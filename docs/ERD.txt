@@ -1,0 +1,46 @@
+users
+-----
+id (PK)
+name
+email
+created_at
+
+shows
+-----
+id (PK)
+name
+start_time
+location
+created_at
+
+seats
+-----
+id (PK)
+show_id (FK -> shows.id)
+seat_code        (A1, A2, B1...)
+status           (AVAILABLE | SOLD)
+
+orders
+------
+id (PK)
+user_id (FK -> users.id)
+show_id (FK -> shows.id)
+status   (PENDING | PAID | CANCELLED)
+created_at
+
+order_seats
+-----------
+id (PK)
+order_id (FK -> orders.id)
+seat_id  (FK -> seats.id)
+
+payments
+--------
+id (PK)
+order_id (FK -> orders.id)
+provider      (VNPAY | MOMO | FAKE)
+amount
+status        (SUCCESS | FAILED)
+transaction_id
+created_at
+

@@ -1,0 +1,149 @@
+# PHÂN TÍCH YÊU CẦU
+
+## Hệ thống đặt vé (Demo – Redis giữ ghế)
+
+---
+
+## 1. Mục tiêu hệ thống
+
+Xây dựng một **hệ thống đặt vé demo** cho sự kiện/suất chiếu, cho phép nhiều người dùng truy cập đồng thời, đảm bảo:
+
+* Không bán trùng ghế (no oversell)
+* Giữ ghế tạm thời khi thanh toán
+* Vé tự động quay lại nếu không thanh toán
+
+Hệ thống hướng tới **demo kiến trúc & logic backend**, không tối ưu cho tải lớn production.
+
+---
+
+## 2. Phạm vi (Scope)
+
+### Trong phạm vi demo
+
+* Đăng nhập người dùng đơn giản
+* Xem danh sách sự kiện / suất chiếu
+* Xem sơ đồ ghế
+* Giữ ghế tạm thời bằng Redis (TTL)
+* Thanh toán giả lập hoặc sandbox
+* Xác nhận vé đã bán
+
+### Ngoài phạm vi demo
+
+* Không xử lý tiền thật phức tạp
+* Không xử lý hoàn tiền
+* Không có phân quyền nâng cao
+* Không có queue phân tán / Kafka
+
+---
+
+## 3. Đối tượng sử dụng
+
+* Người dùng (User): đặt vé, thanh toán
+* Quản trị viên (Admin – optional): tạo sự kiện, ghế
+
+---
+
+## 4. Yêu cầu chức năng (Functional Requirements)
+
+### FR-01: Xem danh sách sự kiện
+
+* Người dùng có thể xem danh sách các sự kiện/suất chiếu
+
+### FR-02: Xem sơ đồ ghế
+
+* Hiển thị các ghế theo 3 trạng thái:
+
+  * AVAILABLE: ghế trống
+  * RESERVED: ghế đang được giữ (Redis)
+  * SOLD: ghế đã bán (DB)
+
+### FR-03: Giữ ghế tạm thời
+
+* Khi người dùng chọn ghế:
+
+  * Backend tạo lock trong Redis với TTL (ví dụ 5 phút)
+  * Nếu ghế đã bị giữ → trả lỗi
+
+### FR-04: Thanh toán
+
+* Người dùng thực hiện thanh toán (fake / sandbox)
+* Trong thời gian giữ ghế, chỉ user đó được phép thanh toán
+
+### FR-05: Xác nhận thanh toán thành công
+
+* Backend nhận callback thanh toán
+* Cập nhật DB: ghế → SOLD
+* Xoá lock Redis
+
+### FR-06: Tự động trả ghế
+
+* Nếu quá thời gian TTL mà không thanh toán:
+
+  * Redis tự xoá lock
+  * Ghế quay lại AVAILABLE
+
+---
+
+## 5. Yêu cầu phi chức năng (Non-Functional Requirements)
+
+### NFR-01: Hiệu năng
+
+* Redis phải xử lý giữ ghế nhanh (O(1))
+* DB chỉ ghi khi thanh toán thành công
+
+### NFR-02: Tính nhất quán
+
+* DB là source of truth cho vé đã bán
+* Redis chỉ dùng cho trạng thái tạm thời
+
+### NFR-03: Độ tin cậy
+
+* Redis mất dữ liệu không làm sai vé đã bán
+* Callback thanh toán phải idempotent
+
+### NFR-04: Khả năng mở rộng (lý thuyết)
+
+* Có thể mở rộng bằng cách:
+
+  * Thêm Redis queue
+  * Tách worker giữ ghế
+
+---
+
+## 6. Luồng nghiệp vụ chính
+
+### Luồng 1: Đặt vé thành công
+
+1. User chọn ghế
+2. Backend giữ ghế trong Redis
+3. User thanh toán
+4. Backend cập nhật DB → SOLD
+
+### Luồng 2: Không thanh toán
+
+1. User giữ ghế
+2. Hết TTL Redis
+3. Ghế tự động AVAILABLE
+
+---
+
+## 7. Giả định & ràng buộc
+
+* Mỗi ghế chỉ bán cho 1 người
+* Thời gian giữ ghế cố định (ví dụ 5 phút)
+* Demo chạy với số lượng user nhỏ
+
+---
+
+## 8. Công nghệ sử dụng (đề xuất)
+
+* Backend: Spring Boot / .NET
+* Database: MySQL / PostgreSQL
+* Cache: Redis
+* Frontend: Web đơn giản
+
+---
+
+## 9. Kết luận
+
+Tài liệu này mô tả **yêu cầu nghiệp vụ và kỹ thuật** cho hệ thống đặt vé demo, tập trung vào xử lý đồng thời và giữ ghế tạm thời bằng Redis, phù hợp cho mục đích học tập, đồ án và trình diễn kiến trúc backend.
