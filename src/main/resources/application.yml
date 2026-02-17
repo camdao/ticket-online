@@ -4,6 +4,9 @@ spring:
             - redis
     datasource:
         url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MYSQL
+    h2:
+        console:
+            enabled: true
     jpa:
         properties:
             hibernate:
