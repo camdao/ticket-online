@@ -9,12 +9,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seat{
+public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +34,7 @@ public class Seat{
         return Seat.builder()
                 .showId(showId)
                 .seatCode(seatCode)
-                .status(SeatStatus.AVAILABLE).build();
+                .status(SeatStatus.AVAILABLE)
+                .build();
     }
 }

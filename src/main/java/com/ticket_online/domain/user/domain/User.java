@@ -29,9 +29,6 @@ public class User extends BaseTimeEntity {
     }
 
     public static User createUser(String name, String email) {
-        return User.builder()
-                .name(name)
-                .email(email).build();
+        return User.builder().name(name).email(email).build();
     }
-
 }
