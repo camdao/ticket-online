@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.2'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.diffplug.spotless") version '6.25.0'
 }
 
 group = 'com.ticket-online'
@@ -40,3 +41,21 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+spotless {
+	java {
+		target("**/*.java")
+		importOrder()
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+		googleJavaFormat().aosp()
+	}
+}
+
+// pre-commit spotless check script
+tasks.register('updateGitHooks', Copy) {
+	from './scripts/pre-commit'
+	into './.git/hooks'
+}
+compileJava.dependsOn updateGitHooks

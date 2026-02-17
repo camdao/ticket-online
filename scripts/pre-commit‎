@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Running Spotless..."
+./gradlew spotlessApply
+
+if ! git diff --quiet; then
+  echo "Spotless has modified files. Please review and commit again."
+  git status --short
+  exit 1
+fi
