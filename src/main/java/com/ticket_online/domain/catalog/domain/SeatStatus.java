@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public enum SeatStatus {
     AVAILABLE("Available"),
-    RESERVED("Reserved"),
     SOLD("Sold");
 
     private final String value;

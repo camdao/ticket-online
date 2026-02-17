@@ -19,20 +19,20 @@ public class Seat{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String showId;
+    private Long showId;
 
     private String seatCode;
 
     private SeatStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Seat(String showId, String seatCode, SeatStatus status) {
+    Seat(Long showId, String seatCode, SeatStatus status) {
         this.showId = showId;
         this.seatCode = seatCode;
         this.status = status;
     }
 
-    public static Seat createSeat(String showId, String seatCode) {
+    public static Seat createSeat(Long showId, String seatCode) {
         return Seat.builder()
                 .showId(showId)
                 .seatCode(seatCode)
