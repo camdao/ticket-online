@@ -1,0 +1,55 @@
+1. Luồng xem ghế
+User → FE: mở màn hình chọn ghế
+FE → Backend: GET /shows/{id}/seats
+Backend → DB: load seats
+Backend → Redis: check seat hold
+Backend → FE: trả về danh sách ghế (AVAILABLE | HELD | SOLD)
+
+2. Luồng giữ ghế
+User → FE: chọn ghế A1, A2
+FE → Backend: POST /seat-holds
+Backend → Redis:
+  SET seat:hold:showId:A1 userId NX EX 300
+  SET seat:hold:showId:A2 userId NX EX 300
+
+Backend → FE:
+  200 OK (hold success)
+
+3. Luồng user khác vào sau
+User B → FE: load ghế
+FE → Backend → Redis
+Backend → FE: A1, A2 = HELD
+
+4. Luồng tạo Order
+User → FE: bấm "Thanh toán"
+FE → Backend: POST /checkout
+Backend:
+  - verify Redis hold belongs to user
+  - create Order (PENDING)
+  - create Payment
+Backend → FE:
+  paymentUrl
+
+5. Luồng thanh toán
+FE → Payment Gateway: redirect
+User → Gateway: thanh toán
+Gateway → Backend: callback
+
+6. Thanh toán THÀNH CÔNG
+Backend:
+  Order → PAID
+  Seat → SOLD (DB)
+  DEL Redis hold keys
+
+7.Thanh toán THẤT BẠI / HẾT THỜI GIAN GIỮ GHẾ
+Trường hợp 1: thất bại
+Gateway → Backend: FAILED
+Backend:
+  Order → CANCELLED
+  Redis TTL tự hết
+
+Trường hợp 2: user bỏ
+Không có callback
+→ Redis TTL hết (5 phút)
+→ ghế AVAILABLE lại
+
