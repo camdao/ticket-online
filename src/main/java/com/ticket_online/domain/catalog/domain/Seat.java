@@ -35,4 +35,8 @@ public class Seat {
                 .status(SeatStatus.AVAILABLE)
                 .build();
     }
+
+    public boolean isSold() {
+        return this.status == SeatStatus.SOLD;
+    }
 }
