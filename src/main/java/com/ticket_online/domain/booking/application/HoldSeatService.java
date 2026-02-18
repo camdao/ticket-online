@@ -2,6 +2,7 @@ package com.ticket_online.domain.booking.application;
 
 import com.ticket_online.domain.booking.repository.RedisSeatHoldRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
+import com.ticket_online.domain.catalog.domain.SeatStatus;
 import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,26 +24,33 @@ public class HoldSeatService {
 
     public void holdSeats(Long showId, List<Long> seatIds, Long userId) {
 
-        if (seatIds.size() > 4) {
-            throw new CustomException(ErrorCode.TOO_MANY_SEATS);
+        List<Seat> seats = seatRepository.findAllByShowIdAndIdIn(showId, seatIds);
+        if (seats.size() != seatIds.size()) {
+            throw new CustomException(ErrorCode.SEAT_NOT_FOUND);
         }
 
+        if (seatRepository.existsSoldSeats(showId, seatIds, SeatStatus.SOLD)) {
+            throw new CustomException(ErrorCode.SEAT_ALREADY_SOLD);
+        }
+
+        List<Long> heldSeats = new ArrayList<>();
+
+        try {
+            for (Long seatId : seatIds) {
+                if (!seatHoldRepository.hold(showId, seatId, userId, HOLD_TTL)) {
+                    throw new CustomException(ErrorCode.SEAT_ALREADY_HELD);
+                }
+                heldSeats.add(seatId);
+            }
+        } catch (RuntimeException ex) {
+            rollbackHold(showId, heldSeats);
+            throw ex;
+        }
+    }
+
+    private void rollbackHold(Long showId, List<Long> seatIds) {
         for (Long seatId : seatIds) {
-
-            Seat seat =
-                    seatRepository
-                            .findByShowIdAndId(showId, seatId)
-                            .orElseThrow(() -> new CustomException(ErrorCode.SEAT_NotFound));
-
-            if (seat.isSold()) {
-                throw new CustomException(ErrorCode.SEAT_ALREADY_SOLD);
-            }
-
-            boolean success = seatHoldRepository.hold(showId, seatId, userId, HOLD_TTL);
-
-            if (!success) {
-                throw new CustomException(ErrorCode.SEAT_ALREADY_HELD);
-            }
+            seatHoldRepository.release(showId, seatId);
         }
     }
 }

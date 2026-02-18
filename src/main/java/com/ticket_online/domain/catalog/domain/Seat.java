@@ -1,6 +1,8 @@
 package com.ticket_online.domain.catalog.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class Seat {
 
     private String seatCode;
 
+    @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)

@@ -1,5 +1,17 @@
 package com.ticket_online.domain.booking.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
-public record HoldSeatRequest(Long showId, List<Long> seatIds, Long userId) {}
+public record HoldSeatRequest(
+        @NotNull(message = "showId not null.")
+        Long showId,
+
+        @NotNull(message = "seatIds not null.")
+        @Size(max = 4, message = "seatIds must contain at most 4 items")
+        List<Long> seatIds,
+
+        @NotNull(message = "userId not null.")
+        Long userId) {}

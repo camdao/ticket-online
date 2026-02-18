@@ -27,7 +27,7 @@ public enum ErrorCode {
 
     SEAT_ALREADY_HELD(HttpStatus.BAD_REQUEST, "The seat is already held by another user."),
 
-    SEAT_NotFound(HttpStatus.NOT_FOUND, "The requested resource was not found.");
+    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested resource was not found.");
 
     private final HttpStatus status;
     private final String message;

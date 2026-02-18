@@ -2,6 +2,8 @@ package com.ticket_online.domain.booking.domain;
 
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +22,7 @@ public class Order extends BaseTimeEntity {
 
     private Long showId;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)
