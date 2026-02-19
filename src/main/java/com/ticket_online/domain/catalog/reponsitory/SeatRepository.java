@@ -22,5 +22,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     boolean existsSoldSeats(@Param("showId") Long showId,
                             @Param("seatIds") List<Long> seatIds,
                             @Param("status") SeatStatus status);
+
 }
 
