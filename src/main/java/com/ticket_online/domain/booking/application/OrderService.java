@@ -28,7 +28,7 @@ public class OrderService {
                 showId,
                 seatIds,
                 userId,
-                RedisSeatScripts.HOLD_TTL
+                1800
         ) != HoldSeatResult.SUCCESS) {
             throw new CustomException(ErrorCode.SEAT_HOLD_FAILED);
         }

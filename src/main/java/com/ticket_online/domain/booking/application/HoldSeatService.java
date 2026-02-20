@@ -16,8 +16,6 @@ import java.util.List;
 @Service
 public class HoldSeatService {
 
-    private static final Duration HOLD_TTL = Duration.ofMinutes(5);
-
     private final SeatRepository seatRepository;
     private final RedisSeatScripts redisSeatScripts;
 
@@ -32,12 +30,8 @@ public class HoldSeatService {
             throw new CustomException(ErrorCode.SEAT_ALREADY_SOLD);
         }
 
-
-        redisSeatScripts.holdSeats(seatIds, userId, HOLD_TTL);
+        redisSeatScripts.holdSeats(seatIds, userId, 360);
 
     }
-
-
-
 
 }
