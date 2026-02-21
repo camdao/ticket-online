@@ -19,9 +19,9 @@ public class RedisSeatScripts {
         return "seat:hold:" + showId + ":" + seatId;
     }
 
-    public HoldSeatResult holdSeats(List<Long> seatIds, Long userId, int ttlSeconds) {
+    public HoldSeatResult holdSeats(List<Long> seatIds, Long showId ,Long userId, int ttlSeconds) {
         List<String> keys = seatIds.stream()
-                .map(seatId -> key(0L, seatId))
+                .map(seatId -> key(showId, seatId))
                 .toList();
 
         RedisScript<Long> HOLD_SEATS =
@@ -85,4 +85,24 @@ public class RedisSeatScripts {
                 : HoldSeatResult.OWNED_BY_OTHER;
     }
 
+    public void releaseSeats(Long showId, List<Long> seatIds) {
+
+        if (seatIds == null || seatIds.isEmpty()) {
+            return;
+        }
+
+        List<String> keys = seatIds.stream()
+                .map(seatId -> key(showId, seatId))
+                .toList();
+
+        RedisScript<Long> RELEASE_SEATS =
+                RedisScript.of("""
+                for i = 1, #KEYS do
+                    redis.call("DEL", KEYS[i])
+                end
+                return #KEYS
+            """, Long.class);
+
+        redisTemplate.execute(RELEASE_SEATS, keys);
+    }
 }

@@ -30,7 +30,7 @@ public class HoldSeatService {
             throw new CustomException(ErrorCode.SEAT_ALREADY_SOLD);
         }
 
-        redisSeatScripts.holdSeats(seatIds, userId, 360);
+        redisSeatScripts.holdSeats(seatIds, showId, userId, 360);
 
     }
 

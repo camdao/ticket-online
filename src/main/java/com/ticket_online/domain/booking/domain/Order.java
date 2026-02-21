@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,14 +27,27 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Column(nullable = false)
+    private LocalDateTime expireTime;
+
     @Builder(access = AccessLevel.PRIVATE)
-    Order(Long userId, Long showId, OrderStatus status) {
+    Order(Long userId, Long showId, OrderStatus status, LocalDateTime expireTime) {
         this.userId = userId;
         this.showId = showId;
         this.status = status;
+        this.expireTime = expireTime;
     }
 
     public static Order createOrder(Long userId, Long showId) {
-        return Order.builder().userId(userId).showId(showId).status(OrderStatus.PENDING).build();
+        return Order.builder()
+                .userId(userId)
+                .showId(showId)
+                .status(OrderStatus.PENDING)
+                .expireTime(LocalDateTime.now().plusMinutes(30))
+                .build();
+    }
+
+    public void cancel() {
+        this.status = OrderStatus.CANCELLED;
     }
 }
