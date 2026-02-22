@@ -50,4 +50,12 @@ public class Order extends BaseTimeEntity {
     public void cancel() {
         this.status = OrderStatus.CANCELLED;
     }
+
+    public boolean isPaid() {
+        return this.status == OrderStatus.PAID;
+    }
+
+    public void markPaid() {
+        this.status = OrderStatus.PAID;
+    }
 }

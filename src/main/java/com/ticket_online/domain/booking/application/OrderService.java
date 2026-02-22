@@ -2,6 +2,7 @@ package com.ticket_online.domain.booking.application;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
+import com.ticket_online.domain.booking.dto.PaymentRequest;
 import com.ticket_online.domain.booking.repository.OrderRepository;
 import com.ticket_online.domain.booking.repository.OrderSeatRepository;
 import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
@@ -41,6 +42,21 @@ public class OrderService {
                         .map(seatId -> OrderSeat.createOrderSeat(order.getId(), seatId))
                         .toList()
         );
+
+    }
+
+    @Transactional
+    public void handlePaymentSuccess(PaymentRequest req) {
+
+        Order order = orderRepository.findById(req.getOrderId())
+                .orElseThrow();
+
+        if (order.isPaid()) {
+            return;
+        }
+
+        order.markPaid();
+        orderRepository.save(order);
 
     }
 }
