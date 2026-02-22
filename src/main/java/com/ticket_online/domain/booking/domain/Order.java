@@ -30,6 +30,9 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime expireTime;
 
+    @Version
+    private Long version;
+
     @Builder(access = AccessLevel.PRIVATE)
     Order(Long userId, Long showId, OrderStatus status, LocalDateTime expireTime) {
         this.userId = userId;
