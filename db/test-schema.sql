@@ -1,83 +1,28 @@
--- Test schema for ticket-online project
--- Compatible with H2 (MODE=MYSQL) and MySQL for quick testing
+--  data for k6 load testing
+-- Create seats
+INSERT INTO seats (show_id, seat_code, status) VALUES 
+(1, 'A1', 'AVAILABLE'), (1, 'A2', 'AVAILABLE'), (1, 'A3', 'AVAILABLE'), (1, 'A4', 'AVAILABLE'), (1, 'A5', 'AVAILABLE'),
+(1, 'A6', 'AVAILABLE'), (1, 'A7', 'AVAILABLE'), (1, 'A8', 'AVAILABLE'), (1, 'A9', 'AVAILABLE'), (1, 'A10', 'AVAILABLE'),
+(1, 'B1', 'AVAILABLE'), (1, 'B2', 'AVAILABLE'), (1, 'B3', 'AVAILABLE'), (1, 'B4', 'AVAILABLE'), (1, 'B5', 'AVAILABLE'),
+(1, 'B6', 'AVAILABLE'), (1, 'B7', 'AVAILABLE'), (1, 'B8', 'AVAILABLE'), (1, 'B9', 'AVAILABLE'), (1, 'B10', 'AVAILABLE'),
+(1, 'C1', 'AVAILABLE'), (1, 'C2', 'AVAILABLE'), (1, 'C3', 'AVAILABLE'), (1, 'C4', 'AVAILABLE'), (1, 'C5', 'AVAILABLE'),
+(1, 'C6', 'AVAILABLE'), (1, 'C7', 'AVAILABLE'), (1, 'C8', 'AVAILABLE'), (1, 'C9', 'AVAILABLE'), (1, 'C10', 'AVAILABLE'),
+(1, 'D1', 'AVAILABLE'), (1, 'D2', 'AVAILABLE'), (1, 'D3', 'AVAILABLE'), (1, 'D4', 'AVAILABLE'), (1, 'D5', 'AVAILABLE'),
+(1, 'D6', 'AVAILABLE'), (1, 'D7', 'AVAILABLE'), (1, 'D8', 'AVAILABLE'), (1, 'D9', 'AVAILABLE'), (1, 'D10', 'AVAILABLE'),
+(1, 'E1', 'AVAILABLE'), (1, 'E2', 'AVAILABLE'), (1, 'E3', 'AVAILABLE'), (1, 'E4', 'AVAILABLE'), (1, 'E5', 'AVAILABLE'),
+(1, 'E6', 'AVAILABLE'), (1, 'E7', 'AVAILABLE'), (1, 'E8', 'AVAILABLE'), (1, 'E9', 'AVAILABLE'), (1, 'E10', 'AVAILABLE'),
+(1, 'F1', 'AVAILABLE'), (1, 'F2', 'AVAILABLE'), (1, 'F3', 'AVAILABLE'), (1, 'F4', 'AVAILABLE'), (1, 'F5', 'AVAILABLE'),
+(1, 'F6', 'AVAILABLE'), (1, 'F7', 'AVAILABLE'), (1, 'F8', 'AVAILABLE'), (1, 'F9', 'AVAILABLE'), (1, 'F10', 'AVAILABLE'),
+(1, 'G1', 'AVAILABLE'), (1, 'G2', 'AVAILABLE'), (1, 'G3', 'AVAILABLE'), (1, 'G4', 'AVAILABLE'), (1, 'G5', 'AVAILABLE'),
+(1, 'G6', 'AVAILABLE'), (1, 'G7', 'AVAILABLE'), (1, 'G8', 'AVAILABLE'), (1, 'G9', 'AVAILABLE'), (1, 'G10', 'AVAILABLE'),
+(1, 'H1', 'AVAILABLE'), (1, 'H2', 'AVAILABLE'), (1, 'H3', 'AVAILABLE'), (1, 'H4', 'AVAILABLE'), (1, 'H5', 'AVAILABLE'),
+(1, 'H6', 'AVAILABLE'), (1, 'H7', 'AVAILABLE'), (1, 'H8', 'AVAILABLE'), (1, 'H9', 'AVAILABLE'), (1, 'H10', 'AVAILABLE'),
+(1, 'I1', 'AVAILABLE'), (1, 'I2', 'AVAILABLE'), (1, 'I3', 'AVAILABLE'), (1, 'I4', 'AVAILABLE'), (1, 'I5', 'AVAILABLE'),
+(1, 'I6', 'AVAILABLE'), (1, 'I7', 'AVAILABLE'), (1, 'I8', 'AVAILABLE'), (1, 'I9', 'AVAILABLE'), (1, 'I10', 'AVAILABLE'),
+(1, 'J1', 'AVAILABLE'), (1, 'J2', 'AVAILABLE'), (1, 'J3', 'AVAILABLE'), (1, 'J4', 'AVAILABLE'), (1, 'J5', 'AVAILABLE'),
+(1, 'J6', 'AVAILABLE'), (1, 'J7', 'AVAILABLE'), (1, 'J8', 'AVAILABLE'), (1, 'J9', 'AVAILABLE'), (1, 'J10', 'AVAILABLE');
 
--- Seats table (matches com.ticket_online.domain.catalog.domain.Seat)
-CREATE TABLE IF NOT EXISTS seats (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  show_id BIGINT,
-  seat_code VARCHAR(255),
-  status VARCHAR(32),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- Create show
+INSERT INTO shows (id, name, created_at, updated_at) VALUES 
+(1, 'Test Concert', NOW(), NOW());
 
--- Orders table (matches com.ticket_online.domain.booking.domain.Order)
-CREATE TABLE IF NOT EXISTS orders (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  user_id BIGINT,
-  show_id BIGINT,
-  status VARCHAR(32),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- OrderSeat table (matches com.ticket_online.domain.booking.domain.OrderSeat)
-CREATE TABLE IF NOT EXISTS order_seat (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  order_id BIGINT,
-  seat_id BIGINT,
-  CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-  CONSTRAINT fk_seat FOREIGN KEY (seat_id) REFERENCES seats(id) ON DELETE SET NULL
-);
-
--- Sample data for quick tests
--- Minimal seeds for show 1
--- Minimal seeds for show 1
-INSERT INTO seats (show_id, seat_code, status) VALUES (1, 'A1', 'AVAILABLE');
-INSERT INTO seats (show_id, seat_code, status) VALUES (1, 'A2', 'AVAILABLE');
-INSERT INTO seats (show_id, seat_code, status) VALUES (1, 'A3', 'SOLD'); -- sold
-INSERT INTO seats (show_id, seat_code, status) VALUES (1, 'B1', 'AVAILABLE');
-INSERT INTO seats (show_id, seat_code, status) VALUES (1, 'B2', 'AVAILABLE');
-
--- Seeds for show 2
--- Seeds for show 2
-INSERT INTO seats (show_id, seat_code, status) VALUES (2, 'A1', 'AVAILABLE');
-INSERT INTO seats (show_id, seat_code, status) VALUES (2, 'A2', 'SOLD'); -- sold
-INSERT INTO seats (show_id, seat_code, status) VALUES (2, 'A3', 'AVAILABLE');
-INSERT INTO seats (show_id, seat_code, status) VALUES (2, 'B1', 'AVAILABLE');
-
--- Orders: mix of PENDING(0), PAID(1), CANCELLED(2)
--- Orders: mix of PENDING, PAID, CANCELLED
-INSERT INTO orders (user_id, show_id, status) VALUES (100, 1, 'PENDING');
-INSERT INTO orders (user_id, show_id, status) VALUES (101, 1, 'PAID');
-INSERT INTO orders (user_id, show_id, status) VALUES (102, 2, 'CANCELLED');
-INSERT INTO orders (user_id, show_id, status) VALUES (103, 2, 'PAID');
-
--- Map orders to seats
--- order 1 (pending) reserves seat 1 (A1)
--- Map orders to seats
--- order 1 (pending) reserves seat 1 (A1)
-INSERT INTO order_seat (order_id, seat_id) VALUES (1, 1);
--- order 2 (paid) purchased seat 3 (A3 of show 1) and B1
--- order 2 (paid) purchased seat 3 (A3 of show 1) and B1
-INSERT INTO order_seat (order_id, seat_id) VALUES (2, 3);
-INSERT INTO order_seat (order_id, seat_id) VALUES (2, 4);
--- order 3 (cancelled) had seat A2 of show 2
--- order 3 (cancelled) had seat A2 of show 2
-INSERT INTO order_seat (order_id, seat_id) VALUES (3, 7);
--- order 4 (paid) purchased seat B1 of show 2
--- order 4 (paid) purchased seat B1 of show 2
-INSERT INTO order_seat (order_id, seat_id) VALUES (4, 8);
-
--- Additional users/orders for concurrency testing
--- Additional users/orders for concurrency testing
-INSERT INTO orders (user_id, show_id, status) VALUES (200, 1, 'PENDING');
-INSERT INTO orders (user_id, show_id, status) VALUES (201, 1, 'PENDING');
-INSERT INTO order_seat (order_id, seat_id) VALUES (5, 2);
-INSERT INTO order_seat (order_id, seat_id) VALUES (6, 5);
-
--- Notes:
--- * Enums (SeatStatus, OrderStatus) are persisted as ORDINAL (INT) by default in JPA for this project.
---   Values: SeatStatus: AVAILABLE=0, SOLD=1; OrderStatus: PENDING=0, PAID=1, CANCELLED=2
--- * H2 in application.yml runs in MySQL compatibility mode; this script uses MySQL-like syntax (AUTO_INCREMENT).
--- * For MySQL use, run this script against your test database. For H2 in-memory, Spring Data JPA can auto-create tables if configured, but this script is handy for manual verification.

@@ -31,7 +31,7 @@ public class OrderService {
                 userId,
                 1800
         ) != HoldSeatResult.SUCCESS) {
-            throw new CustomException(ErrorCode.SEAT_HOLD_FAILED);
+            throw new CustomException(ErrorCode.ORDER_SEAT_HOLD_FAILED);
         }
 
         Order order = Order.createOrder(userId,showId);

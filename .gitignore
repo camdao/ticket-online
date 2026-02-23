@@ -35,3 +35,14 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# dependencies
+k6/node_modules/
+
+# build output
+dist/
+build/
+
+# env
+.env
+.env.*

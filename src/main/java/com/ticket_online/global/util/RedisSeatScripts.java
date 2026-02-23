@@ -1,6 +1,8 @@
 package com.ticket_online.global.util;
 
 
+import com.ticket_online.global.error.exception.CustomException;
+import com.ticket_online.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -44,10 +46,10 @@ public class RedisSeatScripts {
                 userId.toString(),
                 String.valueOf(ttlSeconds * 1000)
         );
-
-        return r == 1
-                ? HoldSeatResult.SUCCESS
-                : HoldSeatResult.OWNED_BY_OTHER;
+        if(r == 0) {
+            throw new CustomException(ErrorCode.SEAT_ALREADY_HELD);
+        }
+        return HoldSeatResult.SUCCESS;
     }
 
     public HoldSeatResult checkAndExtendSeats(

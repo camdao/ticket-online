@@ -1,0 +1,595 @@
+{
+  "info": {
+    "name": "Ticket Online API Tests",
+    "description": "Complete test suite for ticket booking system APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "showId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "12345",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Seat Management",
+      "description": "Test seat hold functionality",
+      "item": [
+        {
+          "name": "Hold Single Seat",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has success message', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('successfully');",
+                  "    pm.expect(jsonData.showId).to.eql(parseInt(pm.variables.get('showId')));",
+                  "    pm.expect(jsonData.seatCount).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [1],\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Hold a single seat for a user"
+          }
+        },
+        {
+          "name": "Hold Multiple Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has correct seat count', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.seatCount).to.eql(3);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [2, 3, 4],\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Hold multiple seats for a user"
+          }
+        },
+        {
+          "name": "Hold Already Held Seats (Should Fail)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 4xx or 5xx', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 409, 500]);",
+                  "});",
+                  "",
+                  "pm.test('Error message contains seat hold failure', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message || jsonData.error).to.exist;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [1, 2],\n  \"userId\": 67890\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Attempt to hold already held seats - should fail"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order Management",
+      "description": "Test order creation functionality",
+      "item": [
+        {
+          "name": "Create Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has orderId', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.orderId).to.exist;",
+                  "    pm.expect(jsonData.orderId).to.be.a('number');",
+                  "    ",
+                  "    // Store orderId for payment test",
+                  "    pm.globals.set('orderId', jsonData.orderId);",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate unique user ID for this test",
+                  "pm.globals.set('testUserId', Math.floor(Math.random() * 1000000));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [10, 11],\n  \"userId\": {{testUserId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Create a new order with held seats"
+          }
+        },
+        {
+          "name": "Create Order - Invalid Show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 4xx', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": 999,\n  \"seatIds\": [1, 2],\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Attempt to create order for invalid show"
+          }
+        },
+        {
+          "name": "Create Order - Empty Seat List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [],\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Attempt to create order with empty seat list"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Processing",
+      "description": "Test payment processing functionality",
+      "item": [
+        {
+          "name": "Payment Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Payment marked as successful', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.orderId).to.exist;",
+                  "    pm.expect(jsonData.status).to.eql('PAID');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": {{orderId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/success",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "success"]
+            },
+            "description": "Process successful payment for an order"
+          }
+        },
+        {
+          "name": "Payment Success - Invalid Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 4xx or 5xx', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404, 500]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": 999999\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/success",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "success"]
+            },
+            "description": "Attempt payment for non-existent order"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complete Flow Test",
+      "description": "End-to-end test of the booking flow",
+      "item": [
+        {
+          "name": "1. Hold Seats for Complete Flow",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate unique identifiers for complete flow test",
+                  "pm.globals.set('flowUserId', Math.floor(Math.random() * 1000000));",
+                  "pm.globals.set('flowSeatId1', Math.floor(Math.random() * 50) + 50); // seats 50-99",
+                  "pm.globals.set('flowSeatId2', parseInt(pm.globals.get('flowSeatId1')) + 1);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Seats held successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [{{flowSeatId1}}, {{flowSeatId2}}],\n  \"userId\": {{flowUserId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Step 1: Hold seats for the complete flow"
+          }
+        },
+        {
+          "name": "2. Create Order for Complete Flow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Order created successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.orderId).to.exist;",
+                  "    pm.globals.set('flowOrderId', jsonData.orderId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [{{flowSeatId1}}, {{flowSeatId2}}],\n  \"userId\": {{flowUserId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Step 2: Create order for the held seats"
+          }
+        },
+        {
+          "name": "3. Complete Payment for Complete Flow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Payment completed successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('PAID');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": {{flowOrderId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/success",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "success"]
+            },
+            "description": "Step 3: Complete payment for the order"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Edge Cases & Error Handling",
+      "description": "Test error scenarios and edge cases",
+      "item": [
+        {
+          "name": "Invalid JSON Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ invalid json }"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Test invalid JSON request handling"
+          }
+        },
+        {
+          "name": "Missing Required Fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Test missing required fields validation"
+          }
+        },
+        {
+          "name": "Too Many Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [1, 2, 3, 4, 5],\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/seat-holds",
+              "host": ["{{baseUrl}}"],
+              "path": ["seat-holds"]
+            },
+            "description": "Test validation for too many seats (max 4)"
+          }
+        }
+      ]
+    }
+  ]
+}
