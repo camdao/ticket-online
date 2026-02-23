@@ -2,10 +2,10 @@ package com.ticket_online.domain.booking.application;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
-import com.ticket_online.domain.booking.dto.PaymentRequest;
 import com.ticket_online.domain.booking.repository.OrderRepository;
 import com.ticket_online.domain.booking.repository.OrderSeatRepository;
 import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
+import com.ticket_online.domain.payment.dto.PaymentRequest;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.HoldSeatResult;
@@ -24,7 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderSeatRepository orderSeatRepository;
     @Transactional
-    public void createOrder(Long showId , List<Long> seatIds, Long userId) {
+    public Long createOrder(Long showId , List<Long> seatIds, Long userId) {
         if (redisSeatScripts.checkAndExtendSeats(
                 showId,
                 seatIds,
@@ -42,13 +42,13 @@ public class OrderService {
                         .map(seatId -> OrderSeat.createOrderSeat(order.getId(), seatId))
                         .toList()
         );
-
+        return order.getId();
     }
 
     @Transactional
-    public void handlePaymentSuccess(PaymentRequest req) {
+    public void handlePaymentSuccess(Long orderId) {
 
-        Order order = orderRepository.findById(req.orderId())
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow();
 
         if (order.isPaid()) {

@@ -9,7 +9,6 @@ import com.ticket_online.global.util.RedisSeatScripts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.List;
 
 @RequiredArgsConstructor

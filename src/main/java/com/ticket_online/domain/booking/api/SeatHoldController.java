@@ -2,8 +2,12 @@ package com.ticket_online.domain.booking.api;
 
 import com.ticket_online.domain.booking.application.HoldSeatService;
 import com.ticket_online.domain.booking.dto.HoldSeatRequest;
+import com.ticket_online.domain.booking.dto.HoldSeatResponse;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +20,8 @@ public class SeatHoldController {
     private final HoldSeatService holdSeatService;
 
     @PostMapping
-    public void holdSeat(@RequestBody @Valid  HoldSeatRequest req) {
+    public ResponseEntity<HoldSeatResponse> holdSeat(@RequestBody @Valid HoldSeatRequest req) {
         holdSeatService.holdSeats(req.showId(), req.seatIds(), req.userId());
+        return ResponseEntity.ok(HoldSeatResponse.success(req.showId(), req.seatIds().size()));
     }
 }
