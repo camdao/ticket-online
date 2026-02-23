@@ -48,7 +48,7 @@ public class OrderService {
     @Transactional
     public void handlePaymentSuccess(PaymentRequest req) {
 
-        Order order = orderRepository.findById(req.getOrderId())
+        Order order = orderRepository.findById(req.orderId())
                 .orElseThrow();
 
         if (order.isPaid()) {
