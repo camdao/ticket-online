@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/payments")
 @RequiredArgsConstructor
 public class PaymentController {
-	private final OrderService orderService;
+    private final OrderService orderService;
 
-	@PostMapping("/success")
-	public ResponseEntity<PaymentResponse> paymentSuccess(@RequestBody PaymentRequest req) {
-		orderService.handlePaymentSuccess(req.orderId());
-		return ResponseEntity.ok(PaymentResponse.of(req.orderId(), PayStatus.SUCCESS));
-	}
-
+    @PostMapping("/success")
+    public ResponseEntity<PaymentResponse> paymentSuccess(@RequestBody PaymentRequest req) {
+        orderService.handlePaymentSuccess(req.orderId());
+        return ResponseEntity.ok(PaymentResponse.of(req.orderId(), PayStatus.SUCCESS));
+    }
 }

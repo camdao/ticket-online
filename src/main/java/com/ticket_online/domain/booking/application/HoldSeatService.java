@@ -6,10 +6,9 @@ import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +29,5 @@ public class HoldSeatService {
         }
 
         redisSeatScripts.holdSeats(seatIds, showId, userId, 360);
-
     }
-
 }

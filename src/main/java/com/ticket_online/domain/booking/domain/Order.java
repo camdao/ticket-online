@@ -4,12 +4,11 @@ import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -30,8 +29,7 @@ public class Order extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime expireTime;
 
-    @Version
-    private Long version;
+    @Version private Long version;
 
     @Builder(access = AccessLevel.PRIVATE)
     Order(Long userId, Long showId, OrderStatus status, LocalDateTime expireTime) {

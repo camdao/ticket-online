@@ -31,7 +31,9 @@ public enum ErrorCode {
     SEAT_HOLD_FAILED(HttpStatus.BAD_REQUEST, "Failed to hold the seat. Please try again."),
 
     // Order
-    ORDER_SEAT_HOLD_FAILED(HttpStatus.BAD_REQUEST, "Failed to hold the seat for the order. Please try again."),;
+    ORDER_SEAT_HOLD_FAILED(
+            HttpStatus.BAD_REQUEST, "Failed to hold the seat for the order. Please try again."),
+    ;
 
     private final HttpStatus status;
     private final String message;

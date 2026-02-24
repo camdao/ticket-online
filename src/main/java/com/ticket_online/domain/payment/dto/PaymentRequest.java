@@ -1,6 +1,3 @@
 package com.ticket_online.domain.payment.dto;
 
-public record PaymentRequest(
-        Long orderId
-) {
-}
+public record PaymentRequest(Long orderId) {}
