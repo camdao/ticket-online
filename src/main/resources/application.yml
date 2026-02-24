@@ -7,7 +7,25 @@ spring:
     h2:
         console:
             enabled: true
+            settings:
+                web-allow-others: true
     jpa:
         properties:
             hibernate:
                 default_batch_fetch_size: 1000
+
+# Actuator
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info,prometheus
+            base-path: /actuator
+        jmx:
+            exposure:
+                exclude: "*"
+    endpoint:
+        health:
+            show-details: never
+    individual:
+        health:
