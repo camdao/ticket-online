@@ -1,10 +1,13 @@
 #!/bin/sh
 
-echo "Running Spotless..."
-./gradlew spotlessCheck
+echo "Running Spotless on staged files..."
 
-if ! git diff --quiet; then
-  echo "Spotless has modified files. Please review and commit again."
-  git status --short
-  exit 1
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".java$")
+
+if [ -z "$FILES" ]; then
+  exit 0
 fi
+
+./gradlew spotlessApply
+
+git add $FILES
