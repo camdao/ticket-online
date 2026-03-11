@@ -20,6 +20,13 @@ public class User extends BaseTimeEntity {
 
     private String name;
 
+    private String username;
+
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @Builder(access = AccessLevel.PRIVATE)
     User(String email, String name) {
         this.email = email;

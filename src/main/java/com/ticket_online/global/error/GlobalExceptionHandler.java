@@ -1,8 +1,8 @@
 package com.ticket_online.global.error;
 
+import com.ticket_online.global.common.response.GlobalResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
-import com.ticket_online.global.response.GlobalResponse;
 import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
