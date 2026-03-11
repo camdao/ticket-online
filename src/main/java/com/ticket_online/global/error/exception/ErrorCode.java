@@ -33,12 +33,6 @@ public enum ErrorCode {
     // Order
     ORDER_SEAT_HOLD_FAILED(
             HttpStatus.BAD_REQUEST, "Failed to hold the seat for the order. Please try again."),
-
-    // User
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested member was not found."),
-
-    // Security
-    PASSWORD_NOT_MATCHES(HttpStatus.BAD_REQUEST, "The provided password does not match."),
     ;
 
     private final HttpStatus status;

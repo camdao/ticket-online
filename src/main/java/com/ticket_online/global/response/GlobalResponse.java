@@ -1,4 +1,4 @@
-package com.ticket_online.global.common.response;
+package com.ticket_online.global.response;
 
 import com.ticket_online.global.error.ErrorResponse;
 import java.time.LocalDateTime;
