@@ -1,4 +1,4 @@
-package com.ticket_online.global.response;
+package com.ticket_online.global.common.response;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
@@ -10,7 +10,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice(basePackages = "com.ManagerGame")
+@RestControllerAdvice(basePackages = "com.SmartBus")
 public class GlobalResponseAdvice implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
