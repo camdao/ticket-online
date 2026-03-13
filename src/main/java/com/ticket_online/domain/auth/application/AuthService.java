@@ -23,7 +23,7 @@ public class AuthService {
         final User member =
                 memberRepository
                         .findByUsername(request.username())
-                        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         validatePasswordMatches(member, request.password());
 
