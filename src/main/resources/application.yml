@@ -1,7 +1,16 @@
+
 spring:
     profiles:
         include:
             - redis
+
+    datasource:
+        url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=Oracle;DEFAULT_NULL_ORDERING=HIGH
+
+    jpa:
+        properties:
+            hibernate:
+                default_batch_fetch_size: 1000
 # Actuator
 management:
     endpoints:
