@@ -1,13 +1,13 @@
 package com.ticket_online.domain.auth.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
 @Getter
-@Entity
+@RedisHash(value = "refresh_token")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class RefreshToken {
 

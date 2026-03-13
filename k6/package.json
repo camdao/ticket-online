@@ -4,7 +4,8 @@
   "description": "",
   "main": "seat_hold_order_test.js",
   "scripts": {
-    "test": "k6 run seat_hold_order_test.js"
+    "test": "k6 run seat_hold_order_test.js",
+    "dev": "k6 run seat_hold_order_test.js"
   },
   "keywords": [],
   "author": "",
