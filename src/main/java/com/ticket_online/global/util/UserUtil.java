@@ -9,20 +9,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MemberUtil {
+public class UserUtil {
 
     private final SecurityUtil securityUtil;
-    private final UserRepository memberRepository;
+    private final UserRepository userRepository;
 
-    public User getCurrentMember() {
-        return memberRepository
+    public User getCurrentUser() {
+        return userRepository
                 .findById(securityUtil.getCurrentMemberId())
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public User getMemberByMemberId(Long memberId) {
-        return memberRepository
+    public User getUserByUserId(Long memberId) {
+        return userRepository
                 .findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
