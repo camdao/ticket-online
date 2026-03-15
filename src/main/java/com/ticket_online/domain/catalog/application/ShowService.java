@@ -1,0 +1,27 @@
+package com.ticket_online.domain.catalog.application;
+
+import com.ticket_online.domain.catalog.domain.Show;
+import com.ticket_online.domain.catalog.dto.FindShowResponse;
+import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ShowService {
+    private final ShowRepository showRepository;
+
+    public List<FindShowResponse> findAllShow() {
+        List<Show> shows = showRepository.findAll();
+        return shows.stream()
+                .map(
+                        show ->
+                                FindShowResponse.of(
+                                        show.getId(),
+                                        show.getName(),
+                                        show.getStart_time(),
+                                        show.getLocation()))
+                .toList();
+    }
+}
