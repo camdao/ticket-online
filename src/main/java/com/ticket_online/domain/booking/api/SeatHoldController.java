@@ -1,6 +1,6 @@
 package com.ticket_online.domain.booking.api;
 
-import com.ticket_online.domain.booking.application.HoldSeatService;
+import com.ticket_online.domain.booking.application.SeatHoldService;
 import com.ticket_online.domain.booking.dto.request.HoldSeatRequest;
 import com.ticket_online.domain.booking.dto.response.HoldSeatResponse;
 import jakarta.validation.Valid;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/seat-holds")
 @RequiredArgsConstructor
 public class SeatHoldController {
-    private final HoldSeatService holdSeatService;
+    private final SeatHoldService holdSeatService;
 
     @PostMapping
     public ResponseEntity<HoldSeatResponse> holdSeat(@RequestBody @Valid HoldSeatRequest req) {

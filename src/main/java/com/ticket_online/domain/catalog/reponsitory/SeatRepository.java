@@ -23,4 +23,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             @Param("showId") Long showId,
             @Param("seatIds") List<Long> seatIds,
             @Param("status") SeatStatus status);
+
+    List<Seat> findByShowId(Long showId);
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class HoldSeatService {
+public class SeatHoldService {
 
     private final SeatRepository seatRepository;
     private final RedisSeatScripts redisSeatScripts;

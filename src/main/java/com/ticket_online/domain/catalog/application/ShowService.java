@@ -1,8 +1,11 @@
 package com.ticket_online.domain.catalog.application;
 
+import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
-import com.ticket_online.domain.catalog.dto.CreateShowResponse;
-import com.ticket_online.domain.catalog.dto.FindShowResponse;
+import com.ticket_online.domain.catalog.dto.response.CreateShowResponse;
+import com.ticket_online.domain.catalog.dto.response.FindShowResponse;
+import com.ticket_online.domain.catalog.dto.response.SeatResponse;
+import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
 import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShowService {
     private final ShowRepository showRepository;
     private final SeatService seatService;
+    private final SeatRepository seatRepository;
 
+    @Transactional(readOnly = true)
     public List<FindShowResponse> findAllShow() {
         List<Show> shows = showRepository.findAll();
         return shows.stream()
@@ -36,5 +41,12 @@ public class ShowService {
         Show savedShow = showRepository.save(show);
         seatService.createSeatsForShow(savedShow, totalSeats);
         return CreateShowResponse.from(savedShow);
+    }
+
+    public List<SeatResponse> findSeatsByShow(Long showId) {
+
+        List<Seat> seats = seatRepository.findByShowId(showId);
+
+        return seats.stream().map(SeatResponse::from).toList();
     }
 }
