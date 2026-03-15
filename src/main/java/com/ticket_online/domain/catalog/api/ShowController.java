@@ -7,10 +7,7 @@ import com.ticket_online.domain.catalog.dto.FindShowResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shows")
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShowController {
     private final ShowService showService;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<List<FindShowResponse>> findAllShow() {
         return ResponseEntity.ok(showService.findAllShow());
     }
