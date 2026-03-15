@@ -1,9 +1,10 @@
 package com.ticket_online.domain.catalog.api;
 
 import com.ticket_online.domain.catalog.application.ShowService;
-import com.ticket_online.domain.catalog.dto.CreateShowRequest;
-import com.ticket_online.domain.catalog.dto.CreateShowResponse;
-import com.ticket_online.domain.catalog.dto.FindShowResponse;
+import com.ticket_online.domain.catalog.dto.request.CreateShowRequest;
+import com.ticket_online.domain.catalog.dto.response.CreateShowResponse;
+import com.ticket_online.domain.catalog.dto.response.FindShowResponse;
+import com.ticket_online.domain.catalog.dto.response.SeatResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class ShowController {
                         request.location(),
                         request.startTime(),
                         request.totalSeats()));
+    }
+
+    @GetMapping("/{id}/seats")
+    public ResponseEntity<List<SeatResponse>> findSeatsByShow(@PathVariable Long id) {
+        return ResponseEntity.ok(showService.findSeatsByShow(id));
     }
 }

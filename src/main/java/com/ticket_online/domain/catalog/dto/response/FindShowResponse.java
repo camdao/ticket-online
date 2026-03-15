@@ -1,4 +1,4 @@
-package com.ticket_online.domain.catalog.dto;
+package com.ticket_online.domain.catalog.dto.response;
 
 import java.time.LocalDateTime;
 
