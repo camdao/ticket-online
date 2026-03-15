@@ -23,7 +23,7 @@ public class CookieUtil {
                         .path("/")
                         .secure(true)
                         .sameSite(sameSite)
-                        .httpOnly(false)
+                        .httpOnly(true)
                         .build();
 
         ResponseCookie refreshTokenCookie =
@@ -31,7 +31,7 @@ public class CookieUtil {
                         .path("/")
                         .secure(true)
                         .sameSite(sameSite)
-                        .httpOnly(false)
+                        .httpOnly(true)
                         .build();
 
         HttpHeaders headers = new HttpHeaders();

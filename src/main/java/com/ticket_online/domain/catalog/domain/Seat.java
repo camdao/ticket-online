@@ -15,9 +15,12 @@ import lombok.NoArgsConstructor;
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seat_id")
     private Long id;
 
-    private Long showId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "show_id", nullable = false)
+    private Show show;
 
     private String seatCode;
 
@@ -25,18 +28,14 @@ public class Seat {
     private SeatStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Seat(Long showId, String seatCode, SeatStatus status) {
-        this.showId = showId;
+    Seat(Show show, String seatCode, SeatStatus status) {
+        this.show = show;
         this.seatCode = seatCode;
         this.status = status;
     }
 
-    public static Seat createSeat(Long showId, String seatCode) {
-        return Seat.builder()
-                .showId(showId)
-                .seatCode(seatCode)
-                .status(SeatStatus.AVAILABLE)
-                .build();
+    public static Seat createSeat(Show show, String seatCode) {
+        return Seat.builder().show(show).seatCode(seatCode).status(SeatStatus.AVAILABLE).build();
     }
 
     public boolean isSold() {

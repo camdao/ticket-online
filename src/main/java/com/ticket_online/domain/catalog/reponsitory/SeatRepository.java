@@ -15,9 +15,9 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             """
     select count(s) > 0
     from Seat s
-    where s.showId = :showId
-      and s.id in :seatIds
-      and s.status = :status
+    where s.show.id = :showId
+    and s.id in :seatIds
+    and s.status = :status
 """)
     boolean existsSoldSeats(
             @Param("showId") Long showId,

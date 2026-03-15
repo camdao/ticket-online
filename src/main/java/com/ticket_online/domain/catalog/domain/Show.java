@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Show extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "show_id")
     private Long id;
 
     private String name;

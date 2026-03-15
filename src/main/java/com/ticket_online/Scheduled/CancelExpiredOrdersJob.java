@@ -38,7 +38,7 @@ public class CancelExpiredOrdersJob {
 
             List<Long> seatIds = orderSeatRepository.findSeatIdsByOrderId(order.getId());
 
-            redisSeatScripts.releaseSeats(order.getShowId(), seatIds);
+            redisSeatScripts.releaseSeats(order.getShow().getId(), seatIds);
 
             log.info("Cancelled expired order {}", order.getId());
         }
