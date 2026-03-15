@@ -1,8 +1,8 @@
 package com.ticket_online.domain.booking.api;
 
 import com.ticket_online.domain.booking.application.HoldSeatService;
-import com.ticket_online.domain.booking.dto.HoldSeatRequest;
-import com.ticket_online.domain.booking.dto.HoldSeatResponse;
+import com.ticket_online.domain.booking.dto.request.HoldSeatRequest;
+import com.ticket_online.domain.booking.dto.response.HoldSeatResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

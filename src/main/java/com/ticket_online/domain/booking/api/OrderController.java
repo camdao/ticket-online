@@ -1,8 +1,8 @@
 package com.ticket_online.domain.booking.api;
 
 import com.ticket_online.domain.booking.application.OrderService;
-import com.ticket_online.domain.booking.dto.CreateOrderRequest;
-import com.ticket_online.domain.booking.dto.CreateOrderResponse;
+import com.ticket_online.domain.booking.dto.request.CreateOrderRequest;
+import com.ticket_online.domain.booking.dto.response.CreateOrderResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
