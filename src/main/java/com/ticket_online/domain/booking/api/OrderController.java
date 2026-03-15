@@ -20,7 +20,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<CreateOrderResponse> createOrder(
             @RequestBody @Valid CreateOrderRequest req) {
-        Long id = orderService.createOrder(req.showId(), req.seatIds(), req.userId());
-        return ResponseEntity.ok(new CreateOrderResponse(id));
+        return ResponseEntity.ok(
+                orderService.createOrder(req.showId(), req.seatIds(), req.userId()));
     }
 }
