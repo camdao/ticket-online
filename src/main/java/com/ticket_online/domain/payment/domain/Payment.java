@@ -1,5 +1,6 @@
 package com.ticket_online.domain.payment.domain;
 
+import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +17,9 @@ public class Payment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long orderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "order_id", nullable = false)
+    private Order order;
 
     private PayProvider provider;
 
@@ -25,17 +28,17 @@ public class Payment extends BaseTimeEntity {
     private PayStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Payment(Long orderId, PayProvider provider, Long amount, PayStatus status) {
-        this.orderId = orderId;
+    Payment(Order order, PayProvider provider, Long amount, PayStatus status) {
+        this.order = order;
         this.provider = provider;
         this.amount = amount;
         this.status = status;
     }
 
     public static Payment createPayment(
-            Long orderId, PayProvider provider, Long amount, PayStatus status) {
+            Order order, PayProvider provider, Long amount, PayStatus status) {
         return Payment.builder()
-                .orderId(orderId)
+                .order(order)
                 .provider(provider)
                 .amount(amount)
                 .status(status)
