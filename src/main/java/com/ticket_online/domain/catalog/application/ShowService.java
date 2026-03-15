@@ -1,16 +1,21 @@
 package com.ticket_online.domain.catalog.application;
 
 import com.ticket_online.domain.catalog.domain.Show;
+import com.ticket_online.domain.catalog.dto.CreateShowResponse;
 import com.ticket_online.domain.catalog.dto.FindShowResponse;
 import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ShowService {
     private final ShowRepository showRepository;
+    private final SeatService seatService;
 
     public List<FindShowResponse> findAllShow() {
         List<Show> shows = showRepository.findAll();
@@ -23,5 +28,13 @@ public class ShowService {
                                         show.getStart_time(),
                                         show.getLocation()))
                 .toList();
+    }
+
+    public CreateShowResponse createShow(
+            String name, String location, LocalDateTime startTime, Long totalSeats) {
+        Show show = Show.createShow(startTime, name, location);
+        Show savedShow = showRepository.save(show);
+        seatService.createSeatsForShow(savedShow, totalSeats);
+        return CreateShowResponse.from(savedShow);
     }
 }
