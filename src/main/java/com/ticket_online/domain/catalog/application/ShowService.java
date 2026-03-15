@@ -17,6 +17,7 @@ public class ShowService {
     private final ShowRepository showRepository;
     private final SeatService seatService;
 
+    @Transactional(readOnly = true)
     public List<FindShowResponse> findAllShow() {
         List<Show> shows = showRepository.findAll();
         return shows.stream()
