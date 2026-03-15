@@ -18,7 +18,7 @@ public class Payment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "order_id", nullable = false)
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     private PayProvider provider;
