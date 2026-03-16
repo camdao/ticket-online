@@ -6,6 +6,7 @@ import com.ticket_online.domain.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,6 +28,8 @@ public class Order extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime expireTime;
+
+    private BigDecimal totalAmount;
 
     @Version private Long version;
 
