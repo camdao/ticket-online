@@ -2,16 +2,21 @@ package com.ticket_online.domain.payment.strategy;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
+import com.ticket_online.global.config.vnpay.VnpayProperties;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class VnPayStrategy implements PaymentStrategy {
+
+    private final VnpayProperties vnpayProperties;
 
     @Override
     public PaymentUrlResponse createPayment(Order order) {
@@ -27,9 +32,9 @@ public class VnPayStrategy implements PaymentStrategy {
 
     private String buildVnpayUrl(Order order) {
 
-        String vnp_TmnCode = "YOUR_TMN_CODE";
-        String vnp_HashSecret = "YOUR_HASH_SECRET";
-        String vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        String vnp_TmnCode = vnpayProperties.tmnCode();
+        String vnp_HashSecret = vnpayProperties.hashSecret();
+        String vnp_Url = vnpayProperties.url();
 
         Map<String, String> params = new HashMap<>();
 
@@ -43,7 +48,7 @@ public class VnPayStrategy implements PaymentStrategy {
         params.put("vnp_OrderInfo", "Thanh toan don hang");
         params.put("vnp_OrderType", "other");
         params.put("vnp_Locale", "vn");
-        params.put("vnp_ReturnUrl", "http://localhost:8080/payment/return");
+        params.put("vnp_ReturnUrl", vnpayProperties.returnUrl());
 
         String query = buildQuery(params);
 
