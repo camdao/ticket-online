@@ -27,6 +27,28 @@ public class VnPayStrategy implements PaymentStrategy {
     @Override
     public void handleCallback(Map<String, String> params) {
         // verify hash
+        String vnp_HashSecret = vnpayProperties.hashSecret();
+
+        String vnp_SecureHash = params.get("vnp_SecureHash");
+
+        // remove hash params
+        params.remove("vnp_SecureHash");
+        params.remove("vnp_SecureHashType");
+
+        // build lại query
+        String signData = buildQuery(params);
+
+        String calculatedHash = hmacSHA512(vnp_HashSecret, signData);
+
+        // verify signature
+        if (!calculatedHash.equalsIgnoreCase(vnp_SecureHash)) {
+            throw new RuntimeException("Invalid VNPay signature");
+        }
+
+        // lấy thông tin
+        String orderId = params.get("vnp_TxnRef");
+        String responseCode = params.get("vnp_ResponseCode");
+
         // update order
     }
 
@@ -57,7 +79,7 @@ public class VnPayStrategy implements PaymentStrategy {
         return vnp_Url + "?" + query + "&vnp_SecureHash=" + hash;
     }
 
-    public String buildQuery(Map<String, String> params) {
+    private String buildQuery(Map<String, String> params) {
 
         List<String> fieldNames = new ArrayList<>(params.keySet());
         Collections.sort(fieldNames);
@@ -82,7 +104,7 @@ public class VnPayStrategy implements PaymentStrategy {
         return query.toString();
     }
 
-    public static String hmacSHA512(String key, String data) {
+    private static String hmacSHA512(String key, String data) {
 
         try {
 
