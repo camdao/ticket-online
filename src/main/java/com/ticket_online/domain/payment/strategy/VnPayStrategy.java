@@ -1,5 +1,6 @@
 package com.ticket_online.domain.payment.strategy;
 
+import com.ticket_online.domain.booking.application.OrderService;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class VnPayStrategy implements PaymentStrategy {
 
     private final VnpayProperties vnpayProperties;
+    private final OrderService orderService;
 
     @Override
     public PaymentUrlResponse createPayment(Order order) {
@@ -50,6 +52,7 @@ public class VnPayStrategy implements PaymentStrategy {
         String responseCode = params.get("vnp_ResponseCode");
 
         // update order
+        orderService.handlePaymentSuccess(Long.parseLong(orderId));
     }
 
     private String buildVnpayUrl(Order order) {

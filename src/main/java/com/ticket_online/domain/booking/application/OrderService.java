@@ -63,5 +63,6 @@ public class OrderService {
         }
 
         order.markPaid();
+        paymentService.confirmPayment(order);
     }
 }

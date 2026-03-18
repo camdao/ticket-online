@@ -51,4 +51,10 @@ public class PaymentService {
 
         return params;
     }
+
+    public void confirmPayment(Order order) {
+        Payment payment = paymentRepository.findByOrderId(order.getId()).orElseThrow();
+        payment.confirmPayment();
+        paymentRepository.save(payment);
+    }
 }

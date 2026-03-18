@@ -44,4 +44,8 @@ public class Payment extends BaseTimeEntity {
                 .status(status)
                 .build();
     }
+
+    public void confirmPayment() {
+        this.status = PayStatus.SUCCESS;
+    }
 }
