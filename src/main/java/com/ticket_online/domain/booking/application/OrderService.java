@@ -4,6 +4,7 @@ import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
 import com.ticket_online.domain.booking.repository.OrderRepository;
 import com.ticket_online.domain.booking.repository.OrderSeatRepository;
+import com.ticket_online.domain.catalog.application.SeatService;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import com.ticket_online.domain.payment.application.PaymentService;
@@ -15,6 +16,7 @@ import com.ticket_online.global.util.HoldSeatResult;
 import com.ticket_online.global.util.RedisSeatScripts;
 import com.ticket_online.global.util.UserUtil;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class OrderService {
     private final ShowRepository showRepository;
     private final UserUtil userUtil;
     private final PaymentService paymentService;
+    private final SeatService seatService;
 
     @Transactional
     public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds, Long userId) {
@@ -61,6 +64,12 @@ public class OrderService {
         if (order.isPaid()) {
             return;
         }
+        List<OrderSeat> orderSeats = orderSeatRepository.findByOrderId(orderId);
+
+        List<Long> seatIds =
+                orderSeats.stream().map(OrderSeat::getSeatId).collect(Collectors.toList());
+
+        seatService.markSeatsAsSold(order.getShow().getId(), seatIds);
 
         order.markPaid();
         paymentService.confirmPayment(order);

@@ -41,4 +41,11 @@ public class Seat {
     public boolean isSold() {
         return this.status == SeatStatus.SOLD;
     }
+
+    public void markSold() {
+        if (this.status == SeatStatus.SOLD) {
+            throw new RuntimeException("Seat is already sold");
+        }
+        this.status = SeatStatus.SOLD;
+    }
 }
