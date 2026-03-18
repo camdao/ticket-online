@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PaymentController {
     private final OrderService orderService;
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
     @PostMapping("/success")
     public ResponseEntity<PaymentResponse> paymentSuccess(@RequestBody PaymentRequest req) {
@@ -23,7 +23,7 @@ public class PaymentController {
         return ResponseEntity.ok(PaymentResponse.of(req.orderId(), PayStatus.SUCCESS));
     }
 
-    @GetMapping("/vnpay-ipn")
+    @GetMapping("/vnpay-return")
     public ResponseEntity<?> ipn(HttpServletRequest request) {
         paymentService.handleVnpayIpn(request);
         return ResponseEntity.ok("OK");
