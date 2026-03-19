@@ -1,4 +1,4 @@
-package com.ticket_online.Scheduled;
+package com.ticket_online.scheduled;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.repository.OrderRepository;
