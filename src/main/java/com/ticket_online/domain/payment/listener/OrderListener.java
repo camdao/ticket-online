@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderListener {
     private final OrderService orderService;
+
     @EventListener
     public void handleCustomEvent(PaySuccessEvent event) {
         System.out.println("Received custom event: " + event.getOrderId());
