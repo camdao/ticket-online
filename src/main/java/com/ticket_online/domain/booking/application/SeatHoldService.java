@@ -1,8 +1,8 @@
 package com.ticket_online.domain.booking.application;
 
+import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.SeatStatus;
-import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;

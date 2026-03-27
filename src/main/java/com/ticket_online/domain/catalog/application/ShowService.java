@@ -1,12 +1,12 @@
 package com.ticket_online.domain.catalog.application;
 
+import com.ticket_online.domain.catalog.dao.SeatRepository;
+import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.catalog.dto.response.CreateShowResponse;
 import com.ticket_online.domain.catalog.dto.response.FindShowResponse;
 import com.ticket_online.domain.catalog.dto.response.SeatResponse;
-import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
-import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
