@@ -31,6 +31,8 @@ public class Order extends BaseTimeEntity {
 
     private BigDecimal totalAmount;
 
+    private Long paymentId;
+
     @Version private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,5 +70,13 @@ public class Order extends BaseTimeEntity {
 
     public void markPaid() {
         this.status = OrderStatus.PAID;
+    }
+
+    public void markAsCancelled() {
+        this.status = OrderStatus.CANCELLED;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 }

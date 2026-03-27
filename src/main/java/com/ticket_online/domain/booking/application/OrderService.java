@@ -4,7 +4,6 @@ import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
 import com.ticket_online.domain.booking.repository.OrderRepository;
 import com.ticket_online.domain.booking.repository.OrderSeatRepository;
-import com.ticket_online.domain.catalog.application.SeatService;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import com.ticket_online.domain.payment.application.PaymentService;
@@ -16,12 +15,9 @@ import com.ticket_online.global.util.HoldSeatResult;
 import com.ticket_online.global.util.RedisSeatScripts;
 import com.ticket_online.global.util.UserUtil;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +29,6 @@ public class OrderService {
     private final ShowRepository showRepository;
     private final UserUtil userUtil;
     private final PaymentService paymentService;
-    private final SeatService seatService;
 
     @Transactional
     public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds, Long userId) {
@@ -58,22 +53,24 @@ public class OrderService {
         return url;
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void handlePaymentSuccess(Long orderId) {
+    public Order getOrderById(Long orderId) {
+        return orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
 
-        Order order = orderRepository.findById(orderId).orElseThrow();
-
-        if (order.isPaid()) {
-            return;
-        }
-        List<OrderSeat> orderSeats = orderSeatRepository.findByOrderId(orderId);
-
-        List<Long> seatIds =
-                orderSeats.stream().map(OrderSeat::getSeatId).collect(Collectors.toList());
-
-        seatService.markSeatsAsSold(order.getShow().getId(), seatIds);
-
+    @Transactional
+    public void markOrderAsPaid(Long orderId, Long paymentId) {
+        Order order = getOrderById(orderId);
         order.markPaid();
-        paymentService.confirmPayment(order);
+        order.setPaymentId(paymentId);
+        orderRepository.save(order);
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order order = getOrderById(orderId);
+        order.markAsCancelled();
+        orderRepository.save(order);
     }
 }

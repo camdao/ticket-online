@@ -2,7 +2,6 @@ package com.ticket_online.domain.payment.strategy;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
-import com.ticket_online.domain.payment.listener.PaySuccessEvent;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -11,7 +10,6 @@ import java.util.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class VnPayStrategy implements PaymentStrategy {
 
     private final VnpayProperties vnpayProperties;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public PaymentUrlResponse createPayment(Order order) {
@@ -29,31 +26,20 @@ public class VnPayStrategy implements PaymentStrategy {
 
     @Override
     public void handleCallback(Map<String, String> params) {
-        // verify hash
         String vnp_HashSecret = vnpayProperties.hashSecret();
 
         String vnp_SecureHash = params.get("vnp_SecureHash");
 
-        // remove hash params
         params.remove("vnp_SecureHash");
         params.remove("vnp_SecureHashType");
 
-        // build lại query
         String signData = buildQuery(params);
 
         String calculatedHash = hmacSHA512(vnp_HashSecret, signData);
 
-        // verify signature
         if (!calculatedHash.equalsIgnoreCase(vnp_SecureHash)) {
             throw new RuntimeException("Invalid VNPay signature");
         }
-
-        // lấy thông tin
-        String orderId = params.get("vnp_TxnRef");
-        String responseCode = params.get("vnp_ResponseCode");
-
-        // publishEvent
-        applicationEventPublisher.publishEvent(new PaySuccessEvent(this, orderId));
     }
 
     private String buildVnpayUrl(Order order) {
