@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @RequiredArgsConstructor
 @Service
@@ -56,7 +58,7 @@ public class OrderService {
         return url;
     }
 
-    @Transactional
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handlePaymentSuccess(Long orderId) {
 
         Order order = orderRepository.findById(orderId).orElseThrow();
