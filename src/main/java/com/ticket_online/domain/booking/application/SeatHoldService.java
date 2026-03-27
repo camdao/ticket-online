@@ -17,7 +17,7 @@ public class SeatHoldService {
     private final SeatRepository seatRepository;
     private final RedisSeatScripts redisSeatScripts;
 
-    public void holdSeats(Long showId, List<Long> seatIds, Long userId) {
+    public void holdSeats(Long showId, List<Long> seatIds) {
 
         List<Seat> seats = seatRepository.findAllByShowIdAndIdIn(showId, seatIds);
         if (seats.size() != seatIds.size()) {
@@ -28,6 +28,6 @@ public class SeatHoldService {
             throw new CustomException(ErrorCode.SEAT_ALREADY_SOLD);
         }
 
-        redisSeatScripts.holdSeats(seatIds, showId, userId, 360);
+        redisSeatScripts.holdSeats(seatIds, showId, 360);
     }
 }

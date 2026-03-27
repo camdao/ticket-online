@@ -19,7 +19,7 @@ public class SeatHoldController {
 
     @PostMapping
     public ResponseEntity<HoldSeatResponse> holdSeat(@RequestBody @Valid HoldSeatRequest req) {
-        holdSeatService.holdSeats(req.showId(), req.seatIds(), req.userId());
+        holdSeatService.holdSeats(req.showId(), req.seatIds());
         return ResponseEntity.ok(HoldSeatResponse.success(req.showId(), req.seatIds().size()));
     }
 }
