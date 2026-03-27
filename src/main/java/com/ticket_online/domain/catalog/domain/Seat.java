@@ -3,6 +3,7 @@ package com.ticket_online.domain.catalog.domain;
 import jakarta.persistence.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,15 +28,22 @@ public class Seat {
     @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
+    private BigDecimal price;
+
     @Builder(access = AccessLevel.PRIVATE)
-    Seat(Show show, String seatCode, SeatStatus status) {
+    Seat(Show show, String seatCode, SeatStatus status, BigDecimal price) {
         this.show = show;
         this.seatCode = seatCode;
         this.status = status;
     }
 
-    public static Seat createSeat(Show show, String seatCode) {
-        return Seat.builder().show(show).seatCode(seatCode).status(SeatStatus.AVAILABLE).build();
+    public static Seat createSeat(Show show, String seatCode, BigDecimal price) {
+        return Seat.builder()
+                .show(show)
+                .seatCode(seatCode)
+                .status(SeatStatus.AVAILABLE)
+                .price(price)
+                .build();
     }
 
     public boolean isSold() {

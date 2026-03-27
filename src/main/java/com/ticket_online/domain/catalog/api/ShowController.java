@@ -29,7 +29,8 @@ public class ShowController {
                         request.name(),
                         request.location(),
                         request.startTime(),
-                        request.totalSeats()));
+                        request.totalSeats(),
+                        request.price()));
     }
 
     @GetMapping("/{id}/seats")

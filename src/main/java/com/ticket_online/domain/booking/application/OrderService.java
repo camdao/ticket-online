@@ -4,7 +4,9 @@ import com.ticket_online.domain.booking.dao.OrderRepository;
 import com.ticket_online.domain.booking.dao.OrderSeatRepository;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
+import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.catalog.dao.ShowRepository;
+import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.payment.application.PaymentService;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
@@ -14,6 +16,7 @@ import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.HoldSeatResult;
 import com.ticket_online.global.util.RedisSeatScripts;
 import com.ticket_online.global.util.UserUtil;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,19 +32,28 @@ public class OrderService {
     private final ShowRepository showRepository;
     private final UserUtil userUtil;
     private final PaymentService paymentService;
+    private final SeatRepository seatRepository;
 
     @Transactional
-    public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds, Long userId) {
-        if (redisSeatScripts.checkAndExtendSeats(showId, seatIds, userId, 1800)
+    public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds) {
+        User user = userUtil.getCurrentUser();
+
+        if (redisSeatScripts.checkAndExtendSeats(showId, seatIds, user.getId(), 1800)
                 != HoldSeatResult.SUCCESS) {
             throw new CustomException(ErrorCode.ORDER_SEAT_HOLD_FAILED);
         }
-        User user = userUtil.getCurrentUser();
+
         Show show =
                 showRepository
                         .findById(showId)
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
-        Order order = Order.createOrder(user, show);
+
+        List<Seat> seats = seatRepository.findAllById(seatIds);
+
+        BigDecimal totalAmount =
+                seats.stream().map(Seat::getPrice).reduce(BigDecimal.ZERO, (a, b) -> a.add(b));
+
+        Order order = Order.createOrder(user, show, totalAmount);
         orderRepository.save(order);
 
         orderSeatRepository.saveAll(

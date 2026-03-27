@@ -9,7 +9,6 @@ import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import com.ticket_online.domain.payment.strategy.PaymentStrategy;
 import com.ticket_online.domain.payment.strategy.PaymentStrategyFactory;
 import jakarta.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ public class PaymentService {
 
     @Transactional
     public PaymentUrlResponse createPayment(Order order) {
-        order.updateTotalAmount(BigDecimal.valueOf(10000000));
         Payment payment =
                 Payment.createPayment(
                         order,

@@ -44,19 +44,25 @@ public class Order extends BaseTimeEntity {
     private Show show;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Order(User user, Show show, OrderStatus status, LocalDateTime expireTime) {
+    Order(
+            User user,
+            Show show,
+            OrderStatus status,
+            LocalDateTime expireTime,
+            BigDecimal totalAmount) {
         this.user = user;
         this.show = show;
         this.status = status;
         this.expireTime = expireTime;
     }
 
-    public static Order createOrder(User user, Show show) {
+    public static Order createOrder(User user, Show show, BigDecimal totalAmount) {
         return Order.builder()
                 .user(user)
                 .show(show)
                 .status(OrderStatus.PENDING)
                 .expireTime(LocalDateTime.now().plusMinutes(30))
+                .totalAmount(totalAmount)
                 .build();
     }
 
