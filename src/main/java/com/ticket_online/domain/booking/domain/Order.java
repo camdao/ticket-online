@@ -79,4 +79,8 @@ public class Order extends BaseTimeEntity {
     public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
     }
+
+    public void updateTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 }
