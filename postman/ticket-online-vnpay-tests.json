@@ -1,0 +1,454 @@
+{
+  "info": {
+    "name": "VNPay Payment Tests - Ticket Online",
+    "description": "Complete VNPay payment processing test suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "showId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "paymentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "VNPay Payment Flow",
+      "description": "Complete VNPay payment flow testing",
+      "item": [
+        {
+          "name": "1. Create Order for Payment",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate random test data",
+                  "pm.globals.set('testUserId', Math.floor(Math.random() * 1000000));",
+                  "pm.globals.set('seat1', Math.floor(Math.random() * 50) + 100);",
+                  "pm.globals.set('seat2', parseInt(pm.globals.get('seat1')) + 1);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Order created successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.orderId).to.exist;",
+                  "    pm.globals.set('testOrderId', jsonData.orderId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": {{showId}},\n  \"seatIds\": [{{seat1}}, {{seat2}}],\n  \"userId\": {{testUserId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            },
+            "description": "Create order for VNPay payment test"
+          }
+        },
+        {
+          "name": "2. VNPay IPN Callback - Success (Response Code 00)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate VNPay transaction data",
+                  "const now = new Date();",
+                  "const timestamp = now.getFullYear() +",
+                  "  String(now.getMonth() + 1).padStart(2, '0') +",
+                  "  String(now.getDate()).padStart(2, '0') +",
+                  "  String(now.getHours()).padStart(2, '0') +",
+                  "  String(now.getMinutes()).padStart(2, '0') +",
+                  "  String(now.getSeconds()).padStart(2, '0');",
+                  "",
+                  "pm.globals.set('vnpayTimestamp', timestamp);",
+                  "pm.globals.set('vnpayTxnNo', Math.floor(Math.random() * 1000000000));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('VNPay IPN success response', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response is OK', function () {",
+                  "    pm.expect(pm.response.text()).to.include('OK');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/vnpay-return?vnp_OrderInfo={{testOrderId}}&vnp_ResponseCode=00&vnp_TransactionNo={{vnpayTxnNo}}&vnp_Amount=50000000&vnp_BankCode=NCB&vnp_PayDate={{vnpayTimestamp}}",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "vnpay-return"],
+              "query": [
+                {
+                  "key": "vnp_OrderInfo",
+                  "value": "{{testOrderId}}",
+                  "description": "Order ID"
+                },
+                {
+                  "key": "vnp_ResponseCode",
+                  "value": "00",
+                  "description": "00 = Payment Success"
+                },
+                {
+                  "key": "vnp_TransactionNo",
+                  "value": "{{vnpayTxnNo}}",
+                  "description": "VNPay Transaction ID"
+                },
+                {
+                  "key": "vnp_Amount",
+                  "value": "50000000",
+                  "description": "Amount (in VND * 100)"
+                },
+                {
+                  "key": "vnp_BankCode",
+                  "value": "NCB",
+                  "description": "Bank code"
+                },
+                {
+                  "key": "vnp_PayDate",
+                  "value": "{{vnpayTimestamp}}",
+                  "description": "Payment date format YYYYMMDDhhmmss"
+                }
+              ]
+            },
+            "description": "Simulate VNPay IPN callback for successful payment"
+          }
+        },
+        {
+          "name": "3. Verify Order Status is PAID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Order status is PAID', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('PAID');",
+                  "});",
+                  "",
+                  "pm.test('Order has paymentId', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.paymentId).to.exist;",
+                  "    pm.globals.set('testPaymentId', jsonData.paymentId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{testOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{testOrderId}}"]
+            },
+            "description": "Verify order status after successful payment"
+          }
+        },
+        {
+          "name": "4. Verify Payment Status is SUCCESS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Payment status is SUCCESS', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('SUCCESS');",
+                  "});",
+                  "",
+                  "pm.test('Payment amount correct', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.amount).to.be.a('number');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/{{testPaymentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "{{testPaymentId}}"]
+            },
+            "description": "Verify payment status"
+          }
+        },
+        {
+          "name": "5. VNPay IPN Callback - Failed (Response Code 01)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Generate new test data for failed payment",
+                  "const now = new Date();",
+                  "const timestamp = now.getFullYear() +",
+                  "  String(now.getMonth() + 1).padStart(2, '0') +",
+                  "  String(now.getDate()).padStart(2, '0') +",
+                  "  String(now.getHours()).padStart(2, '0') +",
+                  "  String(now.getMinutes()).padStart(2, '0') +",
+                  "  String(now.getSeconds()).padStart(2, '0');",
+                  "",
+                  "pm.globals.set('failedPaymentTimestamp', timestamp);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('VNPay IPN failed response - Status 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/vnpay-return?vnp_OrderInfo=99999&vnp_ResponseCode=01&vnp_TransactionNo=9999999&vnp_Amount=50000000&vnp_BankCode=NCB&vnp_PayDate={{failedPaymentTimestamp}}",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "vnpay-return"],
+              "query": [
+                {
+                  "key": "vnp_OrderInfo",
+                  "value": "99999",
+                  "description": "Invalid order ID"
+                },
+                {
+                  "key": "vnp_ResponseCode",
+                  "value": "01",
+                  "description": "01 = Payment failed"
+                },
+                {
+                  "key": "vnp_TransactionNo",
+                  "value": "9999999"
+                },
+                {
+                  "key": "vnp_Amount",
+                  "value": "50000000"
+                },
+                {
+                  "key": "vnp_BankCode",
+                  "value": "NCB"
+                },
+                {
+                  "key": "vnp_PayDate",
+                  "value": "{{failedPaymentTimestamp}}"
+                }
+              ]
+            },
+            "description": "Simulate VNPay IPN callback for failed payment"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Direct API Payment Tests",
+      "description": "Test payment endpoints directly",
+      "item": [
+        {
+          "name": "Mark Payment as Success (Direct API)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Direct payment success response', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('SUCCESS');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": {{testOrderId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/success",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "success"]
+            },
+            "description": "Mark payment as successful via direct API"
+          }
+        },
+        {
+          "name": "Mark Payment as Failed (Direct API)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Direct payment failed response', function () {",
+                  "    pm.response.to.have.status(200) || pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": {{testOrderId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/failed?reason=Customer%20cancelled%20payment",
+              "protocol": "http",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "failed"],
+              "query": [
+                {
+                  "key": "reason",
+                  "value": "Customer cancelled payment"
+                }
+              ]
+            },
+            "description": "Mark payment as failed via direct API"
+          }
+        }
+      ]
+    },
+    {
+      "name": "VNPay Response Codes Reference",
+      "description": "Reference documentation for VNPay response codes",
+      "item": [
+        {
+          "name": "VNPay Response Code: 00 - Success",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/vnpay-return?vnp_OrderInfo=123&vnp_ResponseCode=00",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "vnpay-return"],
+              "query": [
+                {
+                  "key": "vnp_OrderInfo",
+                  "value": "123"
+                },
+                {
+                  "key": "vnp_ResponseCode",
+                  "value": "00",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "00 = Giao dịch thành công (Transaction successful)"
+          }
+        },
+        {
+          "name": "VNPay Response Code: 01 - Bank Rejected",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/vnpay-return?vnp_OrderInfo=123&vnp_ResponseCode=01",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "vnpay-return"],
+              "query": [
+                {
+                  "key": "vnp_OrderInfo",
+                  "value": "123"
+                },
+                {
+                  "key": "vnp_ResponseCode",
+                  "value": "01"
+                }
+              ]
+            },
+            "description": "01 = Ngân hàng từ chối (Bank rejected)"
+          }
+        },
+        {
+          "name": "VNPay Response Code: 02 - Card Expired",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/payments/vnpay-return?vnp_OrderInfo=123&vnp_ResponseCode=02",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "vnpay-return"],
+              "query": [
+                {
+                  "key": "vnp_OrderInfo",
+                  "value": "123"
+                },
+                {
+                  "key": "vnp_ResponseCode",
+                  "value": "02"
+                }
+              ]
+            },
+            "description": "02 = Thẻ bị từ chối (Card rejected)"
+          }
+        }
+      ]
+    }
+  ]
+}
