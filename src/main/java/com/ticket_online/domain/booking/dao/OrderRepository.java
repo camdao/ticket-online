@@ -1,4 +1,4 @@
-package com.ticket_online.domain.booking.repository;
+package com.ticket_online.domain.booking.dao;
 
 import com.ticket_online.domain.booking.domain.Order;
 import jakarta.persistence.LockModeType;

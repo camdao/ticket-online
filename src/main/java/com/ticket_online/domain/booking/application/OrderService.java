@@ -1,11 +1,11 @@
 package com.ticket_online.domain.booking.application;
 
+import com.ticket_online.domain.booking.dao.OrderRepository;
+import com.ticket_online.domain.booking.dao.OrderSeatRepository;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
-import com.ticket_online.domain.booking.repository.OrderRepository;
-import com.ticket_online.domain.booking.repository.OrderSeatRepository;
+import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Show;
-import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import com.ticket_online.domain.payment.application.PaymentService;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import com.ticket_online.domain.user.domain.User;

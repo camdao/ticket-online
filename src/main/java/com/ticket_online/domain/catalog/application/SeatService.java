@@ -1,8 +1,8 @@
 package com.ticket_online.domain.catalog.application;
 
+import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
-import com.ticket_online.domain.catalog.reponsitory.SeatRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

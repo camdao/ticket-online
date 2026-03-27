@@ -1,4 +1,4 @@
-package com.ticket_online.domain.catalog.reponsitory;
+package com.ticket_online.domain.catalog.dao;
 
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.SeatStatus;
@@ -29,6 +29,11 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     List<Seat> findByShowId(Long showId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT s FROM Seat s WHERE s.id = :showId AND s.id IN :seatIds")
+    @Query(
+            """
+    SELECT s FROM Seat s
+    WHERE s.show.id = :showId
+    AND s.id IN :seatIds
+    """)
     List<Seat> findAllByShowIdAndIdInForUpdate(Long showId, List<Long> seatIds);
 }
