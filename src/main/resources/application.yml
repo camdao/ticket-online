@@ -3,6 +3,7 @@ spring:
         include:
             - redis
             - datasource
+            - security
 
 # Actuator
 management:
@@ -19,3 +20,10 @@ management:
             show-details: never
     individual:
         health:
+            
+#Payment
+vnpay:
+    tmn-code: U2BYG43H
+    hash-secret: ${VNPAY_HASH_SECRET:}
+    pay-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    return-url: http://localhost:8080/payments/vnpay-return

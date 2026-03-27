@@ -2,7 +2,7 @@ package com.ticket_online.domain.booking.api;
 
 import com.ticket_online.domain.booking.application.OrderService;
 import com.ticket_online.domain.booking.dto.request.CreateOrderRequest;
-import com.ticket_online.domain.booking.dto.response.CreateOrderResponse;
+import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<CreateOrderResponse> createOrder(
+    public ResponseEntity<PaymentUrlResponse> createOrder(
             @RequestBody @Valid CreateOrderRequest req) {
         return ResponseEntity.ok(
                 orderService.createOrder(req.showId(), req.seatIds(), req.userId()));

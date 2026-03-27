@@ -6,6 +6,7 @@ import com.ticket_online.domain.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,6 +28,10 @@ public class Order extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime expireTime;
+
+    private BigDecimal totalAmount;
+
+    private Long paymentId;
 
     @Version private Long version;
 
@@ -65,5 +70,17 @@ public class Order extends BaseTimeEntity {
 
     public void markPaid() {
         this.status = OrderStatus.PAID;
+    }
+
+    public void markAsCancelled() {
+        this.status = OrderStatus.CANCELLED;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public void updateTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

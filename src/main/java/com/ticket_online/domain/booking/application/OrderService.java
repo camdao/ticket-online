@@ -2,12 +2,12 @@ package com.ticket_online.domain.booking.application;
 
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
-import com.ticket_online.domain.booking.dto.response.CreateOrderResponse;
 import com.ticket_online.domain.booking.repository.OrderRepository;
 import com.ticket_online.domain.booking.repository.OrderSeatRepository;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.catalog.reponsitory.ShowRepository;
 import com.ticket_online.domain.payment.application.PaymentService;
+import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import com.ticket_online.domain.user.domain.User;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
@@ -31,7 +31,7 @@ public class OrderService {
     private final PaymentService paymentService;
 
     @Transactional
-    public CreateOrderResponse createOrder(Long showId, List<Long> seatIds, Long userId) {
+    public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds, Long userId) {
         if (redisSeatScripts.checkAndExtendSeats(showId, seatIds, userId, 1800)
                 != HoldSeatResult.SUCCESS) {
             throw new CustomException(ErrorCode.ORDER_SEAT_HOLD_FAILED);
@@ -48,20 +48,29 @@ public class OrderService {
                 seatIds.stream()
                         .map(seatId -> OrderSeat.createOrderSeat(order.getId(), seatId))
                         .toList());
-        return CreateOrderResponse.of(order.getId());
+        PaymentUrlResponse url = paymentService.createPayment(order);
+
+        return url;
+    }
+
+    public Order getOrderById(Long orderId) {
+        return orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
     @Transactional
-    public void handlePaymentSuccess(Long orderId) {
-
-        Order order = orderRepository.findById(orderId).orElseThrow();
-
-        if (order.isPaid()) {
-            return;
-        }
-
-        paymentService.createPayment(order);
-
+    public void markOrderAsPaid(Long orderId, Long paymentId) {
+        Order order = getOrderById(orderId);
         order.markPaid();
+        order.setPaymentId(paymentId);
+        orderRepository.save(order);
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        Order order = getOrderById(orderId);
+        order.markAsCancelled();
+        orderRepository.save(order);
     }
 }
