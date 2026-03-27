@@ -29,7 +29,8 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     List<Seat> findByShowId(Long showId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("""
+    @Query(
+            """
     SELECT s FROM Seat s
     WHERE s.show.id = :showId
     AND s.id IN :seatIds
