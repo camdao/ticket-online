@@ -24,13 +24,7 @@ public class ShowController {
     @PostMapping
     public ResponseEntity<CreateShowResponse> createShow(@RequestBody CreateShowRequest request) {
 
-        return ResponseEntity.ok(
-                showService.createShow(
-                        request.name(),
-                        request.location(),
-                        request.startTime(),
-                        request.totalSeats(),
-                        request.price()));
+        return ResponseEntity.ok(showService.createShow(request));
     }
 
     @GetMapping("/{id}/seats")
