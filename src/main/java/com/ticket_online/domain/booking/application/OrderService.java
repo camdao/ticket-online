@@ -66,15 +66,11 @@ public class OrderService {
         return url;
     }
 
-    public Order getOrderById(Long orderId) {
-        return orderRepository
-                .findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
-    }
-
     @Transactional
     public void markOrderAsPaid(Long orderId, Long paymentId) {
-        Order order = getOrderById(orderId);
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
         order.markPaid();
         order.setPaymentId(paymentId);
         orderRepository.save(order);
@@ -82,7 +78,9 @@ public class OrderService {
 
     @Transactional
     public void cancelOrder(Long orderId) {
-        Order order = getOrderById(orderId);
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
         order.markAsCancelled();
         orderRepository.save(order);
     }
