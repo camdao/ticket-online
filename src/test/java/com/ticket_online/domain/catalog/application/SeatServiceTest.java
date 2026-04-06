@@ -9,6 +9,7 @@ import com.ticket_online.domain.user.dao.UserRepository;
 import com.ticket_online.domain.user.domain.User;
 import com.ticket_online.global.security.PrincipalDetails;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,20 @@ public class SeatServiceTest {
 
         // then
         assertThat(seatRepository.findByShowId(show.getId()).size()).isEqualTo(100);
+    }
+
+    @Test
+    void markSeatsAsSold() {
+        // given
+        Show show = Show.createShow(LocalDateTime.now(), null, null);
+        showRepository.save(show);
+        seatService.createSeatsForShow(show.getId(), 100, 5000L);
+        Long seatId = seatRepository.findByShowId(show.getId()).get(0).getId();
+
+        // when
+        seatService.markSeatsAsSold(List.of(seatId));
+
+        // then
+        assertThat(seatRepository.findById(seatId).orElseThrow().isSold()).isTrue();
     }
 }
