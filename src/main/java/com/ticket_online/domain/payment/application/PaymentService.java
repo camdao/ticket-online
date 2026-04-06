@@ -26,10 +26,7 @@ public class PaymentService {
     public PaymentUrlResponse createPayment(Order order) {
         Payment payment =
                 Payment.createPayment(
-                        order,
-                        PayProvider.VNPAY,
-                        order.getTotalAmount().longValue(),
-                        PayStatus.PENDING);
+                        order, PayProvider.VNPAY, order.getTotalAmount(), PayStatus.PENDING);
         PaymentStrategy paymentMethod =
                 paymentStrategyFactory.getPaymentStrategy(PayProvider.VNPAY.name());
         PaymentUrlResponse url = paymentMethod.createPayment(order);

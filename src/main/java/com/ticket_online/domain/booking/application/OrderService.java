@@ -4,6 +4,7 @@ import com.ticket_online.domain.booking.dao.OrderRepository;
 import com.ticket_online.domain.booking.dao.OrderSeatRepository;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.booking.domain.OrderSeat;
+import com.ticket_online.domain.booking.dto.request.CreateOrderRequest;
 import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
@@ -35,20 +36,20 @@ public class OrderService {
     private final SeatRepository seatRepository;
 
     @Transactional
-    public PaymentUrlResponse createOrder(Long showId, List<Long> seatIds) {
+    public PaymentUrlResponse createOrder(CreateOrderRequest req) {
         User user = userUtil.getCurrentUser();
 
-        if (redisSeatScripts.checkAndExtendSeats(showId, seatIds, user.getId(), 1800)
+        if (redisSeatScripts.checkAndExtendSeats(req.showId(), req.seatIds(), user.getId(), 1800)
                 != HoldSeatResult.SUCCESS) {
             throw new CustomException(ErrorCode.ORDER_SEAT_HOLD_FAILED);
         }
 
         Show show =
                 showRepository
-                        .findById(showId)
+                        .findById(req.showId())
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
 
-        List<Seat> seats = seatRepository.findAllById(seatIds);
+        List<Seat> seats = seatRepository.findAllById(req.seatIds());
 
         BigDecimal totalAmount =
                 seats.stream().map(Seat::getPrice).reduce(BigDecimal.ZERO, (a, b) -> a.add(b));
@@ -57,7 +58,7 @@ public class OrderService {
         orderRepository.save(order);
 
         orderSeatRepository.saveAll(
-                seatIds.stream()
+                req.seatIds().stream()
                         .map(seatId -> OrderSeat.createOrderSeat(order.getId(), seatId))
                         .toList());
         PaymentUrlResponse url = paymentService.createPayment(order);

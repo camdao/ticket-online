@@ -20,6 +20,6 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<PaymentUrlResponse> createOrder(
             @RequestBody @Valid CreateOrderRequest req) {
-        return ResponseEntity.ok(orderService.createOrder(req.showId(), req.seatIds()));
+        return ResponseEntity.ok(orderService.createOrder(req));
     }
 }
