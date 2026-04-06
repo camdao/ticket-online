@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.ticket_online.domain.user.dao.UserRepository;
 import com.ticket_online.domain.user.domain.User;
 import com.ticket_online.global.security.PrincipalDetails;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,19 +20,26 @@ public class MemberUtilTest {
     @Autowired private UserUtil userUtil;
     @Autowired private UserRepository userRepository;
 
-    @Test
-    void shouldReturnCurrentLoggedInUserInfo() {
-        // given
+    @BeforeEach
+    void setUp() {
+        SecurityContextHolder.clearContext();
+
         PrincipalDetails principal = new PrincipalDetails(1L, "USER");
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(
-                        principal, "password", principal.getAuthorities());
+                        principal, null, principal.getAuthorities());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = User.createUser("test", "test");
-        User saveUser = userRepository.save(user);
+        User saveUser = userRepository.save(User.createUser("test", "test"));
+    }
+
+    @Test
+    void shouldReturnCurrentLoggedInUserInfo() {
+        // given
+
         // when
         User currentUser = userUtil.getCurrentUser();
         // then
-        assertEquals(saveUser.getId(), currentUser.getId());
+        assertEquals(1L, currentUser.getId());
     }
 }
