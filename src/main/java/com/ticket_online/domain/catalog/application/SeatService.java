@@ -27,9 +27,9 @@ public class SeatService {
     }
 
     @Transactional
-    public void markSeatsAsSold(Long showId, List<Long> seatIds) {
+    public void markSeatsAsSold(List<Long> seatIds) {
 
-        List<Seat> seats = seatRepository.findAllByShowIdAndIdInForUpdate(showId, seatIds);
+        List<Seat> seats = seatRepository.findAllById(seatIds);
 
         if (seats.size() != seatIds.size()) {
             throw new RuntimeException("Some seats not found");
