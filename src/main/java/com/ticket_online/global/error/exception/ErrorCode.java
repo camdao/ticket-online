@@ -44,7 +44,7 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCHES(HttpStatus.BAD_REQUEST, "The provided password does not match."),
 
     // Show
-    SHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested show was not found."),
+    SHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested show was not found.");
 
     private final HttpStatus status;
     private final String message;
