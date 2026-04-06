@@ -5,6 +5,7 @@ import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,14 @@ import org.springframework.stereotype.Service;
 public class SeatService {
     private final SeatRepository seatRepository;
 
-    //    N+1
     public void createSeatsForShow(Show show, Long totalSeats, Long price) {
+        List<Seat> seats = new ArrayList<>();
+
         for (long i = 1; i <= totalSeats; i++) {
-            seatRepository.save(Seat.createSeat(show, "S" + i, BigDecimal.valueOf(price)));
+            seats.add(Seat.createSeat(show, "S" + i, BigDecimal.valueOf(price)));
         }
+
+        seatRepository.saveAll(seats);
     }
 
     @Transactional
