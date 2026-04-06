@@ -36,10 +36,10 @@ public class ShowService {
     }
 
     public CreateShowResponse createShow(
-            String name, String location, LocalDateTime startTime, Long totalSeats, Long price) {
+            String name, String location, LocalDateTime startTime, int totalSeats, Long price) {
         Show show = Show.createShow(startTime, name, location);
         Show savedShow = showRepository.save(show);
-        seatService.createSeatsForShow(savedShow, totalSeats, price);
+        seatService.createSeatsForShow(savedShow.getId(), totalSeats, price);
         return CreateShowResponse.from(savedShow);
     }
 

@@ -1,8 +1,11 @@
 package com.ticket_online.domain.catalog.application;
 
 import com.ticket_online.domain.catalog.dao.SeatRepository;
+import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
+import com.ticket_online.global.error.exception.CustomException;
+import com.ticket_online.global.error.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,11 +18,17 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class SeatService {
     private final SeatRepository seatRepository;
+    private final ShowRepository showRepository;
 
-    public void createSeatsForShow(Show show, Long totalSeats, Long price) {
+    public void createSeatsForShow(Long showId, int totalSeats, Long price) {
+        Show show =
+                showRepository
+                        .findById(showId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.SHOW_NOT_FOUND));
+
         List<Seat> seats = new ArrayList<>();
 
-        for (long i = 1; i <= totalSeats; i++) {
+        for (int i = 1; i <= totalSeats; i++) {
             seats.add(Seat.createSeat(show, "S" + i, BigDecimal.valueOf(price)));
         }
 
