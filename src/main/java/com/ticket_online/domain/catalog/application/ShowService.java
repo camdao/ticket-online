@@ -4,10 +4,10 @@ import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.Show;
+import com.ticket_online.domain.catalog.dto.request.CreateShowRequest;
 import com.ticket_online.domain.catalog.dto.response.CreateShowResponse;
 import com.ticket_online.domain.catalog.dto.response.FindShowResponse;
 import com.ticket_online.domain.catalog.dto.response.SeatResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,11 +35,11 @@ public class ShowService {
                 .toList();
     }
 
-    public CreateShowResponse createShow(
-            String name, String location, LocalDateTime startTime, Long totalSeats, Long price) {
-        Show show = Show.createShow(startTime, name, location);
+    public CreateShowResponse createShow(CreateShowRequest request) {
+        Show show = Show.createShow(request.startTime(), request.name(), request.location());
         Show savedShow = showRepository.save(show);
-        seatService.createSeatsForShow(savedShow, totalSeats, price);
+        // SeatType: VIP / NORMAL / ECONOMY
+        seatService.createSeatsForShow(savedShow.getId(), request.totalSeats(), request.price());
         return CreateShowResponse.from(savedShow);
     }
 

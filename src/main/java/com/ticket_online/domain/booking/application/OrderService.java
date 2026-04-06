@@ -86,4 +86,8 @@ public class OrderService {
         order.markAsCancelled();
         orderRepository.save(order);
     }
+
+    public List<Long> getSeatIdsByOrderId(Long orderId) {
+        return orderSeatRepository.findById(orderId).stream().map(OrderSeat::getSeatId).toList();
+    }
 }

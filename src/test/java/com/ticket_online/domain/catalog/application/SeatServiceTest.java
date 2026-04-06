@@ -1,0 +1,51 @@
+package com.ticket_online.domain.catalog.application;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import com.ticket_online.domain.catalog.dao.SeatRepository;
+import com.ticket_online.domain.catalog.dao.ShowRepository;
+import com.ticket_online.domain.catalog.domain.Show;
+import java.time.LocalDateTime;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+@SpringBootTest
+@ActiveProfiles("test")
+public class SeatServiceTest {
+    @Autowired private SeatService seatService;
+
+    @Autowired private SeatRepository seatRepository;
+
+    @Autowired private ShowRepository showRepository;
+
+    @Test
+    void createSeatsForShow() {
+        // given
+        Show show = Show.createShow(LocalDateTime.now(), null, null);
+        showRepository.save(show);
+
+        // when
+        seatService.createSeatsForShow(show.getId(), 100, 5000L);
+
+        // then
+        assertThat(seatRepository.findByShowId(show.getId()).size()).isEqualTo(100);
+    }
+
+    @Test
+    void markSeatsAsSold() {
+        // given
+        Show show = Show.createShow(LocalDateTime.now(), null, null);
+        showRepository.save(show);
+        seatService.createSeatsForShow(show.getId(), 100, 5000L);
+        Long seatId = seatRepository.findByShowId(show.getId()).get(0).getId();
+
+        // when
+        seatService.markSeatsAsSold(List.of(seatId));
+
+        // then
+        assertThat(seatRepository.findById(seatId).orElseThrow().isSold()).isTrue();
+    }
+}

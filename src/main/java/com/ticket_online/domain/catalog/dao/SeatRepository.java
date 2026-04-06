@@ -2,10 +2,8 @@ package com.ticket_online.domain.catalog.dao;
 
 import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.SeatStatus;
-import jakarta.persistence.LockModeType;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,13 +25,4 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             @Param("status") SeatStatus status);
 
     List<Seat> findByShowId(Long showId);
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query(
-            """
-    SELECT s FROM Seat s
-    WHERE s.show.id = :showId
-    AND s.id IN :seatIds
-    """)
-    List<Seat> findAllByShowIdAndIdInForUpdate(Long showId, List<Long> seatIds);
 }
