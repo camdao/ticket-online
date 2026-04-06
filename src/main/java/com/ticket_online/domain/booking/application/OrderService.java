@@ -68,9 +68,10 @@ public class OrderService {
 
     @Transactional
     public void markOrderAsPaid(Long orderId, Long paymentId) {
-        Order order = orderRepository
-                .findById(orderId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+        Order order =
+                orderRepository
+                        .findById(orderId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
         order.markPaid();
         order.setPaymentId(paymentId);
         orderRepository.save(order);
@@ -78,9 +79,10 @@ public class OrderService {
 
     @Transactional
     public void cancelOrder(Long orderId) {
-        Order order = orderRepository
-                .findById(orderId)
-                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+        Order order =
+                orderRepository
+                        .findById(orderId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
         order.markAsCancelled();
         orderRepository.save(order);
     }
