@@ -1,5 +1,6 @@
 package com.ticket_online.domain.catalog.application;
 
+import com.ticket_online.DatabaseCleaner;
 import com.ticket_online.domain.catalog.dao.ShowRepository;
 import com.ticket_online.domain.catalog.domain.Show;
 import com.ticket_online.domain.catalog.dto.request.CreateShowRequest;
@@ -9,9 +10,11 @@ import com.ticket_online.domain.catalog.dto.response.SeatResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
@@ -19,6 +22,12 @@ import org.springframework.test.context.ActiveProfiles;
 public class ShowServiceTest {
     @Autowired private ShowService showService;
     @Autowired private ShowRepository showRepository;
+    @Autowired ApplicationContext applicationContext;
+
+    @BeforeEach
+    void setUp() {
+        DatabaseCleaner.clear(applicationContext);
+    }
 
     @Test
     void findAllShow() {
@@ -76,7 +85,6 @@ public class ShowServiceTest {
         List<SeatResponse> seats = showService.findSeatsByShow(show.id());
 
         // then
-
         assert seats.size() == totalSeats;
     }
 }
