@@ -54,6 +54,7 @@ public class Order extends BaseTimeEntity {
         this.show = show;
         this.status = status;
         this.expireTime = expireTime;
+        this.totalAmount = totalAmount;
     }
 
     public static Order createOrder(User user, Show show, BigDecimal totalAmount) {

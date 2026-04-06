@@ -3,7 +3,6 @@ package com.ticket_online.domain.payment.strategy;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.payment.dto.PaymentUrlResponse;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,7 @@ public class VnPayStrategy implements PaymentStrategy {
     @Override
     public PaymentUrlResponse createPayment(Order order) {
         String paymentUrl = buildVnpayUrl(order);
-        return new PaymentUrlResponse(paymentUrl);
+        return PaymentUrlResponse.of(paymentUrl);
     }
 
     @Override
@@ -54,8 +53,7 @@ public class VnPayStrategy implements PaymentStrategy {
         params.put("vnp_Version", "2.1.0");
         params.put("vnp_Command", "pay");
         params.put("vnp_TmnCode", vnp_TmnCode);
-        params.put(
-                "vnp_Amount", order.getTotalAmount().multiply(BigDecimal.valueOf(100)).toString());
+        params.put("vnp_Amount", String.valueOf(order.getTotalAmount()));
         params.put("vnp_CurrCode", "VND");
         params.put("vnp_TxnRef", String.valueOf(order.getId()));
         params.put("vnp_OrderInfo", "Thanh toan don hang");

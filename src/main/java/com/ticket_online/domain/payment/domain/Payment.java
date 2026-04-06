@@ -3,6 +3,7 @@ package com.ticket_online.domain.payment.domain;
 import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,12 +24,12 @@ public class Payment extends BaseTimeEntity {
 
     private PayProvider provider;
 
-    private Long amount;
+    private BigDecimal amount;
 
     private PayStatus status;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Payment(Order order, PayProvider provider, Long amount, PayStatus status) {
+    Payment(Order order, PayProvider provider, BigDecimal amount, PayStatus status) {
         this.order = order;
         this.provider = provider;
         this.amount = amount;
@@ -36,7 +37,7 @@ public class Payment extends BaseTimeEntity {
     }
 
     public static Payment createPayment(
-            Order order, PayProvider provider, Long amount, PayStatus status) {
+            Order order, PayProvider provider, BigDecimal amount, PayStatus status) {
         return Payment.builder()
                 .order(order)
                 .provider(provider)

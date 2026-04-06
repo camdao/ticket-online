@@ -35,6 +35,8 @@ public enum ErrorCode {
             HttpStatus.BAD_REQUEST,
             "False hold result from Redis. Failed to hold the seat. Please try again."),
 
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested order was not found."),
+
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested member was not found."),
 

@@ -35,6 +35,7 @@ public class Seat {
         this.show = show;
         this.seatCode = seatCode;
         this.status = status;
+        this.price = price;
     }
 
     public static Seat createSeat(Show show, String seatCode, BigDecimal price) {
