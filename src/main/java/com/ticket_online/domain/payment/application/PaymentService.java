@@ -51,20 +51,6 @@ public class PaymentService {
         return Long.parseLong(orderId);
     }
 
-    private Map<String, String> extractParams(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-
-        request.getParameterMap()
-                .forEach(
-                        (key, values) -> {
-                            if (values != null && values.length > 0) {
-                                params.put(key, values[0]);
-                            }
-                        });
-
-        return params;
-    }
-
     @Transactional
     public void markPaymentSuccess(Long paymentId) {
         Payment payment =
@@ -89,5 +75,19 @@ public class PaymentService {
         return paymentRepository
                 .findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Payment not found for order: " + orderId));
+    }
+
+    private Map<String, String> extractParams(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+
+        request.getParameterMap()
+                .forEach(
+                        (key, values) -> {
+                            if (values != null && values.length > 0) {
+                                params.put(key, values[0]);
+                            }
+                        });
+
+        return params;
     }
 }
