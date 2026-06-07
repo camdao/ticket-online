@@ -1,6 +1,11 @@
 package com.ticket_online.domain.payment.application;
 
+import com.ticket_online.domain.booking.dao.OrderRepository;
+import com.ticket_online.domain.booking.dao.OrderSeatRepository;
 import com.ticket_online.domain.booking.domain.Order;
+import com.ticket_online.domain.booking.domain.OrderSeat;
+import com.ticket_online.domain.booking.domain.OrderStatus;
+import com.ticket_online.domain.catalog.dao.SeatRepository;
 import com.ticket_online.domain.payment.dao.PaymentRepository;
 import com.ticket_online.domain.payment.domain.PayProvider;
 import com.ticket_online.domain.payment.domain.PayStatus;
@@ -10,6 +15,7 @@ import com.ticket_online.domain.payment.strategy.PaymentStrategy;
 import com.ticket_online.domain.payment.strategy.PaymentStrategyFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentStrategyFactory paymentStrategyFactory;
+    private final OrderRepository orderRepository;
+    private final SeatRepository seatRepository;
+    private final OrderSeatRepository orderSeatRepository;
 
     @Transactional
     public PaymentUrlResponse createPayment(Order order) {
@@ -89,5 +98,33 @@ public class PaymentService {
                         });
 
         return params;
+    }
+
+    @Transactional
+    public void handlePaymentSuccess(Long orderId) {
+
+        Payment payment =
+                paymentRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Payment not found for order: " + orderId));
+
+        if (payment.getStatus() == PayStatus.SUCCESS) {
+            return;
+        }
+
+        Order order =
+                orderRepository.findById(orderId)
+                        .orElseThrow();
+
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException(
+                    "Order is not pending"
+            );
+        }
+
+        payment.markSuccess();
+
+        order.markPaid();
+        List<OrderSeat> orderSeatList =  orderSeatRepository.findByOrderId(orderId);
+        List<Long> seatIds = orderSeatList.stream().map(OrderSeat::getSeatId).toList();
+        seatRepository.markSold(seatIds);
     }
 }

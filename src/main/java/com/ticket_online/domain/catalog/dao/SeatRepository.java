@@ -4,6 +4,7 @@ import com.ticket_online.domain.catalog.domain.Seat;
 import com.ticket_online.domain.catalog.domain.SeatStatus;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -25,4 +26,15 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             @Param("status") SeatStatus status);
 
     List<Seat> findByShowId(Long showId);
+
+
+
+    @Modifying
+    @Query("""
+    UPDATE Seat s
+    SET s.status = 'SOLD'
+    WHERE s.id IN :seatIds
+""")
+    int markSold(@Param("seatIds") List<Long> seatIds);
+
 }

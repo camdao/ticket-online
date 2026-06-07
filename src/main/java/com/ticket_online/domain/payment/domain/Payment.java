@@ -53,4 +53,8 @@ public class Payment extends BaseTimeEntity {
     public void markAsFailed(String reason) {
         this.status = PayStatus.FAILED;
     }
+
+    public void markSuccess() {
+        this.status = PayStatus.SUCCESS;
+    }
 }

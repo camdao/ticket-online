@@ -2,6 +2,8 @@ package com.ticket_online.domain.booking.dao;
 
 import com.ticket_online.domain.booking.domain.OrderSeat;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +15,6 @@ public interface OrderSeatRepository extends JpaRepository<OrderSeat, Long> {
         where os.orderId = :orderId
     """)
     List<Long> findSeatIdsByOrderId(Long orderId);
+
+    List<OrderSeat> findByOrderId(Long orderId);
 }
