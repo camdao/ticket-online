@@ -43,7 +43,6 @@ public class OrderService {
                 != HoldSeatResult.SUCCESS) {
             throw new CustomException(ErrorCode.ORDER_SEAT_HOLD_FAILED);
         }
-
         Show show =
                 showRepository
                         .findById(req.showId())

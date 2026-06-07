@@ -23,6 +23,8 @@ public class Order extends BaseTimeEntity {
     @Column(name = "order_id")
     private Long id;
 
+    @Version private Long version;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
@@ -32,8 +34,6 @@ public class Order extends BaseTimeEntity {
     private BigDecimal totalAmount;
 
     private Long paymentId;
-
-    @Version private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
