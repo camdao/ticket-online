@@ -27,8 +27,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     List<Seat> findByShowId(Long showId);
 
-
-
     @Modifying
     @Query("""
     UPDATE Seat s
@@ -36,5 +34,4 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     WHERE s.id IN :seatIds
 """)
     int markSold(@Param("seatIds") List<Long> seatIds);
-
 }

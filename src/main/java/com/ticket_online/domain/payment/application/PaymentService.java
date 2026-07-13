@@ -104,26 +104,27 @@ public class PaymentService {
     public void handlePaymentSuccess(Long orderId) {
 
         Payment payment =
-                paymentRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Payment not found for order: " + orderId));
+                paymentRepository
+                        .findByOrderId(orderId)
+                        .orElseThrow(
+                                () ->
+                                        new RuntimeException(
+                                                "Payment not found for order: " + orderId));
 
         if (payment.getStatus() == PayStatus.SUCCESS) {
             return;
         }
 
-        Order order =
-                orderRepository.findById(orderId)
-                        .orElseThrow();
+        Order order = orderRepository.findById(orderId).orElseThrow();
 
         if (order.getStatus() != OrderStatus.PENDING) {
-            throw new IllegalStateException(
-                    "Order is not pending"
-            );
+            throw new IllegalStateException("Order is not pending");
         }
 
         payment.markSuccess();
 
         order.markPaid();
-        List<OrderSeat> orderSeatList =  orderSeatRepository.findByOrderId(orderId);
+        List<OrderSeat> orderSeatList = orderSeatRepository.findByOrderId(orderId);
         List<Long> seatIds = orderSeatList.stream().map(OrderSeat::getSeatId).toList();
         seatRepository.markSold(seatIds);
     }
