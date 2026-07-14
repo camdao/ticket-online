@@ -21,58 +21,6 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    @Transactional
-    public MovieResponse createMovie(MovieRequest request) {
-        Movie movie =
-                Movie.createMovie(
-                        request.getTitle(),
-                        request.getDuration(),
-                        request.getDescription(),
-                        request.getImageUrl(),
-                        request.getTrailerUrl(),
-                        request.getReleaseDate(),
-                        request.getGenre(),
-                        request.getDirector(),
-                        request.getCast(),
-                        request.getRating());
-
-        Movie savedMovie = movieRepository.save(movie);
-        return MovieResponse.from(savedMovie);
-    }
-
-    @Transactional
-    public MovieResponse updateMovie(Long id, MovieRequest request) {
-        Movie movie =
-                movieRepository
-                        .findById(id)
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Movie not found with id: " + id));
-
-        movie.updateMovie(
-                request.getTitle(),
-                request.getDuration(),
-                request.getDescription(),
-                request.getImageUrl(),
-                request.getTrailerUrl(),
-                request.getReleaseDate(),
-                request.getGenre(),
-                request.getDirector(),
-                request.getCast(),
-                request.getRating());
-
-        return MovieResponse.from(movie);
-    }
-
-    @Transactional
-    public void deleteMovie(Long id) {
-        if (!movieRepository.existsById(id)) {
-            throw new IllegalArgumentException("Movie not found with id: " + id);
-        }
-        movieRepository.deleteById(id);
-    }
-
     public MovieResponse getMovieById(Long id) {
         Movie movie =
                 movieRepository

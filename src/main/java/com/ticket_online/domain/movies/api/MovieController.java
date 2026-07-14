@@ -23,25 +23,6 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @PostMapping
-    public ResponseEntity<MovieResponse> createMovie(@Valid @RequestBody MovieRequest request) {
-        MovieResponse response = movieService.createMovie(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<MovieResponse> updateMovie(
-            @PathVariable Long id, @Valid @RequestBody MovieRequest request) {
-        MovieResponse response = movieService.updateMovie(id, request);
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
-        movieService.deleteMovie(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponse> getMovieById(@PathVariable Long id) {
         MovieResponse response = movieService.getMovieById(id);
