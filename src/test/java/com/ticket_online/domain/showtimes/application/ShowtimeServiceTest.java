@@ -110,8 +110,7 @@ class ShowtimeServiceTest {
         @DisplayName("Should return showtime detail when showtime exists")
         void shouldReturnShowtimeDetailWhenExists() {
             // Given
-            when(showtimeRepository.findByIdWithDetails(101L))
-                    .thenReturn(Optional.of(showtime));
+            when(showtimeRepository.findByIdWithDetails(101L)).thenReturn(Optional.of(showtime));
 
             // When
             ShowtimeDetailResponse result = showtimeService.getShowtimeById(101L);
