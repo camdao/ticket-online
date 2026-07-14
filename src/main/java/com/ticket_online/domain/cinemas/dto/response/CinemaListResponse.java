@@ -1,4 +1,4 @@
-package com.ticket_online.domain.movies.dto;
+package com.ticket_online.domain.cinemas.dto.response;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovieListResponse {
-
-    private List<MovieResponse> content;
+public class CinemaListResponse {
+    private List<CinemaResponse> content;
     private int page;
     private int size;
     private long totalElements;

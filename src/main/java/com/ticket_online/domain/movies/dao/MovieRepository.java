@@ -54,4 +54,12 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     // Find movies by IDs
     List<Movie> findByIdIn(List<Long> ids);
+
+    // Find movies by status (calculated based on releaseDate)
+    @Query(
+            "SELECT m FROM Movie m WHERE "
+                    + "(:status = 'NOW_SHOWING' AND m.releaseDate <= :today) OR "
+                    + "(:status = 'UPCOMING' AND m.releaseDate > :today)")
+    Page<Movie> findByStatus(
+            @Param("status") String status, @Param("today") LocalDate today, Pageable pageable);
 }

@@ -53,8 +53,13 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(
                 authorize ->
                         authorize
-                                .requestMatchers("/auth/login/**")
+                                .requestMatchers(
+                                        "/api/v1/auth/register",
+                                        "/api/v1/auth/login",
+                                        "/api/v1/auth/refresh")
                                 .permitAll()
+                                .requestMatchers("/api/v1/auth/logout")
+                                .authenticated()
                                 .anyRequest()
                                 .permitAll());
         http.exceptionHandling(

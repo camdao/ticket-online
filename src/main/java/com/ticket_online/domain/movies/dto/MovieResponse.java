@@ -1,8 +1,8 @@
 package com.ticket_online.domain.movies.dto;
 
 import com.ticket_online.domain.movies.domain.Movie;
+import com.ticket_online.domain.movies.domain.MovieStatus;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,15 +18,15 @@ public class MovieResponse {
     private String title;
     private Integer duration;
     private String description;
-    private String imageUrl;
-    private String trailerUrl;
-    private LocalDate releaseDate;
     private String genre;
     private String director;
     private String cast;
-    private String rating;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Double rating;
+    private String ageRating;
+    private LocalDate releaseDate;
+    private String posterUrl;
+    private String trailerUrl;
+    private MovieStatus status;
 
     public static MovieResponse from(Movie movie) {
         return MovieResponse.builder()
@@ -34,15 +34,15 @@ public class MovieResponse {
                 .title(movie.getTitle())
                 .duration(movie.getDuration())
                 .description(movie.getDescription())
-                .imageUrl(movie.getImageUrl())
-                .trailerUrl(movie.getTrailerUrl())
-                .releaseDate(movie.getReleaseDate())
                 .genre(movie.getGenre())
                 .director(movie.getDirector())
                 .cast(movie.getCast())
-                .rating(movie.getRating())
-                .createdAt(movie.getCreatedAt())
-                .updatedAt(movie.getUpdatedAt())
+                .rating(movie.getRating() != null ? Double.parseDouble(movie.getRating()) : null)
+                .ageRating(movie.getAgeRating())
+                .releaseDate(movie.getReleaseDate())
+                .posterUrl(movie.getPosterUrl())
+                .trailerUrl(movie.getTrailerUrl())
+                .status(movie.getStatus())
                 .build();
     }
 }

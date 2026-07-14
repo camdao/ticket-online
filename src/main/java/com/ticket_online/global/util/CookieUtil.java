@@ -101,4 +101,21 @@ public class CookieUtil {
 
         return headers;
     }
+
+    public HttpHeaders generateAccessTokenCookie(String accessToken) {
+        String sameSite = determineSameSitePolicy();
+
+        ResponseCookie accessTokenCookie =
+                ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, accessToken)
+                        .path("/")
+                        .secure(true)
+                        .sameSite(sameSite)
+                        .httpOnly(true)
+                        .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+
+        return headers;
+    }
 }

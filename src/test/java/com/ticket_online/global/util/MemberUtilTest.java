@@ -30,7 +30,14 @@ public class MemberUtilTest {
                         principal, null, principal.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User saveUser = userRepository.save(User.createUser("test", "test"));
+        User saveUser =
+                userRepository.save(
+                        User.createUser(
+                                "testuser",
+                                "test@example.com",
+                                "password123",
+                                "Test User",
+                                "0912345678"));
     }
 
     @Test

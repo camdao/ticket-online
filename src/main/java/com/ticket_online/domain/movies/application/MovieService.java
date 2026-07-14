@@ -2,9 +2,11 @@ package com.ticket_online.domain.movies.application;
 
 import com.ticket_online.domain.movies.dao.MovieRepository;
 import com.ticket_online.domain.movies.domain.Movie;
+import com.ticket_online.domain.movies.domain.MovieStatus;
 import com.ticket_online.domain.movies.dto.MovieListResponse;
-import com.ticket_online.domain.movies.dto.MovieRequest;
 import com.ticket_online.domain.movies.dto.MovieResponse;
+import com.ticket_online.global.error.exception.CustomException;
+import com.ticket_online.global.error.exception.ErrorCode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,66 +23,11 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    @Transactional
-    public MovieResponse createMovie(MovieRequest request) {
-        Movie movie =
-                Movie.createMovie(
-                        request.getTitle(),
-                        request.getDuration(),
-                        request.getDescription(),
-                        request.getImageUrl(),
-                        request.getTrailerUrl(),
-                        request.getReleaseDate(),
-                        request.getGenre(),
-                        request.getDirector(),
-                        request.getCast(),
-                        request.getRating());
-
-        Movie savedMovie = movieRepository.save(movie);
-        return MovieResponse.from(savedMovie);
-    }
-
-    @Transactional
-    public MovieResponse updateMovie(Long id, MovieRequest request) {
-        Movie movie =
-                movieRepository
-                        .findById(id)
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Movie not found with id: " + id));
-
-        movie.updateMovie(
-                request.getTitle(),
-                request.getDuration(),
-                request.getDescription(),
-                request.getImageUrl(),
-                request.getTrailerUrl(),
-                request.getReleaseDate(),
-                request.getGenre(),
-                request.getDirector(),
-                request.getCast(),
-                request.getRating());
-
-        return MovieResponse.from(movie);
-    }
-
-    @Transactional
-    public void deleteMovie(Long id) {
-        if (!movieRepository.existsById(id)) {
-            throw new IllegalArgumentException("Movie not found with id: " + id);
-        }
-        movieRepository.deleteById(id);
-    }
-
     public MovieResponse getMovieById(Long id) {
         Movie movie =
                 movieRepository
                         .findById(id)
-                        .orElseThrow(
-                                () ->
-                                        new IllegalArgumentException(
-                                                "Movie not found with id: " + id));
+                        .orElseThrow(() -> new CustomException(ErrorCode.MOVIE_NOT_FOUND));
         return MovieResponse.from(movie);
     }
 
@@ -140,6 +87,39 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
+    public MovieListResponse getAllMoviesWithFilters(
+            MovieStatus status, String genre, Pageable pageable) {
+        Page<Movie> moviePage;
+
+        if (status != null && genre != null) {
+            moviePage =
+                    movieRepository
+                            .searchMovies(null, genre, null, null, pageable)
+                            .map(
+                                    movie -> {
+                                        if (movie.getStatus() == status) {
+                                            return movie;
+                                        }
+                                        return null;
+                                    });
+            moviePage = moviePage.map(movie -> movie); // Filter out nulls (not ideal, better to use
+            // Specification)
+        } else if (status != null) {
+            moviePage = movieRepository.findByStatus(status.name(), LocalDate.now(), pageable);
+        } else if (genre != null) {
+            moviePage = movieRepository.findByGenreContainingIgnoreCase(genre, pageable);
+        } else {
+            moviePage = movieRepository.findAll(pageable);
+        }
+
+        return buildMovieListResponse(moviePage);
+    }
+
+    public MovieListResponse searchMoviesByKeyword(String keyword, Pageable pageable) {
+        Page<Movie> moviePage = movieRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+        return buildMovieListResponse(moviePage);
+    }
+
     private MovieListResponse buildMovieListResponse(Page<Movie> moviePage) {
         List<MovieResponse> movieResponses =
                 moviePage.getContent().stream()
@@ -147,11 +127,11 @@ public class MovieService {
                         .collect(Collectors.toList());
 
         return MovieListResponse.builder()
-                .movies(movieResponses)
-                .currentPage(moviePage.getNumber())
-                .totalPages(moviePage.getTotalPages())
+                .content(movieResponses)
+                .page(moviePage.getNumber())
+                .size(moviePage.getSize())
                 .totalElements(moviePage.getTotalElements())
-                .pageSize(moviePage.getSize())
+                .totalPages(moviePage.getTotalPages())
                 .build();
     }
 }

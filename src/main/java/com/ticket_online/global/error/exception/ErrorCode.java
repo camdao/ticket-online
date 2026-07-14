@@ -39,12 +39,26 @@ public enum ErrorCode {
 
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested member was not found."),
+    USERNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "Username already exists."),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "Email already exists."),
 
     // Security
     PASSWORD_NOT_MATCHES(HttpStatus.BAD_REQUEST, "The provided password does not match."),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid or expired refresh token."),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Token has expired."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Authentication is required."),
 
     // Show
-    SHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested show was not found.");
+    SHOW_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested show was not found."),
+
+    // Cinema
+    CINEMA_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested cinema was not found."),
+
+    // Screen
+    SCREEN_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested screen was not found."),
+
+    // Movie
+    MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found.");
 
     private final HttpStatus status;
     private final String message;

@@ -24,8 +24,8 @@ public class MovieRequest {
     @Size(max = 5000, message = "Description must not exceed 5000 characters")
     private String description;
 
-    @Size(max = 1000, message = "Image URL must not exceed 1000 characters")
-    private String imageUrl;
+    @Size(max = 1000, message = "Poster URL must not exceed 1000 characters")
+    private String posterUrl;
 
     @Size(max = 1000, message = "Trailer URL must not exceed 1000 characters")
     private String trailerUrl;
@@ -41,7 +41,10 @@ public class MovieRequest {
     @Size(max = 5000, message = "Cast must not exceed 5000 characters")
     private String cast;
 
-    @Pattern(regexp = "^(P|C13|C16|C18)?$", message = "Rating must be one of: P, C13, C16, C18")
     @Size(max = 10, message = "Rating must not exceed 10 characters")
     private String rating;
+
+    @Pattern(regexp = "^(P|T13|T16|T18)?$", message = "Age rating must be one of: P, T13, T16, T18")
+    @Size(max = 10, message = "Age rating must not exceed 10 characters")
+    private String ageRating;
 }

@@ -1,0 +1,10 @@
+2026-07-14 15:57:19.651 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table "USERS" not found (this database is empty); SQL statement:
+insert into users (created_at,email,full_name,password,phone_number,role,updated_at,username,user_id) values (?,?,?,?,?,?,?,?,default) [42104-224]
+2026-07-14 15:57:55.474 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table "USERS" not found (this database is empty); SQL statement:
+insert into users (created_at,email,full_name,password,phone_number,role,updated_at,username,user_id) values (?,?,?,?,?,?,?,?,default) [42104-224]
+2026-07-14 20:15:56.897 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table "USERS" not found (this database is empty); SQL statement:
+insert into users (created_at,email,full_name,password,phone_number,role,updated_at,username,user_id) values (?,?,?,?,?,?,?,?,default) [42104-224]
+2026-07-14 20:20:08.233 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table "USERS" not found (this database is empty); SQL statement:
+insert into users (created_at,email,full_name,password,phone_number,role,updated_at,username,user_id) values (?,?,?,?,?,?,?,?,default) [42104-224]
+2026-07-14 20:22:16.531 [Test worker] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Table "USERS" not found (this database is empty); SQL statement:
+insert into users (created_at,email,full_name,password,phone_number,role,updated_at,username,user_id) values (?,?,?,?,?,?,?,?,default) [42104-224]
