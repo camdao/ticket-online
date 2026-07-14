@@ -20,6 +20,7 @@ public class CinemaResponse {
     private String phone;
     private String website;
     private String description;
+    private Integer totalScreens;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -35,6 +36,25 @@ public class CinemaResponse {
                 .phone(cinema.getPhone())
                 .website(cinema.getWebsite())
                 .description(cinema.getDescription())
+                .totalScreens(null) // Will be populated when needed
+                .createdAt(cinema.getCreatedAt())
+                .updatedAt(cinema.getUpdatedAt())
+                .build();
+    }
+
+    public static CinemaResponse from(Cinema cinema, Integer totalScreens) {
+        return CinemaResponse.builder()
+                .id(cinema.getId())
+                .name(cinema.getName())
+                .brand(cinema.getBrand())
+                .logoUrl(cinema.getLogoUrl())
+                .address(cinema.getAddress())
+                .district(cinema.getDistrict())
+                .city(cinema.getCity())
+                .phone(cinema.getPhone())
+                .website(cinema.getWebsite())
+                .description(cinema.getDescription())
+                .totalScreens(totalScreens)
                 .createdAt(cinema.getCreatedAt())
                 .updatedAt(cinema.getUpdatedAt())
                 .build();

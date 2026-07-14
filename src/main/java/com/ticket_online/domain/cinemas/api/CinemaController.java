@@ -7,14 +7,17 @@ import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.cinemas.dto.response.ScreenResponse;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/cinemas")
+@RequestMapping("/api/v1/cinemas")
 @RequiredArgsConstructor
 public class CinemaController {
 
@@ -22,26 +25,39 @@ public class CinemaController {
 
     @GetMapping
     public ResponseEntity<CinemaListResponse> getAllCinemas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String city,
-            @RequestParam(required = false) String district,
-            @RequestParam(required = false) String keyword) {
+            @RequestParam(required = false) String district) {
 
         CinemaListResponse response;
 
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            response = cinemaService.searchCinemas(keyword);
-        } else if (city != null && district != null) {
+        if (city != null && district != null) {
             response = cinemaService.getCinemasByCityAndDistrict(city, district);
         } else if (brand != null) {
             response = cinemaService.getCinemasByBrand(brand);
         } else if (city != null) {
             response = cinemaService.getCinemasByCity(city);
         } else {
-            response = cinemaService.getAllCinemas();
+            Pageable pageable = PageRequest.of(page, size);
+            response = cinemaService.getAllCinemas(pageable);
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/showtimes")
+    public ResponseEntity<?> getCinemaShowtimes(
+            @PathVariable Long id,
+            @RequestParam(required = false) Long movieId,
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        // Placeholder: Return empty list until Showtimes domain is implemented
+        // Verify cinema exists first
+        cinemaService.getCinemaById(id);
+        return ResponseEntity.ok(Collections.emptyList());
     }
 
     @GetMapping("/{id}")

@@ -14,6 +14,8 @@ import com.ticket_online.global.error.exception.ErrorCode;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +28,51 @@ public class CinemaService {
     private final ScreenRepository screenRepository;
 
     public CinemaListResponse getAllCinemas() {
-        List<CinemaResponse> cinemas =
-                cinemaRepository.findAll().stream()
-                        .map(CinemaResponse::from)
+        List<Cinema> cinemas = cinemaRepository.findAll();
+        List<CinemaResponse> cinemaResponses =
+                cinemas.stream()
+                        .map(
+                                cinema -> {
+                                    Long totalScreensLong =
+                                            screenRepository.countByCinemaId(cinema.getId());
+                                    Integer totalScreens =
+                                            totalScreensLong != null
+                                                    ? totalScreensLong.intValue()
+                                                    : 0;
+                                    return CinemaResponse.from(cinema, totalScreens);
+                                })
                         .collect(Collectors.toList());
-        return CinemaListResponse.of(cinemas);
+        return CinemaListResponse.builder()
+                .content(cinemaResponses)
+                .page(0)
+                .size(cinemaResponses.size())
+                .totalElements(cinemaResponses.size())
+                .totalPages(1)
+                .build();
+    }
+
+    public CinemaListResponse getAllCinemas(Pageable pageable) {
+        Page<Cinema> cinemaPage = cinemaRepository.findAll(pageable);
+        List<CinemaResponse> cinemaResponses =
+                cinemaPage.getContent().stream()
+                        .map(
+                                cinema -> {
+                                    Long totalScreensLong =
+                                            screenRepository.countByCinemaId(cinema.getId());
+                                    Integer totalScreens =
+                                            totalScreensLong != null
+                                                    ? totalScreensLong.intValue()
+                                                    : 0;
+                                    return CinemaResponse.from(cinema, totalScreens);
+                                })
+                        .collect(Collectors.toList());
+        return CinemaListResponse.builder()
+                .content(cinemaResponses)
+                .page(cinemaPage.getNumber())
+                .size(cinemaPage.getSize())
+                .totalElements(cinemaPage.getTotalElements())
+                .totalPages(cinemaPage.getTotalPages())
+                .build();
     }
 
     public CinemaResponse getCinemaById(Long id) {
@@ -49,35 +91,46 @@ public class CinemaService {
     }
 
     public CinemaListResponse getCinemasByBrand(String brand) {
-        List<CinemaResponse> cinemas =
-                cinemaRepository.findByBrand(brand).stream()
-                        .map(CinemaResponse::from)
-                        .collect(Collectors.toList());
-        return CinemaListResponse.of(cinemas);
+        List<Cinema> cinemas = cinemaRepository.findByBrand(brand);
+        return buildCinemaListResponse(cinemas);
     }
 
     public CinemaListResponse getCinemasByCity(String city) {
-        List<CinemaResponse> cinemas =
-                cinemaRepository.findByCity(city).stream()
-                        .map(CinemaResponse::from)
-                        .collect(Collectors.toList());
-        return CinemaListResponse.of(cinemas);
+        List<Cinema> cinemas = cinemaRepository.findByCity(city);
+        return buildCinemaListResponse(cinemas);
     }
 
     public CinemaListResponse getCinemasByCityAndDistrict(String city, String district) {
-        List<CinemaResponse> cinemas =
-                cinemaRepository.findByCityAndDistrict(city, district).stream()
-                        .map(CinemaResponse::from)
-                        .collect(Collectors.toList());
-        return CinemaListResponse.of(cinemas);
+        List<Cinema> cinemas = cinemaRepository.findByCityAndDistrict(city, district);
+        return buildCinemaListResponse(cinemas);
     }
 
     public CinemaListResponse searchCinemas(String keyword) {
-        List<CinemaResponse> cinemas =
-                cinemaRepository.searchByKeyword(keyword).stream()
-                        .map(CinemaResponse::from)
+        List<Cinema> cinemas = cinemaRepository.searchByKeyword(keyword);
+        return buildCinemaListResponse(cinemas);
+    }
+
+    private CinemaListResponse buildCinemaListResponse(List<Cinema> cinemas) {
+        List<CinemaResponse> cinemaResponses =
+                cinemas.stream()
+                        .map(
+                                cinema -> {
+                                    Long totalScreensLong =
+                                            screenRepository.countByCinemaId(cinema.getId());
+                                    Integer totalScreens =
+                                            totalScreensLong != null
+                                                    ? totalScreensLong.intValue()
+                                                    : 0;
+                                    return CinemaResponse.from(cinema, totalScreens);
+                                })
                         .collect(Collectors.toList());
-        return CinemaListResponse.of(cinemas);
+        return CinemaListResponse.builder()
+                .content(cinemaResponses)
+                .page(0)
+                .size(cinemaResponses.size())
+                .totalElements(cinemaResponses.size())
+                .totalPages(1)
+                .build();
     }
 
     public List<String> getAllBrands() {

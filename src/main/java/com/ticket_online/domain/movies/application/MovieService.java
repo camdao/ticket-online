@@ -4,7 +4,6 @@ import com.ticket_online.domain.movies.dao.MovieRepository;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.movies.domain.MovieStatus;
 import com.ticket_online.domain.movies.dto.MovieListResponse;
-import com.ticket_online.domain.movies.dto.MovieRequest;
 import com.ticket_online.domain.movies.dto.MovieResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
@@ -94,16 +93,16 @@ public class MovieService {
 
         if (status != null && genre != null) {
             moviePage =
-                    movieRepository.searchMovies(null, genre, null, null, pageable).map(
-                            movie -> {
-                                if (movie.getStatus() == status) {
-                                    return movie;
-                                }
-                                return null;
-                            });
-            moviePage =
-                    moviePage.map(
-                            movie -> movie); // Filter out nulls (not ideal, better to use
+                    movieRepository
+                            .searchMovies(null, genre, null, null, pageable)
+                            .map(
+                                    movie -> {
+                                        if (movie.getStatus() == status) {
+                                            return movie;
+                                        }
+                                        return null;
+                                    });
+            moviePage = moviePage.map(movie -> movie); // Filter out nulls (not ideal, better to use
             // Specification)
         } else if (status != null) {
             moviePage = movieRepository.findByStatus(status.name(), LocalDate.now(), pageable);

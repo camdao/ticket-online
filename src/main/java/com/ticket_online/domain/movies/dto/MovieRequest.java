@@ -44,9 +44,7 @@ public class MovieRequest {
     @Size(max = 10, message = "Rating must not exceed 10 characters")
     private String rating;
 
-    @Pattern(
-            regexp = "^(P|T13|T16|T18)?$",
-            message = "Age rating must be one of: P, T13, T16, T18")
+    @Pattern(regexp = "^(P|T13|T16|T18)?$", message = "Age rating must be one of: P, T13, T16, T18")
     @Size(max = 10, message = "Age rating must not exceed 10 characters")
     private String ageRating;
 }

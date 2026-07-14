@@ -4,15 +4,16 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class CinemaListResponse {
-    private List<CinemaResponse> cinemas;
-    private int totalCount;
-
-    public static CinemaListResponse of(List<CinemaResponse> cinemas) {
-        return CinemaListResponse.builder().cinemas(cinemas).totalCount(cinemas.size()).build();
-    }
+    private List<CinemaResponse> content;
+    private int page;
+    private int size;
+    private long totalElements;
+    private int totalPages;
 }

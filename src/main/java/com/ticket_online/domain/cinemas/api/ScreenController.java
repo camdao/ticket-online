@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/screens")
+@RequestMapping("/api/v1/screens")
 @RequiredArgsConstructor
 public class ScreenController {
 

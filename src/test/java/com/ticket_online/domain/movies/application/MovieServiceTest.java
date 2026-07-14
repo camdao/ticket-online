@@ -320,7 +320,8 @@ class MovieServiceTest {
                 .thenReturn(moviePage);
 
         // When
-        MovieListResponse result = movieService.searchMovies(title, genre, rating, director, pageable);
+        MovieListResponse result =
+                movieService.searchMovies(title, genre, rating, director, pageable);
 
         // Then
         assertThat(result).isNotNull();
