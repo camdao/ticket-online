@@ -352,8 +352,7 @@ class ShowtimeServiceTest {
             // Given
             List<Showtime> showtimes = List.of(showtime);
 
-            when(showtimeRepository.findAll(any(Specification.class)))
-                    .thenReturn(showtimes);
+            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -373,8 +372,7 @@ class ShowtimeServiceTest {
             // Given
             List<Showtime> showtimes = List.of(showtime);
 
-            when(showtimeRepository.findAll(any(Specification.class)))
-                    .thenReturn(showtimes);
+            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -400,8 +398,7 @@ class ShowtimeServiceTest {
             // Given
             List<Showtime> showtimes = List.of(showtime);
 
-            when(showtimeRepository.findAll(any(Specification.class)))
-                    .thenReturn(showtimes);
+            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -421,8 +418,7 @@ class ShowtimeServiceTest {
             // Given
             List<Showtime> showtimes = List.of(showtime);
 
-            when(showtimeRepository.findAll(any(Specification.class)))
-                    .thenReturn(showtimes);
+            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
