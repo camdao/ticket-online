@@ -121,4 +121,8 @@ public class Showtime extends BaseTimeEntity {
     public boolean isUpcoming() {
         return this.startTime.isAfter(LocalDateTime.now());
     }
+
+    public void updateStatus(ShowtimeStatus showtimeStatus) {
+        this.status = showtimeStatus;
+    }
 }
