@@ -9,6 +9,8 @@ import com.ticket_online.domain.cinemas.dto.response.CinemaDetailResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.cinemas.dto.response.ScreenResponse;
+import com.ticket_online.domain.showtimes.application.ShowtimeService;
+import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.util.List;
@@ -26,6 +28,7 @@ public class CinemaService {
 
     private final CinemaRepository cinemaRepository;
     private final ScreenRepository screenRepository;
+    private final ShowtimeService showtimeService;
 
     public CinemaListResponse getAllCinemas() {
         List<Cinema> cinemas = cinemaRepository.findAll();
@@ -179,6 +182,11 @@ public class CinemaService {
     public void deleteCinema(Long id) {
         Cinema cinema = findCinemaById(id);
         cinemaRepository.delete(cinema);
+    }
+
+    public List<ShowtimeResponse> getCinemaShowtimes(
+            Long cinemaId, Long movieId, String date, String startDate, String endDate) {
+        return showtimeService.getShowtimesByCinemaId(cinemaId, movieId, date, startDate, endDate);
     }
 
     public List<ScreenResponse> getScreensByCinemaId(Long cinemaId) {

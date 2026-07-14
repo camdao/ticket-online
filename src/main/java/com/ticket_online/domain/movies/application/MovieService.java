@@ -5,6 +5,8 @@ import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.movies.domain.MovieStatus;
 import com.ticket_online.domain.movies.dto.MovieListResponse;
 import com.ticket_online.domain.movies.dto.MovieResponse;
+import com.ticket_online.domain.showtimes.application.ShowtimeService;
+import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MovieService {
 
     private final MovieRepository movieRepository;
+    private final ShowtimeService showtimeService;
 
     public MovieResponse getMovieById(Long id) {
         Movie movie =
@@ -118,6 +121,17 @@ public class MovieService {
     public MovieListResponse searchMoviesByKeyword(String keyword, Pageable pageable) {
         Page<Movie> moviePage = movieRepository.findByTitleContainingIgnoreCase(keyword, pageable);
         return buildMovieListResponse(moviePage);
+    }
+
+    public List<ShowtimeResponse> getMovieShowtimes(
+            Long movieId,
+            Long cinemaId,
+            String city,
+            String date,
+            String startDate,
+            String endDate) {
+        return showtimeService.getShowtimesByMovieId(
+                movieId, cinemaId, city, date, startDate, endDate);
     }
 
     private MovieListResponse buildMovieListResponse(Page<Movie> moviePage) {

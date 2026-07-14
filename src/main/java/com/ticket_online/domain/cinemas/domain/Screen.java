@@ -67,4 +67,12 @@ public class Screen extends BaseTimeEntity {
                         || roomType.equalsIgnoreCase("VIP")
                         || roomType.equalsIgnoreCase("4DX"));
     }
+
+    public String getType() {
+        return this.roomType;
+    }
+
+    public Integer getTotalSeats() {
+        return this.capacity;
+    }
 }

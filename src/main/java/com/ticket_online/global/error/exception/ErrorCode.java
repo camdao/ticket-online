@@ -58,7 +58,10 @@ public enum ErrorCode {
     SCREEN_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested screen was not found."),
 
     // Movie
-    MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found.");
+    MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found."),
+
+    // Showtime
+    SHOWTIME_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested showtime was not found.");
 
     private final HttpStatus status;
     private final String message;

@@ -7,7 +7,6 @@ import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.cinemas.dto.response.ScreenResponse;
 import jakarta.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -54,10 +53,10 @@ public class CinemaController {
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
-        // Placeholder: Return empty list until Showtimes domain is implemented
         // Verify cinema exists first
         cinemaService.getCinemaById(id);
-        return ResponseEntity.ok(Collections.emptyList());
+        return ResponseEntity.ok(
+                cinemaService.getCinemaShowtimes(id, movieId, date, startDate, endDate));
     }
 
     @GetMapping("/{id}")

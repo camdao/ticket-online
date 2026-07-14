@@ -4,7 +4,6 @@ import com.ticket_online.domain.movies.application.MovieService;
 import com.ticket_online.domain.movies.domain.MovieStatus;
 import com.ticket_online.domain.movies.dto.MovieListResponse;
 import com.ticket_online.domain.movies.dto.MovieResponse;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,8 +46,10 @@ public class MovieController {
             @RequestParam(required = false) String date,
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
-        // Placeholder: Return empty list until Showtimes domain is implemented
-        return ResponseEntity.ok(Collections.emptyList());
+        // Verify movie exists first
+        movieService.getMovieById(id);
+        return ResponseEntity.ok(
+                movieService.getMovieShowtimes(id, cinemaId, city, date, startDate, endDate));
     }
 
     @GetMapping("/now-showing")
