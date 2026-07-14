@@ -20,11 +20,13 @@ DROP TABLE IF EXISTS users;
 -- Description: User account information
 -- ============================================
 CREATE TABLE users (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+    full_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    role ENUM('ROLE_USER', 'ROLE_ADMIN') NOT NULL DEFAULT 'ROLE_USER',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -143,7 +145,7 @@ CREATE TABLE bookings (
     confirmed_at DATETIME NULL,
     expired_at DATETIME NULL,
     updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (showtime_id) REFERENCES showtimes(id) ON DELETE CASCADE,
     INDEX idx_user_id (user_id),
     INDEX idx_showtime_id (showtime_id),
@@ -192,10 +194,10 @@ CREATE TABLE payments (
 -- ============================================
 
 -- Insert sample users
-INSERT INTO users (name, email, password, role) VALUES
-('Admin User', 'admin@example.com', '$2a$10$dummyHashedPassword1', 'ADMIN'),
-('John Doe', 'john.doe@example.com', '$2a$10$dummyHashedPassword2', 'USER'),
-('Jane Smith', 'jane.smith@example.com', '$2a$10$dummyHashedPassword3', 'USER');
+INSERT INTO users (username, email, password, full_name, phone_number, role) VALUES
+('admin', 'admin@example.com', '$2a$10$dummyHashedPassword1', 'Admin User', '0901234567', 'ROLE_ADMIN'),
+('johndoe', 'john.doe@example.com', '$2a$10$dummyHashedPassword2', 'John Doe', '0912345678', 'ROLE_USER'),
+('janesmith', 'jane.smith@example.com', '$2a$10$dummyHashedPassword3', 'Jane Smith', '0923456789', 'ROLE_USER');
 
 -- Insert sample movies
 INSERT INTO movies (title, duration, description, image_url, release_date, genre, rating) VALUES
