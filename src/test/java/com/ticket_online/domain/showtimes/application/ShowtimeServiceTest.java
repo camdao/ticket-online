@@ -350,12 +350,10 @@ class ShowtimeServiceTest {
         @DisplayName("Should return showtimes for specific movie")
         void shouldReturnShowtimesForMovie() {
             // Given
-            Pageable pageable = PageRequest.of(0, 20);
             List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
 
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
+            when(showtimeRepository.findAll(any(Specification.class)))
+                    .thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -366,19 +364,17 @@ class ShowtimeServiceTest {
             assertThat(result).hasSize(1);
             assertThat(result.get(0).movieId()).isEqualTo(1L);
 
-            verify(showtimeRepository).findAll(any(Specification.class), any(Pageable.class));
+            verify(showtimeRepository).findAll(any(Specification.class));
         }
 
         @Test
         @DisplayName("Should filter movie showtimes by cinema")
         void shouldFilterMovieShowtimesByCinema() {
             // Given
-            Pageable pageable = PageRequest.of(0, 20);
             List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
 
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
+            when(showtimeRepository.findAll(any(Specification.class)))
+                    .thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -390,7 +386,7 @@ class ShowtimeServiceTest {
             assertThat(result.get(0).movieId()).isEqualTo(1L);
             assertThat(result.get(0).cinemaId()).isEqualTo(5L);
 
-            verify(showtimeRepository).findAll(any(Specification.class), any(Pageable.class));
+            verify(showtimeRepository).findAll(any(Specification.class));
         }
     }
 
@@ -402,12 +398,10 @@ class ShowtimeServiceTest {
         @DisplayName("Should return showtimes for specific cinema")
         void shouldReturnShowtimesForCinema() {
             // Given
-            Pageable pageable = PageRequest.of(0, 20);
             List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
 
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
+            when(showtimeRepository.findAll(any(Specification.class)))
+                    .thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -418,19 +412,17 @@ class ShowtimeServiceTest {
             assertThat(result).hasSize(1);
             assertThat(result.get(0).cinemaId()).isEqualTo(5L);
 
-            verify(showtimeRepository).findAll(any(Specification.class), any(Pageable.class));
+            verify(showtimeRepository).findAll(any(Specification.class));
         }
 
         @Test
         @DisplayName("Should filter cinema showtimes by movie")
         void shouldFilterCinemaShowtimesByMovie() {
             // Given
-            Pageable pageable = PageRequest.of(0, 20);
             List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
 
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
+            when(showtimeRepository.findAll(any(Specification.class)))
+                    .thenReturn(showtimes);
 
             // When
             List<ShowtimeResponse> result =
@@ -442,7 +434,7 @@ class ShowtimeServiceTest {
             assertThat(result.get(0).cinemaId()).isEqualTo(5L);
             assertThat(result.get(0).movieId()).isEqualTo(1L);
 
-            verify(showtimeRepository).findAll(any(Specification.class), any(Pageable.class));
+            verify(showtimeRepository).findAll(any(Specification.class));
         }
     }
 }
