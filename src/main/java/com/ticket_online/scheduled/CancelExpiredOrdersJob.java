@@ -1,8 +1,9 @@
 package com.ticket_online.scheduled;
 
-import com.ticket_online.domain.booking.dao.OrderRepository;
-import com.ticket_online.domain.booking.dao.OrderSeatRepository;
-import com.ticket_online.domain.booking.domain.Order;
+// TODO: Uncomment when booking domain is implemented
+// import com.ticket_online.domain.booking.dao.OrderRepository;
+// import com.ticket_online.domain.booking.dao.OrderSeatRepository;
+// import com.ticket_online.domain.booking.domain.Order;
 import com.ticket_online.global.util.RedisSeatScripts;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,34 +14,35 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@RequiredArgsConstructor
+// @RequiredArgsConstructor  // TODO: Uncomment when booking domain is implemented
 @Slf4j
 @Transactional
 public class CancelExpiredOrdersJob {
-    private final OrderRepository orderRepository;
-    private final RedisSeatScripts redisSeatScripts;
-    private final OrderSeatRepository orderSeatRepository;
+    // TODO: Uncomment when booking domain is implemented
+    // private final OrderRepository orderRepository;
+    // private final RedisSeatScripts redisSeatScripts;
+    // private final OrderSeatRepository orderSeatRepository;
 
-    @Scheduled(fixedDelay = 60_000)
-    @Transactional
-    public void cancelExpiredOrders() {
-        LocalDateTime now = LocalDateTime.now();
-
-        List<Order> expiredOrders = orderRepository.findExpiredPendingOrders(now);
-
-        if (expiredOrders.isEmpty()) {
-            return;
-        }
-
-        for (Order order : expiredOrders) {
-
-            order.cancel();
-
-            List<Long> seatIds = orderSeatRepository.findSeatIdsByOrderId(order.getId());
-
-            redisSeatScripts.releaseSeats(order.getShow().getId(), seatIds);
-
-            log.info("Cancelled expired order {}", order.getId());
-        }
-    }
+    // @Scheduled(fixedDelay = 60_000)
+    // @Transactional
+    // public void cancelExpiredOrders() {
+    //     LocalDateTime now = LocalDateTime.now();
+    //
+    //     List<Order> expiredOrders = orderRepository.findExpiredPendingOrders(now);
+    //
+    //     if (expiredOrders.isEmpty()) {
+    //         return;
+    //     }
+    //
+    //     for (Order order : expiredOrders) {
+    //
+    //         order.cancel();
+    //
+    //         List<Long> seatIds = orderSeatRepository.findSeatIdsByOrderId(order.getId());
+    //
+    //         redisSeatScripts.releaseSeats(order.getShow().getId(), seatIds);
+    //
+    //         log.info("Cancelled expired order {}", order.getId());
+    //     }
+    // }
 }
