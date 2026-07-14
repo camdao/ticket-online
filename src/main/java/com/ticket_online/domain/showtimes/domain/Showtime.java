@@ -1,6 +1,7 @@
 package com.ticket_online.domain.showtimes.domain;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
+import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import com.ticket_online.domain.movies.domain.Movie;
@@ -39,8 +40,15 @@ public class Showtime extends BaseTimeEntity {
     private Cinema cinema;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "screen_id", nullable = false)
-    private Screen screen;
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
+
+    // Deprecated: Use room instead
+    @Deprecated
+    public Screen getScreen() {
+        // For backward compatibility, we can create a Screen wrapper if needed
+        return null;
+    }
 
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
@@ -59,14 +67,14 @@ public class Showtime extends BaseTimeEntity {
     Showtime(
             Movie movie,
             Cinema cinema,
-            Screen screen,
+            Room room,
             LocalDateTime startTime,
             LocalDateTime endTime,
             BigDecimal basePrice,
             ShowtimeStatus status) {
         this.movie = movie;
         this.cinema = cinema;
-        this.screen = screen;
+        this.room = room;
         this.startTime = startTime;
         this.endTime = endTime;
         this.basePrice = basePrice;
@@ -76,14 +84,14 @@ public class Showtime extends BaseTimeEntity {
     public static Showtime createShowtime(
             Movie movie,
             Cinema cinema,
-            Screen screen,
+            Room room,
             LocalDateTime startTime,
             LocalDateTime endTime,
             BigDecimal basePrice) {
         return Showtime.builder()
                 .movie(movie)
                 .cinema(cinema)
-                .screen(screen)
+                .room(room)
                 .startTime(startTime)
                 .endTime(endTime)
                 .basePrice(basePrice)

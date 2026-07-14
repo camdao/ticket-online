@@ -418,7 +418,185 @@ Lấy danh sách thành phố có rạp.
 
 ---
 
-## 4.4. Showtimes
+## 4.4. Rooms
+
+### GET /rooms/{id}
+Lấy thông tin chi tiết phòng chiếu.
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 12,
+    "cinemaId": 5,
+    "name": "Room 3",
+    "capacity": 120,
+    "roomType": "IMAX",
+    "createdAt": "2024-01-01T10:00:00",
+    "updatedAt": "2024-01-10T15:30:00"
+  },
+  "message": "Success"
+}
+```
+
+---
+
+### GET /rooms
+Lấy danh sách phòng chiếu theo bộ lọc.
+
+**Query Parameters:**
+- `cinemaId` (optional): Lọc theo rạp chiếu
+- `roomType` (optional): Lọc theo loại phòng (Standard, IMAX, VIP, 4DX)
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 12,
+      "cinemaId": 5,
+      "name": "Room 3",
+      "capacity": 120,
+      "roomType": "IMAX",
+      "createdAt": "2024-01-01T10:00:00",
+      "updatedAt": "2024-01-10T15:30:00"
+    },
+    {
+      "id": 13,
+      "cinemaId": 5,
+      "name": "Room 4",
+      "capacity": 80,
+      "roomType": "Standard",
+      "createdAt": "2024-01-01T10:00:00",
+      "updatedAt": "2024-01-10T15:30:00"
+    }
+  ],
+  "message": "Success"
+}
+```
+
+**Note:** Nếu không có query parameter nào được cung cấp, API sẽ trả về danh sách rỗng.
+
+---
+
+### POST /rooms
+Tạo phòng chiếu mới (Admin only).
+
+**Headers:**
+- `Authorization: Bearer <access_token>`
+
+**Request:**
+```json
+{
+  "cinemaId": 5,
+  "name": "Room 5",
+  "capacity": 100,
+  "roomType": "VIP"
+}
+```
+
+**Validation Rules:**
+- `cinemaId`: Bắt buộc, phải tồn tại trong hệ thống
+- `name`: Bắt buộc, tối đa 100 ký tự
+- `capacity`: Bắt buộc, tối thiểu 1
+- `roomType`: Tùy chọn, tối đa 50 ký tự
+
+**Response (201):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 14,
+    "cinemaId": 5,
+    "name": "Room 5",
+    "capacity": 100,
+    "roomType": "VIP",
+    "createdAt": "2024-01-15T14:30:00",
+    "updatedAt": "2024-01-15T14:30:00"
+  },
+  "message": "Success"
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "success": false,
+  "message": "The requested cinema was not found."
+}
+```
+
+---
+
+### PUT /rooms/{id}
+Cập nhật thông tin phòng chiếu (Admin only).
+
+**Headers:**
+- `Authorization: Bearer <access_token>`
+
+**Request:**
+```json
+{
+  "cinemaId": 5,
+  "name": "Room 5 - Updated",
+  "capacity": 110,
+  "roomType": "VIP"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 14,
+    "cinemaId": 5,
+    "name": "Room 5 - Updated",
+    "capacity": 110,
+    "roomType": "VIP",
+    "createdAt": "2024-01-15T14:30:00",
+    "updatedAt": "2024-01-15T16:45:00"
+  },
+  "message": "Success"
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "success": false,
+  "message": "The requested room was not found."
+}
+```
+
+---
+
+### DELETE /rooms/{id}
+Xóa phòng chiếu (Admin only).
+
+**Headers:**
+- `Authorization: Bearer <access_token>`
+
+**Response (204):**
+```
+No Content
+```
+
+**Error Response (404):**
+```json
+{
+  "success": false,
+  "message": "The requested room was not found."
+}
+```
+
+**Note:** Xóa phòng chiếu sẽ xóa cascade các suất chiếu và ghế ngồi liên quan.
+
+---
+
+## 4.5. Showtimes
 
 ### GET /showtimes
 Tìm kiếm suất chiếu.
@@ -581,7 +759,7 @@ Lấy sơ đồ ghế của suất chiếu.
 
 ---
 
-## 4.5. Bookings
+## 4.6. Bookings
 
 ### POST /bookings/hold-seats
 Giữ ghế tạm thời (5 phút).
@@ -831,7 +1009,7 @@ Hủy đơn đặt vé (chỉ được phép hủy đơn chưa thanh toán hoặ
 
 ---
 
-## 4.6. Payments
+## 4.7. Payments
 
 ### POST /payments
 Khởi tạo thanh toán cho đơn đặt vé.

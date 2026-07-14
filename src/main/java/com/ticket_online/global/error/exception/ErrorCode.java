@@ -29,6 +29,9 @@ public enum ErrorCode {
 
     SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested resource was not found."),
     SEAT_HOLD_FAILED(HttpStatus.BAD_REQUEST, "Failed to hold the seat. Please try again."),
+    SEAT_ALREADY_EXISTS(HttpStatus.CONFLICT, "Seat already exists at this position."),
+    SEAT_NOT_AVAILABLE(HttpStatus.CONFLICT, "Seat is not available."),
+    SEATS_NOT_FOUND(HttpStatus.NOT_FOUND, "One or more seats not found."),
 
     // Order
     ORDER_SEAT_HOLD_FAILED(
@@ -56,6 +59,9 @@ public enum ErrorCode {
 
     // Screen
     SCREEN_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested screen was not found."),
+
+    // Room
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested room was not found."),
 
     // Movie
     MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found."),
