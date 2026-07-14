@@ -14,7 +14,21 @@ public class SecurityUtil {
         try {
             return Long.parseLong(authentication.getName());
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.SAMPLE_ERROR);
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
+    }
+
+    public static Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
+        }
+        try {
+            return Long.parseLong(authentication.getName());
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
     }
 }

@@ -2,6 +2,9 @@ package com.ticket_online.domain.user.domain;
 
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,24 +20,56 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
-    private String email;
-
-    private String name;
-
+    @NotBlank
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @NotBlank
+    @Email
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @NotBlank
+    @Column(nullable = false)
     private String password;
 
+    @NotBlank
+    @Column(nullable = false)
+    private String fullName;
+
+    @Pattern(regexp = "^0\\d{9}$", message = "Phone number must be 10 digits and start with 0")
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
 
     @Builder(access = AccessLevel.PRIVATE)
-    User(String email, String name) {
+    private User(
+            String username,
+            String email,
+            String password,
+            String fullName,
+            String phoneNumber,
+            UserRole role) {
+        this.username = username;
         this.email = email;
-        this.name = name;
+        this.password = password;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.role = role != null ? role : UserRole.ROLE_USER;
     }
 
-    public static User createUser(String name, String email) {
-        return User.builder().name(name).email(email).build();
+    public static User createUser(
+            String username, String email, String password, String fullName, String phoneNumber) {
+        return User.builder()
+                .username(username)
+                .email(email)
+                .password(password)
+                .fullName(fullName)
+                .phoneNumber(phoneNumber)
+                .role(UserRole.ROLE_USER)
+                .build();
     }
 }
