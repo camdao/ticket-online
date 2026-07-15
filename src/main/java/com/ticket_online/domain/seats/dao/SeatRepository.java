@@ -1,7 +1,6 @@
 package com.ticket_online.domain.seats.dao;
 
 import com.ticket_online.domain.seats.domain.Seat;
-import com.ticket_online.domain.seats.domain.SeatType;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

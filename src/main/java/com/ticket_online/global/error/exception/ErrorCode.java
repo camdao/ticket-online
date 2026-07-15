@@ -67,7 +67,24 @@ public enum ErrorCode {
     MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found."),
 
     // Showtime
-    SHOWTIME_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested showtime was not found.");
+    SHOWTIME_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested showtime was not found."),
+
+    // Booking
+    BOOKING_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested booking was not found."),
+    BOOKING_ALREADY_CONFIRMED(HttpStatus.CONFLICT, "Booking is already confirmed."),
+    BOOKING_ALREADY_CANCELLED(HttpStatus.CONFLICT, "Booking is already cancelled."),
+    BOOKING_EXPIRED(HttpStatus.BAD_REQUEST, "Booking has expired."),
+    BOOKING_CANNOT_CANCEL(
+            HttpStatus.BAD_REQUEST,
+            "Cannot cancel confirmed booking within 2 hours of showtime."),
+    INVALID_HOLD_TOKEN(HttpStatus.BAD_REQUEST, "Hold token expired or invalid."),
+    HOLD_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "Hold token has expired."),
+    SEATS_NOT_HELD(HttpStatus.BAD_REQUEST, "Seats are not held or held by another user."),
+
+    // Payment
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested payment was not found."),
+    PAYMENT_ALREADY_COMPLETED(HttpStatus.CONFLICT, "Payment is already completed."),
+    INVALID_PAYMENT_CALLBACK(HttpStatus.BAD_REQUEST, "Invalid payment callback signature.");
 
     private final HttpStatus status;
     private final String message;
