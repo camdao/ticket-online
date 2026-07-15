@@ -1,87 +1,90 @@
 package com.ticket_online.domain.seats.domain;
 
-import com.ticket_online.domain.cinemas.domain.Room;
+import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/** Entity representing a physical seat in a cinema screen */
 @Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
         name = "seats",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"screen_id", "row", "number"})},
         indexes = {
-            @Index(name = "idx_seat_room", columnList = "room_id"),
-            @Index(name = "idx_seat_position", columnList = "room_id, row_code, seat_number")
-        },
-        uniqueConstraints = {
-            @UniqueConstraint(
-                    name = "uk_seat_position",
-                    columnNames = {"room_id", "row_code", "seat_number"})
+            @Index(name = "idx_seat_screen", columnList = "screen_id"),
+            @Index(name = "idx_seat_row_number", columnList = "row, number")
         })
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Seat extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @JoinColumn(name = "screen_id", nullable = false)
+    private Screen screen;
 
-    @Column(name = "row_code", nullable = false, length = 10)
-    private String rowCode;
+    @Column(name = "row", nullable = false, length = 2)
+    private String row;
 
-    @Column(name = "seat_number", nullable = false)
-    private Integer seatNumber;
+    @Column(name = "number", nullable = false)
+    private Integer number;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "seat_type", nullable = false, length = 20)
-    private SeatType seatType;
+    @Column(name = "type", nullable = false, length = 20)
+    private SeatType type;
 
-    @Column(name = "surcharge", nullable = false, precision = 10, scale = 2)
-    private BigDecimal surcharge;
+    @Column(name = "base_price", nullable = false)
+    private Long basePrice;
 
-    @Builder(access = AccessLevel.PRIVATE)
-    Seat(Room room, String rowCode, Integer seatNumber, SeatType seatType, BigDecimal surcharge) {
-        this.room = room;
-        this.rowCode = rowCode;
-        this.seatNumber = seatNumber;
-        this.seatType = seatType;
-        this.surcharge = surcharge;
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
+    @Builder
+    public Seat(Screen screen, String row, Integer number, SeatType type, Long basePrice) {
+        this.screen = screen;
+        this.row = row;
+        this.number = number;
+        this.type = type;
+        this.basePrice = basePrice;
+        this.isActive = true;
     }
 
-    public static Seat createSeat(
-            Room room, String rowCode, Integer seatNumber, SeatType seatType, BigDecimal surcharge) {
-        return Seat.builder()
-                .room(room)
-                .rowCode(rowCode)
-                .seatNumber(seatNumber)
-                .seatType(seatType)
-                .surcharge(surcharge != null ? surcharge : BigDecimal.ZERO)
-                .build();
+    /** Get the seat label (e.g., "A-5") */
+    public String getSeatLabel() {
+        return row + "-" + number;
     }
 
-    public void updateSeat(String rowCode, Integer seatNumber, SeatType seatType, BigDecimal surcharge) {
-        this.rowCode = rowCode;
-        this.seatNumber = seatNumber;
-        this.seatType = seatType;
-        this.surcharge = surcharge;
+    /** Calculate the price for this seat based on seat type */
+    public Long calculatePrice() {
+        return basePrice;
     }
 
-    public boolean isVipSeat() {
-        return this.seatType == SeatType.VIP;
+    /** Deactivate the seat */
+    public void deactivate() {
+        this.isActive = false;
     }
 
-    public boolean isCoupleSeat() {
-        return this.seatType == SeatType.COUPLE;
+    /** Activate the seat */
+    public void activate() {
+        this.isActive = true;
     }
 
-    public String getPosition() {
-        return rowCode + seatNumber;
+    /** Update seat type */
+    public void updateType(SeatType newType) {
+        this.type = newType;
+    }
+
+    /** Update base price */
+    public void updateBasePrice(Long newPrice) {
+        if (newPrice <= 0) {
+            throw new IllegalArgumentException("Base price must be positive");
+        }
+        this.basePrice = newPrice;
     }
 }

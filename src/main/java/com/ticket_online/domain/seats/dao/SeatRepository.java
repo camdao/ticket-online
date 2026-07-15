@@ -7,20 +7,47 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/** Repository for Seat entity */
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-    List<Seat> findByRoomId(Long roomId);
+    /** Find all seats for a specific screen */
+    @Query(
+            "SELECT s FROM Seat s WHERE s.screen.id = :screenId AND s.isActive = true ORDER BY s.row, s.number")
+    List<Seat> findByScreenId(@Param("screenId") Long screenId);
 
-    @Query("SELECT s FROM Seat s WHERE s.room.id = :roomId ORDER BY s.rowCode, s.seatNumber")
-    List<Seat> findByRoomIdOrderByPosition(@Param("roomId") Long roomId);
+    /** Find all active seats for a screen */
+    @Query(
+            "SELECT s FROM Seat s WHERE s.screen.id = :screenId AND s.isActive = true ORDER BY s.row, s.number")
+    List<Seat> findActiveByScreenId(@Param("screenId") Long screenId);
 
-    Optional<Seat> findByRoomIdAndRowCodeAndSeatNumber(
-            Long roomId, String rowCode, Integer seatNumber);
+    /** Find seat by screen, row, and number */
+    @Query(
+            "SELECT s FROM Seat s WHERE s.screen.id = :screenId AND s.row = :row AND s.number = :number")
+    Optional<Seat> findByScreenIdAndRowAndNumber(
+            @Param("screenId") Long screenId,
+            @Param("row") String row,
+            @Param("number") Integer number);
 
-    boolean existsByRoomIdAndRowCodeAndSeatNumber(Long roomId, String rowCode, Integer seatNumber);
+    /** Find all seats of a specific type in a screen */
+    @Query(
+            "SELECT s FROM Seat s WHERE s.screen.id = :screenId AND s.type = :type AND s.isActive = true")
+    List<Seat> findByScreenIdAndType(
+            @Param("screenId") Long screenId, @Param("type") SeatType type);
 
-    @Query("SELECT s FROM Seat s WHERE s.id IN :seatIds")
-    List<Seat> findAllByIdIn(@Param("seatIds") List<Long> seatIds);
+    /** Count total seats in a screen */
+    @Query("SELECT COUNT(s) FROM Seat s WHERE s.screen.id = :screenId AND s.isActive = true")
+    Long countByScreenId(@Param("screenId") Long screenId);
 
-    long countByRoomId(Long roomId);
+    /** Find seats by IDs */
+    @Query("SELECT s FROM Seat s WHERE s.id IN :seatIds AND s.isActive = true")
+    List<Seat> findByIdIn(@Param("seatIds") List<Long> seatIds);
+
+    /** Check if seat exists */
+    @Query(
+            "SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM Seat s "
+                    + "WHERE s.screen.id = :screenId AND s.row = :row AND s.number = :number")
+    boolean existsByScreenIdAndRowAndNumber(
+            @Param("screenId") Long screenId,
+            @Param("row") String row,
+            @Param("number") Integer number);
 }
