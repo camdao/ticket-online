@@ -3,7 +3,7 @@ package com.ticket_online.domain.showtimes.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
-import com.ticket_online.domain.cinemas.domain.Screen;
+import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.movies.domain.Movie;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -52,7 +52,7 @@ class ShowtimeTest {
 
         // When
         Showtime showtime =
-                Showtime.createShowtime(movie, cinema, screen, startTime, endTime, basePrice);
+                Showtime.createShowtime(movie, cinema, room, startTime, endTime, basePrice);
 
         // Then
         assertThat(showtime).isNotNull();
