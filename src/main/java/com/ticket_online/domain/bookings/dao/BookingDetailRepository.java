@@ -12,8 +12,9 @@ public interface BookingDetailRepository extends JpaRepository<BookingDetail, Lo
 
     @Query(
             "SELECT bd FROM BookingDetail bd WHERE bd.booking.id IN (SELECT b.id FROM Booking b"
-                + " WHERE b.showtime.id = :showtimeId AND b.status = 'CONFIRMED')")
-    List<BookingDetail> findConfirmedBookingDetailsByShowtimeId(@Param("showtimeId") Long showtimeId);
+                    + " WHERE b.showtime.id = :showtimeId AND b.status = 'CONFIRMED')")
+    List<BookingDetail> findConfirmedBookingDetailsByShowtimeId(
+            @Param("showtimeId") Long showtimeId);
 
     @Query(
             "SELECT bd.seat.id FROM BookingDetail bd WHERE bd.booking.showtime.id = :showtimeId"

@@ -2,7 +2,6 @@ package com.ticket_online.domain.showtimes.domain;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.cinemas.domain.Room;
-import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import com.ticket_online.domain.movies.domain.Movie;
 import jakarta.persistence.*;
@@ -16,15 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(
-        name = "showtimes",
-        indexes = {
-            @Index(name = "idx_showtime_movie", columnList = "movie_id"),
-            @Index(name = "idx_showtime_cinema", columnList = "cinema_id"),
-            @Index(name = "idx_showtime_screen", columnList = "screen_id"),
-            @Index(name = "idx_showtime_start_time", columnList = "start_time"),
-            @Index(name = "idx_showtime_movie_cinema", columnList = "movie_id, cinema_id")
-        })
+@Table(name = "showtimes")
 public class Showtime extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +33,6 @@ public class Showtime extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
-
-    // Deprecated: Use room instead
-    @Deprecated
-    public Screen getScreen() {
-        // For backward compatibility, we can create a Screen wrapper if needed
-        return null;
-    }
 
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
@@ -112,10 +96,6 @@ public class Showtime extends BaseTimeEntity {
 
     public void cancel() {
         this.status = ShowtimeStatus.CANCELLED;
-    }
-
-    public void complete() {
-        this.status = ShowtimeStatus.COMPLETED;
     }
 
     public boolean isActive() {

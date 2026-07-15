@@ -75,8 +75,7 @@ public enum ErrorCode {
     BOOKING_ALREADY_CANCELLED(HttpStatus.CONFLICT, "Booking is already cancelled."),
     BOOKING_EXPIRED(HttpStatus.BAD_REQUEST, "Booking has expired."),
     BOOKING_CANNOT_CANCEL(
-            HttpStatus.BAD_REQUEST,
-            "Cannot cancel confirmed booking within 2 hours of showtime."),
+            HttpStatus.BAD_REQUEST, "Cannot cancel confirmed booking within 2 hours of showtime."),
     INVALID_HOLD_TOKEN(HttpStatus.BAD_REQUEST, "Hold token expired or invalid."),
     HOLD_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "Hold token has expired."),
     SEATS_NOT_HELD(HttpStatus.BAD_REQUEST, "Seats are not held or held by another user."),

@@ -8,7 +8,6 @@ import com.ticket_online.domain.bookings.domain.BookingDetail;
 import com.ticket_online.domain.payments.dao.PaymentRepository;
 import com.ticket_online.domain.payments.domain.Payment;
 import com.ticket_online.domain.payments.domain.PaymentMethod;
-import com.ticket_online.domain.payments.domain.PaymentStatus;
 import com.ticket_online.domain.payments.dto.request.PaymentRequest;
 import com.ticket_online.domain.payments.dto.response.PaymentResponse;
 import com.ticket_online.domain.payments.dto.response.PaymentVerificationResponse;
@@ -16,7 +15,6 @@ import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
 import jakarta.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,9 +79,7 @@ public class PaymentService {
         // Create payment URL based on payment method
         String paymentUrl;
         if (request.getPaymentMethod() == PaymentMethod.VNPAY) {
-            String orderInfo =
-                    "Thanh toan ve phim - Booking: "
-                            + booking.getBookingCode();
+            String orderInfo = "Thanh toan ve phim - Booking: " + booking.getBookingCode();
             paymentUrl =
                     vnpayService.createPaymentUrl(
                             transactionId,

@@ -39,15 +39,11 @@ public record ShowtimeResponse(
                 .cinemaId(showtime.getCinema().getId())
                 .cinemaName(showtime.getCinema().getName())
                 .cinemaAddress(showtime.getCinema().getFullAddress())
-                .screenId(showtime.getScreen().getId())
-                .screenName(showtime.getScreen().getName())
-                .screenType(showtime.getScreen().getType())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())
                 .status(showtime.getStatus())
-                .availableSeats(0) // TODO: Calculate from bookings
-                .totalSeats(showtime.getScreen().getTotalSeats())
+                .availableSeats(0)
                 .build();
     }
 
@@ -62,15 +58,11 @@ public record ShowtimeResponse(
                 .cinemaId(showtime.getCinema().getId())
                 .cinemaName(showtime.getCinema().getName())
                 .cinemaAddress(showtime.getCinema().getFullAddress())
-                .screenId(showtime.getScreen().getId())
-                .screenName(showtime.getScreen().getName())
-                .screenType(showtime.getScreen().getType())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())
                 .status(showtime.getStatus())
                 .availableSeats(availableSeats)
-                .totalSeats(showtime.getScreen().getTotalSeats())
                 .build();
     }
 }

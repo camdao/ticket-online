@@ -29,7 +29,8 @@ public class BookingController {
 
     @PostMapping("/hold-seats")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<HoldSeatsResponse> holdSeats(@Valid @RequestBody HoldSeatsRequest request) {
+    public ResponseEntity<HoldSeatsResponse> holdSeats(
+            @Valid @RequestBody HoldSeatsRequest request) {
         Long userId = SecurityUtil.getCurrentUserId();
         HoldSeatsResponse response = bookingService.holdSeats(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -51,7 +52,8 @@ public class BookingController {
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
         Long userId = SecurityUtil.getCurrentUserId();
-        Page<BookingListResponse> response = bookingService.getUserBookings(userId, status, pageable);
+        Page<BookingListResponse> response =
+                bookingService.getUserBookings(userId, status, pageable);
         return ResponseEntity.ok(response);
     }
 
