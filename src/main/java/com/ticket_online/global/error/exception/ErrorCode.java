@@ -60,6 +60,9 @@ public enum ErrorCode {
     // Screen
     SCREEN_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested screen was not found."),
 
+    // Room
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested room was not found."),
+
     // Movie
     MOVIE_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested movie was not found."),
 

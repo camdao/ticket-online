@@ -1,6 +1,7 @@
 package com.ticket_online.domain.cinemas.application;
 
 import com.ticket_online.domain.cinemas.dao.CinemaRepository;
+import com.ticket_online.domain.cinemas.dao.RoomRepository;
 import com.ticket_online.domain.cinemas.dao.ScreenRepository;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.cinemas.domain.Screen;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CinemaService {
 
     private final CinemaRepository cinemaRepository;
+    private final RoomRepository roomRepository;
     private final ScreenRepository screenRepository;
     private final ShowtimeService showtimeService;
 
