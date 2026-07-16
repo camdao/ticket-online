@@ -5,11 +5,11 @@ import com.ticket_online.domain.auth.dto.request.RefreshTokenRequest;
 import com.ticket_online.domain.auth.dto.request.RegisterRequest;
 import com.ticket_online.domain.auth.dto.request.UsernamePasswordRequest;
 import com.ticket_online.domain.auth.dto.response.AccessTokenResponse;
+import com.ticket_online.domain.auth.dto.response.LogoutResponse;
 import com.ticket_online.domain.auth.dto.response.TokenPairResponse;
 import com.ticket_online.global.util.CookieUtil;
 import com.ticket_online.global.util.SecurityUtil;
 import jakarta.validation.Valid;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout() {
+    public ResponseEntity<LogoutResponse> logout() {
         Long userId = SecurityUtil.getCurrentUserId();
         authService.logout(userId);
 
@@ -55,7 +55,7 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .headers(clearCookieHeaders)
-                .body(Map.of("message", "Logout successful"));
+                .body(LogoutResponse.success());
     }
 
     @PostMapping("/refresh")
