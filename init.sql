@@ -112,7 +112,6 @@ CREATE TABLE seats (
 CREATE TABLE showtimes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     movie_id BIGINT NOT NULL,
-    cinema_id BIGINT NOT NULL,
     room_id BIGINT NOT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
@@ -121,13 +120,10 @@ CREATE TABLE showtimes (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
-    FOREIGN KEY (cinema_id) REFERENCES cinemas(id) ON DELETE CASCADE,
     FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
     INDEX idx_movie_id (movie_id),
-    INDEX idx_cinema_id (cinema_id),
     INDEX idx_room_id (room_id),
-    INDEX idx_start_time (start_time),
-    INDEX idx_movie_cinema (movie_id, cinema_id)
+    INDEX idx_start_time (start_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================
@@ -291,21 +287,22 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (1, 'E', 10, 'REGULAR', 0.00);
 
 -- Insert sample showtimes
-INSERT INTO showtimes (movie_id, cinema_id, room_id, start_time, end_time, base_price, status) VALUES
--- Movie 1 (142 minutes) at CGV Vincom Center (cinema_id=1)
-(1, 1, 1, '2026-07-15 14:00:00', '2026-07-15 16:22:00', 100000.00, 'ACTIVE'),
-(1, 1, 1, '2026-07-15 18:00:00', '2026-07-15 20:22:00', 100000.00, 'ACTIVE'),
-(1, 1, 2, '2026-07-15 20:00:00', '2026-07-15 22:22:00', 100000.00, 'ACTIVE'),
--- Movie 2 (175 minutes) at CGV Vincom Center (cinema_id=1, IMAX Room)
-(2, 1, 3, '2026-07-15 15:00:00', '2026-07-15 17:55:00', 150000.00, 'ACTIVE'),
-(2, 1, 3, '2026-07-15 19:30:00', '2026-07-15 22:25:00', 150000.00, 'ACTIVE'),
--- Movie 3 (152 minutes) at Lotte Cinema Diamond Plaza (cinema_id=3, 4DX Room)
-(3, 3, 6, '2026-07-15 16:00:00', '2026-07-15 18:32:00', 120000.00, 'ACTIVE'),
-(3, 3, 6, '2026-07-15 21:00:00', '2026-07-15 23:32:00', 120000.00, 'ACTIVE'),
--- Movie 1 at Lotte Cinema Landmark 81 (cinema_id=4, Premium Room)
-(1, 4, 8, '2026-07-16 14:30:00', '2026-07-16 16:52:00', 180000.00, 'ACTIVE'),
--- Movie 3 at Galaxy Nguyen Du (cinema_id=5)
-(3, 5, 9, '2026-07-16 17:00:00', '2026-07-16 19:32:00', 110000.00, 'ACTIVE');
+INSERT INTO showtimes (movie_id, room_id, start_time, end_time, base_price, status) VALUES
+-- Movie 1 (142 minutes) at CGV Vincom Center (Room 1, room_id=1)
+(1, 1, '2026-07-15 14:00:00', '2026-07-15 16:22:00', 100000.00, 'ACTIVE'),
+(1, 1, '2026-07-15 18:00:00', '2026-07-15 20:22:00', 100000.00, 'ACTIVE'),
+-- Movie 1 at CGV Vincom Center (Room 2, room_id=2)
+(1, 2, '2026-07-15 20:00:00', '2026-07-15 22:22:00', 100000.00, 'ACTIVE'),
+-- Movie 2 (175 minutes) at CGV Vincom Center (IMAX Room, room_id=3)
+(2, 3, '2026-07-15 15:00:00', '2026-07-15 17:55:00', 150000.00, 'ACTIVE'),
+(2, 3, '2026-07-15 19:30:00', '2026-07-15 22:25:00', 150000.00, 'ACTIVE'),
+-- Movie 3 (152 minutes) at Lotte Cinema Diamond Plaza (4DX Room, room_id=6)
+(3, 6, '2026-07-15 16:00:00', '2026-07-15 18:32:00', 120000.00, 'ACTIVE'),
+(3, 6, '2026-07-15 21:00:00', '2026-07-15 23:32:00', 120000.00, 'ACTIVE'),
+-- Movie 1 at Lotte Cinema Landmark 81 (Premium Room, room_id=8)
+(1, 8, '2026-07-16 14:30:00', '2026-07-16 16:52:00', 180000.00, 'ACTIVE'),
+-- Movie 3 at Galaxy Nguyen Du (Room 1, room_id=9)
+(3, 9, '2026-07-16 17:00:00', '2026-07-16 19:32:00', 110000.00, 'ACTIVE');
 
 -- ============================================
 -- End of initialization script

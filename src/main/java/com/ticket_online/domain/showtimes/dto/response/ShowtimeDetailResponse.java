@@ -48,9 +48,7 @@ public record ShowtimeDetailResponse(
                                 .address(showtime.getCinema().getFullAddress())
                                 .phoneNumber(showtime.getCinema().getPhone())
                                 .build())
-                .screen(
-                        ScreenInfo.builder()
-                                .build())
+                .screen(ScreenInfo.builder().build())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())
@@ -77,9 +75,7 @@ public record ShowtimeDetailResponse(
                                 .address(showtime.getCinema().getFullAddress())
                                 .phoneNumber(showtime.getCinema().getPhone())
                                 .build())
-                .screen(
-                        ScreenInfo.builder()
-                                .build())
+                .screen(ScreenInfo.builder().build())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())

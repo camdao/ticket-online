@@ -27,10 +27,6 @@ public class Showtime extends BaseTimeEntity {
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cinema_id", nullable = false)
-    private Cinema cinema;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
@@ -50,14 +46,12 @@ public class Showtime extends BaseTimeEntity {
     @Builder(access = AccessLevel.PRIVATE)
     Showtime(
             Movie movie,
-            Cinema cinema,
             Room room,
             LocalDateTime startTime,
             LocalDateTime endTime,
             BigDecimal basePrice,
             ShowtimeStatus status) {
         this.movie = movie;
-        this.cinema = cinema;
         this.room = room;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -67,20 +61,22 @@ public class Showtime extends BaseTimeEntity {
 
     public static Showtime createShowtime(
             Movie movie,
-            Cinema cinema,
             Room room,
             LocalDateTime startTime,
             LocalDateTime endTime,
             BigDecimal basePrice) {
         return Showtime.builder()
                 .movie(movie)
-                .cinema(cinema)
                 .room(room)
                 .startTime(startTime)
                 .endTime(endTime)
                 .basePrice(basePrice)
                 .status(ShowtimeStatus.ACTIVE)
                 .build();
+    }
+
+    public Cinema getCinema() {
+        return this.room.getCinema();
     }
 
     public void updateShowtime(

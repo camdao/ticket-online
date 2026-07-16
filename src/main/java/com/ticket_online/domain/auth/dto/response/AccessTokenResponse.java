@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Response containing a new access token")
 public record AccessTokenResponse(
-        @Schema(description = "JWT access token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+        @Schema(
+                        description = "JWT access token",
+                        example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
                 String accessToken,
         @Schema(description = "Token type", example = "Bearer") String tokenType,
         @Schema(description = "Access token expiration time in seconds", example = "3600")

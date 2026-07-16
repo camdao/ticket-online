@@ -1,13 +1,13 @@
 #!/bin/sh
 
-echo "Running Spotless on staged files..."
+targetFiles=$(git diff --staged --name-only)
 
-FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".java$")
-
-if [ -z "$FILES" ]; then
-  exit 0
-fi
-
+echo "Apply Spotless.."
 ./gradlew spotlessApply
 
-git add $FILES
+# Add files to stage spotless applied
+for file in $targetFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done

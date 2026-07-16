@@ -2,9 +2,8 @@ package com.ticket_online.global.config.annotion;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
-
 import com.ticket_online.global.common.constants.EnvironmentConstants;
+import java.util.Arrays;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
@@ -25,8 +24,8 @@ public class OnProfileCondition implements Condition {
     private EnvironmentConstants[] getTargetProfiles(AnnotatedTypeMetadata metadata) {
         return (EnvironmentConstants[])
                 requireNonNull(
-                        metadata.getAnnotationAttributes(
-                                ConditionalOnProfile.class.getName()))
+                                metadata.getAnnotationAttributes(
+                                        ConditionalOnProfile.class.getName()))
                         .get("value");
     }
 }
