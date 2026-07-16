@@ -130,6 +130,9 @@ public class MovieService {
             String date,
             String startDate,
             String endDate) {
+        movieRepository
+                .findById(movieId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MOVIE_NOT_FOUND));
         return showtimeService.getShowtimesByMovieId(
                 movieId, cinemaId, city, date, startDate, endDate);
     }

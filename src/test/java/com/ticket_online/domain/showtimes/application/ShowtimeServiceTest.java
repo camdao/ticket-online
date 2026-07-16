@@ -63,7 +63,6 @@ class ShowtimeServiceTest {
                         "Action, Adventure, Sci-Fi",
                         "James Cameron",
                         "Sam Worthington, Zoe Saldana",
-                        "8.5",
                         "T13");
         ReflectionTestUtils.setField(movie, "id", 1L);
 

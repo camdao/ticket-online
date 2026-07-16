@@ -51,7 +51,6 @@ class MovieServiceTest {
                         "Action",
                         "James Cameron",
                         "Sam Worthington",
-                        "8.5",
                         "T13");
         when(movieRepository.findById(movieId)).thenReturn(Optional.of(movie));
 
@@ -95,7 +94,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director 1",
                                 "Cast 1",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Movie 2",
@@ -107,7 +105,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director 2",
                                 "Cast 2",
-                                "7.5",
                                 "T16"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findAll(pageable)).thenReturn(moviePage);
@@ -141,7 +138,6 @@ class MovieServiceTest {
                                 "Sci-Fi",
                                 "James Cameron",
                                 "Cast",
-                                "7.8",
                                 "T13"),
                         Movie.createMovie(
                                 "Avatar 2",
@@ -153,7 +149,6 @@ class MovieServiceTest {
                                 "Sci-Fi",
                                 "James Cameron",
                                 "Cast",
-                                "8.5",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findByTitleContainingIgnoreCase(title, pageable))
@@ -187,7 +182,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findByGenreContainingIgnoreCase(genre, pageable))
@@ -219,7 +213,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Movie 2",
@@ -231,7 +224,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director",
                                 "Cast",
-                                "7.5",
                                 "T16"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findNowShowingMovies(any(LocalDate.class), eq(pageable)))
@@ -264,7 +256,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Future Movie 2",
@@ -276,7 +267,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director",
                                 "Cast",
-                                "7.5",
                                 "T16"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findUpcomingMovies(any(LocalDate.class), eq(pageable)))
@@ -313,7 +303,6 @@ class MovieServiceTest {
                                 "Sci-Fi",
                                 "James Cameron",
                                 "Cast",
-                                "8.5",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.searchMovies(title, genre, rating, director, pageable))
@@ -348,7 +337,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Movie 2",
@@ -360,7 +348,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director",
                                 "Cast",
-                                "7.5",
                                 "T16"));
         when(movieRepository.findByIdIn(ids)).thenReturn(movies);
 
@@ -390,7 +377,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findByStatus(eq("NOW_SHOWING"), any(LocalDate.class), eq(pageable)))
@@ -423,7 +409,6 @@ class MovieServiceTest {
                                 "Sci-Fi",
                                 "James Cameron",
                                 "Cast",
-                                "8.5",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findByTitleContainingIgnoreCase(keyword, pageable))
