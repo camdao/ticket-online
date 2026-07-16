@@ -1,4 +1,4 @@
-package com.ticket_online.global.common;
+package com.ticket_online.global.common.constants;
 
 import java.util.Arrays;
 import lombok.AllArgsConstructor;

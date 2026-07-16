@@ -1,6 +1,6 @@
 package com.ticket_online.global.config.security;
 
-import static com.ticket_online.global.common.SwaggerUrlConstants.getSwaggerUrls;
+import static com.ticket_online.global.common.constants.SwaggerUrlConstants.getSwaggerUrls;
 import static com.ticket_online.global.common.constants.EnvironmentConstants.*;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.security.config.Customizer.withDefaults;

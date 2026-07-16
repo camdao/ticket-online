@@ -16,7 +16,7 @@ public class UserUtil {
 
     public User getCurrentUser() {
         return userRepository
-                .findById(securityUtil.getCurrentMemberId())
+                .findById(securityUtil.getCurrentUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
