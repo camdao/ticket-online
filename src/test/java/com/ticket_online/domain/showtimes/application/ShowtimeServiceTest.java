@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
-import com.ticket_online.domain.cinemas.domain.Screen;
+import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
@@ -46,7 +46,7 @@ class ShowtimeServiceTest {
 
     private Movie movie;
     private Cinema cinema;
-    private Screen screen;
+    private Room room;
     private Showtime showtime;
 
     @BeforeEach
@@ -81,16 +81,17 @@ class ShowtimeServiceTest {
                         "CGV Vincom Center là rạp chiếu phim hiện đại...");
         ReflectionTestUtils.setField(cinema, "id", 5L);
 
-        // Create test screen
-        screen = Screen.createScreen(5L, "Screen 3", 120, "IMAX");
-        ReflectionTestUtils.setField(screen, "id", 12L);
+        // Create test room
+        room = Room.createRoom(5L, "Room 3", 120, "IMAX");
+        ReflectionTestUtils.setField(room, "id", 12L);
+        // Set the cinema relationship for the room
+        ReflectionTestUtils.setField(room, "cinema", cinema);
 
         // Create test showtime with correct signature
         showtime =
                 Showtime.createShowtime(
                         movie,
-                        cinema,
-                        screen,
+                        room,
                         LocalDateTime.of(2024, 1, 15, 14, 30),
                         LocalDateTime.of(2024, 1, 15, 17, 42),
                         BigDecimal.valueOf(85000));
@@ -121,7 +122,7 @@ class ShowtimeServiceTest {
             assertThat(result.cinema().name()).isEqualTo("CGV Vincom Center");
             assertThat(result.screen()).isNotNull();
             assertThat(result.screen().id()).isEqualTo(12L);
-            assertThat(result.screen().name()).isEqualTo("Screen 3");
+            assertThat(result.screen().name()).isEqualTo("Room 3");
             assertThat(result.startTime()).isEqualTo(LocalDateTime.of(2024, 1, 15, 14, 30));
             assertThat(result.basePrice()).isEqualByComparingTo(BigDecimal.valueOf(85000));
             assertThat(result.status()).isEqualTo(ShowtimeStatus.ACTIVE);
