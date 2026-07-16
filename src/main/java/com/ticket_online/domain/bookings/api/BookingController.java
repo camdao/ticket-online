@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.*;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final SecurityUtil securityUtil;
 
     @PostMapping("/hold-seats")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<HoldSeatsResponse> holdSeats(@Valid @RequestBody HoldSeatsRequest request) {
-        Long userId = SecurityUtil.getCurrentUserId();
+    public ResponseEntity<HoldSeatsResponse> holdSeats(
+            @Valid @RequestBody HoldSeatsRequest request) {
+        Long userId = securityUtil.getCurrentUserId();
         HoldSeatsResponse response = bookingService.holdSeats(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -39,7 +41,7 @@ public class BookingController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<BookingResponse> createBooking(
             @Valid @RequestBody CreateBookingRequest request) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = securityUtil.getCurrentUserId();
         BookingResponse response = bookingService.createBooking(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -50,15 +52,16 @@ public class BookingController {
             @RequestParam(required = false) BookingStatus status,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
-        Long userId = SecurityUtil.getCurrentUserId();
-        Page<BookingListResponse> response = bookingService.getUserBookings(userId, status, pageable);
+        Long userId = securityUtil.getCurrentUserId();
+        Page<BookingListResponse> response =
+                bookingService.getUserBookings(userId, status, pageable);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<BookingDetailResponse> getBookingDetail(@PathVariable Long id) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = securityUtil.getCurrentUserId();
         BookingDetailResponse response = bookingService.getBookingDetail(id, userId);
         return ResponseEntity.ok(response);
     }
@@ -66,7 +69,7 @@ public class BookingController {
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = securityUtil.getCurrentUserId();
         bookingService.cancelBooking(id, userId);
         return ResponseEntity.ok().build();
     }

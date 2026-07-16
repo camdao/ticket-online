@@ -4,8 +4,6 @@ import com.ticket_online.global.config.vnpay.VnpayProperties;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.crypto.Mac;
@@ -32,7 +30,8 @@ public class VnpayService {
         vnpParams.put("vnp_Version", "2.1.0");
         vnpParams.put("vnp_Command", "pay");
         vnpParams.put("vnp_TmnCode", vnpayProperties.tmnCode());
-        vnpParams.put("vnp_Amount", String.valueOf(amount * 100)); // VNPay requires amount in VND * 100
+        vnpParams.put(
+                "vnp_Amount", String.valueOf(amount * 100)); // VNPay requires amount in VND * 100
         vnpParams.put("vnp_CurrCode", "VND");
         vnpParams.put("vnp_TxnRef", transactionId);
         vnpParams.put("vnp_OrderInfo", orderInfo);
@@ -66,7 +65,8 @@ public class VnpayService {
                 hashData.append(fieldName);
                 hashData.append('=');
                 try {
-                    hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    hashData.append(
+                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
                 } catch (UnsupportedEncodingException e) {
                     log.error("Error encoding field value", e);
                 }
@@ -109,7 +109,8 @@ public class VnpayService {
                 hashData.append(fieldName);
                 hashData.append('=');
                 try {
-                    hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    hashData.append(
+                            URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
                 } catch (UnsupportedEncodingException e) {
                     log.error("Error encoding field value", e);
                 }

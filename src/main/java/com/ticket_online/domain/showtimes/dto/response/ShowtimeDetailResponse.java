@@ -50,17 +50,16 @@ public record ShowtimeDetailResponse(
                                 .build())
                 .screen(
                         ScreenInfo.builder()
-                                .id(showtime.getScreen().getId())
-                                .name(showtime.getScreen().getName())
-                                .type(showtime.getScreen().getType())
-                                .totalSeats(showtime.getScreen().getTotalSeats())
+                                .id(showtime.getRoom().getId())
+                                .name(showtime.getRoom().getName())
+                                .type(showtime.getRoom().getType())
+                                .totalSeats(showtime.getRoom().getTotalSeats())
                                 .build())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())
                 .status(showtime.getStatus())
-                .availableSeats(0) // TODO: Calculate from bookings
-                .totalSeats(showtime.getScreen().getTotalSeats())
+                .availableSeats(0)
                 .build();
     }
 
@@ -84,17 +83,16 @@ public record ShowtimeDetailResponse(
                                 .build())
                 .screen(
                         ScreenInfo.builder()
-                                .id(showtime.getScreen().getId())
-                                .name(showtime.getScreen().getName())
-                                .type(showtime.getScreen().getType())
-                                .totalSeats(showtime.getScreen().getTotalSeats())
+                                .id(showtime.getRoom().getId())
+                                .name(showtime.getRoom().getName())
+                                .type(showtime.getRoom().getType())
+                                .totalSeats(showtime.getRoom().getTotalSeats())
                                 .build())
                 .startTime(showtime.getStartTime())
                 .endTime(showtime.getEndTime())
                 .basePrice(showtime.getBasePrice())
                 .status(showtime.getStatus())
                 .availableSeats(availableSeats)
-                .totalSeats(showtime.getScreen().getTotalSeats())
                 .build();
     }
 }

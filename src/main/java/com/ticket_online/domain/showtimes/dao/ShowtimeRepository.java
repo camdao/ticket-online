@@ -16,16 +16,16 @@ public interface ShowtimeRepository
     @Query(
             "SELECT s FROM Showtime s "
                     + "JOIN FETCH s.movie m "
-                    + "JOIN FETCH s.cinema c "
-                    + "JOIN FETCH s.screen sc "
+                    + "JOIN FETCH s.room r "
+                    + "JOIN FETCH r.cinema c "
                     + "WHERE s.id = :id")
     java.util.Optional<Showtime> findByIdWithDetails(@Param("id") Long id);
 
     @Query(
             "SELECT s FROM Showtime s "
                     + "JOIN FETCH s.movie m "
-                    + "JOIN FETCH s.cinema c "
-                    + "JOIN FETCH s.screen sc "
+                    + "JOIN FETCH s.room r "
+                    + "JOIN FETCH r.cinema c "
                     + "WHERE s.movie.id = :movieId "
                     + "AND s.status = :status "
                     + "AND s.startTime >= :startTime "
@@ -39,9 +39,9 @@ public interface ShowtimeRepository
     @Query(
             "SELECT s FROM Showtime s "
                     + "JOIN FETCH s.movie m "
-                    + "JOIN FETCH s.cinema c "
-                    + "JOIN FETCH s.screen sc "
-                    + "WHERE s.cinema.id = :cinemaId "
+                    + "JOIN FETCH s.room r "
+                    + "JOIN FETCH r.cinema c "
+                    + "WHERE r.cinema.id = :cinemaId "
                     + "AND s.status = :status "
                     + "AND s.startTime >= :startTime "
                     + "ORDER BY s.startTime ASC")

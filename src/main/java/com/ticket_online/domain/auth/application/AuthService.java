@@ -11,6 +11,7 @@ import com.ticket_online.domain.user.domain.User;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.jwt.JwtProperties;
+import com.ticket_online.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProperties jwtProperties;
+    private final SecurityUtil securityUtil;
 
     public TokenPairResponse register(RegisterRequest request) {
         // Check if username already exists
@@ -73,8 +75,9 @@ public class AuthService {
         return getLoginResponse(user);
     }
 
-    public void logout(Long userId) {
-        // Delete refresh token from Redis
+    public void logout() {
+        Long userId = securityUtil.getCurrentUserId();
+
         refreshTokenRepository.deleteById(userId);
         log.info("User logged out successfully: userId={}", userId);
     }

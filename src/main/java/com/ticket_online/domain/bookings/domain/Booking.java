@@ -14,15 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(
-        name = "bookings",
-        indexes = {
-            @Index(name = "idx_booking_user", columnList = "user_id"),
-            @Index(name = "idx_booking_showtime", columnList = "showtime_id"),
-            @Index(name = "idx_booking_code", columnList = "booking_code"),
-            @Index(name = "idx_booking_status", columnList = "status"),
-            @Index(name = "idx_booking_created", columnList = "created_at")
-        })
+@Table(name = "bookings")
 public class Booking extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,12 +45,6 @@ public class Booking extends BaseTimeEntity {
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
-    @Column(name = "customer_email", length = 100)
-    private String customerEmail;
-
-    @Column(name = "customer_phone", length = 20)
-    private String customerPhone;
-
     @Builder(access = AccessLevel.PRIVATE)
     Booking(
             String bookingCode,
@@ -75,8 +61,6 @@ public class Booking extends BaseTimeEntity {
         this.totalAmount = totalAmount;
         this.status = status;
         this.expiresAt = expiresAt;
-        this.customerEmail = customerEmail;
-        this.customerPhone = customerPhone;
     }
 
     public static Booking createBooking(

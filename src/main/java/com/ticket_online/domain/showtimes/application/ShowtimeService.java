@@ -52,12 +52,18 @@ public class ShowtimeService {
 
         // Filter by cinema
         if (cinemaId != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("cinema").get("id"), cinemaId));
+            spec =
+                    spec.and(
+                            (root, query, cb) ->
+                                    cb.equal(root.get("room").get("cinema").get("id"), cinemaId));
         }
 
         // Filter by city
         if (city != null && !city.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("cinema").get("city"), city));
+            spec =
+                    spec.and(
+                            (root, query, cb) ->
+                                    cb.equal(root.get("room").get("cinema").get("city"), city));
         }
 
         // Filter by date
@@ -100,8 +106,7 @@ public class ShowtimeService {
                 spec.and(
                         (root, query, cb) -> {
                             root.fetch("movie");
-                            root.fetch("cinema");
-                            root.fetch("screen");
+                            root.fetch("room").fetch("cinema");
                             return cb.conjunction();
                         });
 
@@ -135,12 +140,18 @@ public class ShowtimeService {
 
         // Filter by cinema
         if (cinemaId != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("cinema").get("id"), cinemaId));
+            spec =
+                    spec.and(
+                            (root, query, cb) ->
+                                    cb.equal(root.get("room").get("cinema").get("id"), cinemaId));
         }
 
         // Filter by city
         if (city != null && !city.isBlank()) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("cinema").get("city"), city));
+            spec =
+                    spec.and(
+                            (root, query, cb) ->
+                                    cb.equal(root.get("room").get("cinema").get("city"), city));
         }
 
         // Filter by date
@@ -183,8 +194,7 @@ public class ShowtimeService {
                 spec.and(
                         (root, query, cb) -> {
                             root.fetch("movie");
-                            root.fetch("cinema");
-                            root.fetch("screen");
+                            root.fetch("room").fetch("cinema");
                             return cb.conjunction();
                         });
 
@@ -198,7 +208,10 @@ public class ShowtimeService {
         Specification<Showtime> spec = Specification.where(null);
 
         // Filter by cinema (required)
-        spec = spec.and((root, query, cb) -> cb.equal(root.get("cinema").get("id"), cinemaId));
+        spec =
+                spec.and(
+                        (root, query, cb) ->
+                                cb.equal(root.get("room").get("cinema").get("id"), cinemaId));
 
         // Filter by movie
         if (movieId != null) {
@@ -245,8 +258,7 @@ public class ShowtimeService {
                 spec.and(
                         (root, query, cb) -> {
                             root.fetch("movie");
-                            root.fetch("cinema");
-                            root.fetch("screen");
+                            root.fetch("room").fetch("cinema");
                             return cb.conjunction();
                         });
 

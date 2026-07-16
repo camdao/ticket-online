@@ -53,13 +53,14 @@ Authorization: Bearer <access_token>
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "tokenType": "Bearer",
     "expiresIn": 3600
   },
-  "message": "Registration successful"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -80,13 +81,14 @@ Authorization: Bearer <access_token>
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "tokenType": "Bearer",
     "expiresIn": 3600
   },
-  "message": "Login successful"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -102,7 +104,7 @@ Authorization: Bearer <access_token>
 ```json
 {
   "success": true,
-  "message": "Logout successful"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -122,12 +124,13 @@ Làm mới access token.
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "tokenType": "Bearer",
     "expiresIn": 3600
   },
-  "message": "Token refreshed"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -150,6 +153,7 @@ Lấy danh sách phim với phân trang và lọc.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "content": [
       {
@@ -169,7 +173,7 @@ Lấy danh sách phim với phân trang và lọc.
     "totalElements": 45,
     "totalPages": 3
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -182,6 +186,7 @@ Lấy chi tiết phim.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "id": 1,
     "title": "Avatar: The Way of Water",
@@ -197,7 +202,7 @@ Lấy chi tiết phim.
     "trailerUrl": "https://youtube.com/watch?v=...",
     "status": "NOW_SHOWING"
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -217,6 +222,7 @@ Lấy danh sách suất chiếu của phim.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": [
     {
       "id": 101,
@@ -235,7 +241,7 @@ Lấy danh sách suất chiếu của phim.
       "totalSeats": 120
     }
   ],
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -288,6 +294,7 @@ Lấy danh sách rạp chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "content": [
       {
@@ -307,7 +314,7 @@ Lấy danh sách rạp chiếu.
     "totalElements": 52,
     "totalPages": 3
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -320,6 +327,7 @@ Lấy chi tiết rạp chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "id": 5,
     "name": "CGV Vincom Center",
@@ -341,7 +349,7 @@ Lấy chi tiết rạp chiếu.
       }
     ]
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -360,6 +368,7 @@ Lấy danh sách suất chiếu tại rạp.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": [
     {
       "id": 101,
@@ -379,7 +388,7 @@ Lấy danh sách suất chiếu tại rạp.
       "totalSeats": 120
     }
   ],
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -392,8 +401,9 @@ Lấy danh sách thương hiệu rạp.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": ["CGV", "Lotte Cinema", "Galaxy Cinema", "BHD Star"],
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -406,13 +416,14 @@ Lấy danh sách thành phố có rạp.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": [
     "TP. Hồ Chí Minh",
     "Hà Nội",
     "Đà Nẵng",
     "Cần Thơ"
   ],
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -427,6 +438,7 @@ Lấy thông tin chi tiết phòng chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "id": 12,
     "cinemaId": 5,
@@ -436,7 +448,7 @@ Lấy thông tin chi tiết phòng chiếu.
     "createdAt": "2024-01-01T10:00:00",
     "updatedAt": "2024-01-10T15:30:00"
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -453,6 +465,7 @@ Lấy danh sách phòng chiếu theo bộ lọc.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": [
     {
       "id": 12,
@@ -473,7 +486,7 @@ Lấy danh sách phòng chiếu theo bộ lọc.
       "updatedAt": "2024-01-10T15:30:00"
     }
   ],
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -507,6 +520,7 @@ Tạo phòng chiếu mới (Admin only).
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "id": 14,
     "cinemaId": 5,
@@ -516,7 +530,7 @@ Tạo phòng chiếu mới (Admin only).
     "createdAt": "2024-01-15T14:30:00",
     "updatedAt": "2024-01-15T14:30:00"
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -524,7 +538,7 @@ Tạo phòng chiếu mới (Admin only).
 ```json
 {
   "success": false,
-  "message": "The requested cinema was not found."
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -550,6 +564,7 @@ Cập nhật thông tin phòng chiếu (Admin only).
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "id": 14,
     "cinemaId": 5,
@@ -559,7 +574,7 @@ Cập nhật thông tin phòng chiếu (Admin only).
     "createdAt": "2024-01-15T14:30:00",
     "updatedAt": "2024-01-15T16:45:00"
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -567,7 +582,7 @@ Cập nhật thông tin phòng chiếu (Admin only).
 ```json
 {
   "success": false,
-  "message": "The requested room was not found."
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -588,7 +603,7 @@ No Content
 ```json
 {
   "success": false,
-  "message": "The requested room was not found."
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -614,6 +629,7 @@ Tìm kiếm suất chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "content": [
       {
@@ -640,7 +656,7 @@ Tìm kiếm suất chiếu.
     "totalElements": 156,
     "totalPages": 8
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -653,6 +669,7 @@ Lấy chi tiết suất chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "id": 101,
     "movie": {
@@ -681,7 +698,7 @@ Lấy chi tiết suất chiếu.
     "availableSeats": 87,
     "totalSeats": 120
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -694,6 +711,7 @@ Lấy sơ đồ ghế của suất chiếu.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "showtimeId": 101,
     "screenLayout": {
@@ -743,7 +761,7 @@ Lấy sơ đồ ghế của suất chiếu.
       }
     ]
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -779,6 +797,7 @@ Giữ ghế tạm thời (5 phút).
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "holdToken": "hold_abc123xyz",
     "showtimeId": 101,
@@ -786,7 +805,7 @@ Giữ ghế tạm thời (5 phút).
     "expiresAt": "2024-01-15T14:35:00",
     "remainingSeconds": 300
   },
-  "message": "Seats held successfully"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -794,7 +813,12 @@ Giữ ghế tạm thời (5 phút).
 ```json
 {
   "success": false,
-  "message": "Some seats are already booked or held",
+  "status": 409,
+  "data": {
+    "errorClassName": "SeatConflictException",
+    "message": "Some seats are already booked or held"
+  },
+  "timestamp": "2024-01-15T14:30:00",
   "data": {
     "unavailableSeats": [1202]
   }
@@ -824,6 +848,7 @@ Tạo đơn đặt vé từ ghế đã giữ.
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "id": 5001,
     "bookingCode": "BK20240115001",
@@ -861,7 +886,7 @@ Tạo đơn đặt vé từ ghế đã giữ.
     "createdAt": "2024-01-15T14:30:00",
     "expiresAt": "2024-01-15T14:45:00"
   },
-  "message": "Booking created successfully"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -869,7 +894,7 @@ Tạo đơn đặt vé từ ghế đã giữ.
 ```json
 {
   "success": false,
-  "message": "Hold token expired or invalid"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -889,6 +914,7 @@ Lấy lịch sử đặt vé của người dùng.
 ```json
 {
   "success": true,
+  "status": 200,
   "data": {
     "content": [
       {
@@ -911,7 +937,7 @@ Lấy lịch sử đặt vé của người dùng.
     "totalElements": 15,
     "totalPages": 1
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -927,6 +953,7 @@ Lấy chi tiết đơn đặt vé.
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "id": 5001,
     "bookingCode": "BK20240115001",
@@ -979,7 +1006,7 @@ Lấy chi tiết đơn đặt vé.
     "confirmedAt": "2024-01-15T14:32:00",
     "expiresAt": null
   },
-  "message": "Success"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -995,7 +1022,7 @@ Hủy đơn đặt vé (chỉ được phép hủy đơn chưa thanh toán hoặ
 ```json
 {
   "success": true,
-  "message": "Booking cancelled successfully"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -1003,7 +1030,7 @@ Hủy đơn đặt vé (chỉ được phép hủy đơn chưa thanh toán hoặ
 ```json
 {
   "success": false,
-  "message": "Cannot cancel confirmed booking within 2 hours of showtime"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -1031,6 +1058,7 @@ Khởi tạo thanh toán cho đơn đặt vé.
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "paymentId": 7001,
     "bookingId": 5001,
@@ -1041,7 +1069,7 @@ Khởi tạo thanh toán cho đơn đặt vé.
     "transactionId": "PAY20240115001",
     "expiresAt": "2024-01-15T14:45:00"
   },
-  "message": "Payment initiated"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -1067,6 +1095,7 @@ Xác minh trạng thái thanh toán.
 ```json
 {
   "success": true,
+  "status": 201,
   "data": {
     "paymentId": 7001,
     "bookingId": 5001,
@@ -1075,7 +1104,7 @@ Xác minh trạng thái thanh toán.
     "transactionId": "PAY20240115001",
     "paidAt": "2024-01-15T14:32:00"
   },
-  "message": "Payment verified"
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
 
@@ -1088,10 +1117,19 @@ Xác minh trạng thái thanh toán.
 ```json
 {
   "success": true,
-  "data": {},
-  "message": "Success"
+  "status": 200,
+  "data": {
+    // Dữ liệu trả về
+  },
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
+
+**Mô tả các trường:**
+- `success`: Boolean - Trạng thái thành công/thất bại
+- `status`: Integer - HTTP status code
+- `data`: Object - Dữ liệu trả về
+- `timestamp`: String (ISO 8601) - Thời gian phản hồi
 
 ---
 
@@ -1100,15 +1138,22 @@ Xác minh trạng thái thanh toán.
 ```json
 {
   "success": false,
-  "message": "Error message here",
-  "errors": [
-    {
-      "field": "seatIds",
-      "message": "Seat A-2 is already booked"
-    }
-  ]
+  "status": 400,
+  "data": {
+    "errorClassName": "ValidationException",
+  "timestamp": "2024-01-15T14:30:00"
+  },
+  "timestamp": "2024-01-15T14:30:00"
 }
 ```
+
+**Mô tả các trường:**
+- `success`: false
+- `status`: HTTP status code (4xx, 5xx)
+- `data`: ErrorResponse object
+  - `errorClassName`: Tên class exception
+  - `message`: Thông báo lỗi
+- `timestamp`: Thời gian phản hồi
 
 ---
 

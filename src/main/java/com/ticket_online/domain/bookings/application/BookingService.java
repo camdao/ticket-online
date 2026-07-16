@@ -19,7 +19,6 @@ import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +55,7 @@ public class BookingService {
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOWTIME_NOT_FOUND));
 
         // Validate seats exist
-        List<Seat> seats = seatRepository.findAllByIdIn(request.getSeatIds());
+        List<Seat> seats = seatRepository.findByIdIn(request.getSeatIds());
         if (seats.size() != request.getSeatIds().size()) {
             throw new CustomException(ErrorCode.SEATS_NOT_FOUND);
         }
@@ -75,7 +74,8 @@ public class BookingService {
                         + ":"
                         + request.getShowtimeId()
                         + ":"
-                        + String.join(",", request.getSeatIds().stream().map(String::valueOf).toList());
+                        + String.join(
+                                ",", request.getSeatIds().stream().map(String::valueOf).toList());
         redisTemplate
                 .opsForValue()
                 .set(holdTokenKey, holdInfo, java.time.Duration.ofSeconds(SEAT_HOLD_TTL_SECONDS));
@@ -130,7 +130,7 @@ public class BookingService {
                         .findById(request.getShowtimeId())
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOWTIME_NOT_FOUND));
 
-        List<Seat> seats = seatRepository.findAllByIdIn(request.getSeatIds());
+        List<Seat> seats = seatRepository.findByIdIn(request.getSeatIds());
         if (seats.size() != request.getSeatIds().size()) {
             throw new CustomException(ErrorCode.SEATS_NOT_FOUND);
         }
@@ -138,7 +138,10 @@ public class BookingService {
         // Calculate total amount
         BigDecimal totalAmount =
                 seats.stream()
-                        .map(seat -> showtime.getBasePrice().add(seat.getSurcharge()))
+                        .map(
+                                seat ->
+                                        showtime.getBasePrice()
+                                                .add(BigDecimal.valueOf(seat.getBasePrice())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Generate unique booking code
@@ -162,7 +165,8 @@ public class BookingService {
                         .map(
                                 seat -> {
                                     BigDecimal seatPrice =
-                                            showtime.getBasePrice().add(seat.getSurcharge());
+                                            showtime.getBasePrice()
+                                                    .add(BigDecimal.valueOf(seat.getBasePrice()));
                                     return BookingDetail.createBookingDetail(
                                             finalBooking, seat, seatPrice);
                                 })
@@ -270,13 +274,15 @@ public class BookingService {
                                 seat ->
                                         SeatDto.builder()
                                                 .id(seat.getId())
-                                                .row(seat.getRowCode())
-                                                .number(seat.getSeatNumber())
-                                                .type(seat.getSeatType())
+                                                .row(seat.getRow())
+                                                .number(seat.getNumber())
+                                                .type(seat.getType())
                                                 .price(
-                                                        showtime
-                                                                .getBasePrice()
-                                                                .add(seat.getSurcharge()))
+                                                        showtime.getBasePrice()
+                                                                .add(
+                                                                        BigDecimal.valueOf(
+                                                                                seat
+                                                                                        .getBasePrice())))
                                                 .build())
                         .toList();
 
@@ -327,9 +333,9 @@ public class BookingService {
                                 bd ->
                                         SeatDto.builder()
                                                 .id(bd.getSeat().getId())
-                                                .row(bd.getSeat().getRowCode())
-                                                .number(bd.getSeat().getSeatNumber())
-                                                .type(bd.getSeat().getSeatType())
+                                                .row(bd.getSeat().getRow())
+                                                .number(bd.getSeat().getNumber())
+                                                .type(bd.getSeat().getType())
                                                 .price(bd.getPrice())
                                                 .build())
                         .toList();

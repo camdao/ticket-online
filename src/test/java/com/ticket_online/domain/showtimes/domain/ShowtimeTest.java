@@ -2,7 +2,6 @@ package com.ticket_online.domain.showtimes.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.movies.domain.Movie;
 import java.math.BigDecimal;
@@ -32,33 +31,19 @@ class ShowtimeTest {
                         "Sam Worthington",
                         "https://banner.jpg");
 
-        Cinema cinema =
-                Cinema.createCinema(
-                        "CGV Vincom",
-                        "CGV",
-                        "logo.png",
-                        "Address",
-                        "District",
-                        "City",
-                        "Phone",
-                        "website",
-                        "desc");
-
-        Screen screen = Screen.createScreen(1L, "Screen 1", 100, "IMAX");
+        Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 
         LocalDateTime startTime = LocalDateTime.of(2024, 1, 15, 14, 30);
         LocalDateTime endTime = LocalDateTime.of(2024, 1, 15, 17, 30);
         BigDecimal basePrice = BigDecimal.valueOf(85000);
 
         // When
-        Showtime showtime =
-                Showtime.createShowtime(movie, cinema, room, startTime, endTime, basePrice);
+        Showtime showtime = Showtime.createShowtime(movie, room, startTime, endTime, basePrice);
 
         // Then
         assertThat(showtime).isNotNull();
         assertThat(showtime.getMovie()).isEqualTo(movie);
-        assertThat(showtime.getCinema()).isEqualTo(cinema);
-        assertThat(showtime.getScreen()).isEqualTo(screen);
+        assertThat(showtime.getRoom()).isEqualTo(room);
         assertThat(showtime.getStartTime()).isEqualTo(startTime);
         assertThat(showtime.getEndTime()).isEqualTo(endTime);
         assertThat(showtime.getBasePrice()).isEqualByComparingTo(basePrice);
@@ -83,26 +68,13 @@ class ShowtimeTest {
                         "Sam Worthington",
                         "https://banner.jpg");
 
-        Cinema cinema =
-                Cinema.createCinema(
-                        "CGV Vincom",
-                        "CGV",
-                        "logo.png",
-                        "Address",
-                        "District",
-                        "City",
-                        "Phone",
-                        "website",
-                        "desc");
-
-        Screen screen = Screen.createScreen(1L, "Screen 1", 100, "IMAX");
+        Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 
         // When
         Showtime showtime =
                 Showtime.createShowtime(
                         movie,
-                        cinema,
-                        screen,
+                        room,
                         LocalDateTime.now(),
                         LocalDateTime.now().plusHours(2),
                         BigDecimal.valueOf(85000));
@@ -129,25 +101,12 @@ class ShowtimeTest {
                         "Sam Worthington",
                         "https://banner.jpg");
 
-        Cinema cinema =
-                Cinema.createCinema(
-                        "CGV Vincom",
-                        "CGV",
-                        "logo.png",
-                        "Address",
-                        "District",
-                        "City",
-                        "Phone",
-                        "website",
-                        "desc");
-
-        Screen screen = Screen.createScreen(1L, "Screen 1", 100, "IMAX");
+        Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 
         Showtime showtime =
                 Showtime.createShowtime(
                         movie,
-                        cinema,
-                        screen,
+                        room,
                         LocalDateTime.now(),
                         LocalDateTime.now().plusHours(2),
                         BigDecimal.valueOf(85000));

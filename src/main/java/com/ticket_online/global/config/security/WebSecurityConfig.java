@@ -1,22 +1,30 @@
 package com.ticket_online.global.config.security;
 
+import static com.ticket_online.global.common.constants.EnvironmentConstants.*;
+import static com.ticket_online.global.common.constants.SwaggerUrlConstants.getSwaggerUrls;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import com.ticket_online.domain.auth.application.JwtTokenService;
 import com.ticket_online.global.common.constants.UrlConstants;
+import com.ticket_online.global.config.annotion.ConditionalOnProfile;
 import com.ticket_online.global.security.*;
 import com.ticket_online.global.util.CookieUtil;
 import com.ticket_online.global.util.SpringEnvironmentUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,6 +40,12 @@ public class WebSecurityConfig {
     private final JwtTokenService jwtTokenService;
     private final CookieUtil cookieUtil;
 
+    @Value("${swagger.user}")
+    private String swaggerUser;
+
+    @Value("${swagger.password}")
+    private String swaggerPassword;
+
     private void defaultFilterChain(HttpSecurity http) throws Exception {
         http.httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -39,6 +53,32 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
+        UserDetails user =
+                User.withUsername(swaggerUser)
+                        .password(passwordEncoder().encode(swaggerPassword))
+                        .roles("SWAGGER")
+                        .build();
+        return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    @Order(1)
+    @ConditionalOnProfile({PROD, DEV, LOCAL})
+    public SecurityFilterChain swaggerFilterChain(HttpSecurity http) throws Exception {
+        defaultFilterChain(http);
+
+        http.securityMatcher(getSwaggerUrls()).httpBasic(withDefaults());
+
+        http.authorizeHttpRequests(
+                (springEnvironmentUtil.isDevProfile() || springEnvironmentUtil.isProdProfile())
+                        ? authorize -> authorize.anyRequest().authenticated()
+                        : authorize -> authorize.anyRequest().permitAll());
+
+        return http.build();
     }
 
     @Bean

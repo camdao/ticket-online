@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum UrlConstants {
     PROD_SERVER_URL(""),
     DEV_SERVER_URL(""),
-    LOCAL_SERVER_URL("http://localhost:8080"),
+    LOCAL_SERVER_URL("http://localhost:8081"),
 
     PROD_DOMAIN_URL(""),
     DEV_DOMAIN_URL(""),
