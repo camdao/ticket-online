@@ -23,12 +23,13 @@ import org.springframework.web.servlet.view.RedirectView;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final SecurityUtil securityUtil;
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PaymentResponse> initiatePayment(
             @Valid @RequestBody PaymentRequest request, HttpServletRequest httpRequest) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = securityUtil.getCurrentUserId();
         PaymentResponse response = paymentService.initiatePayment(request, userId, httpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -51,7 +52,7 @@ public class PaymentController {
     @PostMapping("/{id}/verify")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PaymentVerificationResponse> verifyPayment(@PathVariable Long id) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = securityUtil.getCurrentUserId();
         PaymentVerificationResponse response = paymentService.verifyPayment(id, userId);
         return ResponseEntity.ok(response);
     }
