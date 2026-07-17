@@ -23,7 +23,6 @@ class MovieTest {
                         "Action",
                         "James Cameron",
                         "Sam Worthington",
-                        "8.5",
                         "T13");
 
         // When
@@ -48,7 +47,6 @@ class MovieTest {
                         "Drama, Romance",
                         "James Cameron",
                         "Leonardo DiCaprio",
-                        "7.9",
                         "T13");
 
         // When
@@ -73,7 +71,6 @@ class MovieTest {
                         "Action, Sci-Fi",
                         "Russo Brothers",
                         "Robert Downey Jr.",
-                        "8.0",
                         "T13");
 
         // When
@@ -98,7 +95,6 @@ class MovieTest {
                         "Drama",
                         "Unknown",
                         "Unknown Cast",
-                        "7.0",
                         "P");
 
         // When
@@ -136,21 +132,19 @@ class MovieTest {
                         genre,
                         director,
                         cast,
-                        rating,
                         ageRating);
 
         // Then
         assertThat(movie.getTitle()).isEqualTo(title);
         assertThat(movie.getDuration()).isEqualTo(duration);
         assertThat(movie.getDescription()).isEqualTo(description);
-        assertThat(movie.getPosterUrl()).isEqualTo(posterUrl);
+        assertThat(movie.getImageUrl()).isEqualTo(posterUrl);
         assertThat(movie.getTrailerUrl()).isEqualTo(trailerUrl);
         assertThat(movie.getReleaseDate()).isEqualTo(releaseDate);
         assertThat(movie.getGenre()).isEqualTo(genre);
         assertThat(movie.getDirector()).isEqualTo(director);
         assertThat(movie.getCast()).isEqualTo(cast);
-        assertThat(movie.getRating()).isEqualTo(rating);
-        assertThat(movie.getAgeRating()).isEqualTo(ageRating);
+        assertThat(movie.getRating()).isEqualTo(ageRating);
     }
 
     @Test
@@ -168,7 +162,6 @@ class MovieTest {
                         "Drama",
                         "Original Director",
                         "Original Cast",
-                        "7.0",
                         "P");
 
         String newTitle = "Updated Title";
@@ -194,21 +187,19 @@ class MovieTest {
                 newGenre,
                 newDirector,
                 newCast,
-                newRating,
-                newAgeRating);
+                newRating);
 
         // Then
         assertThat(movie.getTitle()).isEqualTo(newTitle);
         assertThat(movie.getDuration()).isEqualTo(newDuration);
         assertThat(movie.getDescription()).isEqualTo(newDescription);
-        assertThat(movie.getPosterUrl()).isEqualTo(newPosterUrl);
+        assertThat(movie.getImageUrl()).isEqualTo(newPosterUrl);
         assertThat(movie.getTrailerUrl()).isEqualTo(newTrailerUrl);
         assertThat(movie.getReleaseDate()).isEqualTo(newReleaseDate);
         assertThat(movie.getGenre()).isEqualTo(newGenre);
         assertThat(movie.getDirector()).isEqualTo(newDirector);
         assertThat(movie.getCast()).isEqualTo(newCast);
         assertThat(movie.getRating()).isEqualTo(newRating);
-        assertThat(movie.getAgeRating()).isEqualTo(newAgeRating);
     }
 
     @Test
@@ -226,7 +217,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         Movie moviePast =
@@ -240,7 +230,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         // When & Then
@@ -263,7 +252,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         // When & Then
@@ -285,7 +273,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         // When & Then
@@ -307,7 +294,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         Movie moviePast =
@@ -321,7 +307,6 @@ class MovieTest {
                         "Action",
                         "Director",
                         "Cast",
-                        "8.0",
                         "T13");
 
         // When & Then

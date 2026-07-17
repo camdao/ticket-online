@@ -38,8 +38,8 @@ public record ShowtimeDetailResponse(
                                 .id(showtime.getMovie().getId())
                                 .title(showtime.getMovie().getTitle())
                                 .duration(showtime.getMovie().getDuration())
-                                .posterUrl(showtime.getMovie().getPosterUrl())
-                                .ageRating(showtime.getMovie().getAgeRating())
+                                .posterUrl(showtime.getMovie().getImageUrl())
+                                .ageRating(showtime.getMovie().getRating())
                                 .build())
                 .cinema(
                         CinemaInfo.builder()
@@ -71,8 +71,8 @@ public record ShowtimeDetailResponse(
                                 .id(showtime.getMovie().getId())
                                 .title(showtime.getMovie().getTitle())
                                 .duration(showtime.getMovie().getDuration())
-                                .posterUrl(showtime.getMovie().getPosterUrl())
-                                .ageRating(showtime.getMovie().getAgeRating())
+                                .posterUrl(showtime.getMovie().getImageUrl())
+                                .ageRating(showtime.getMovie().getRating())
                                 .build())
                 .cinema(
                         CinemaInfo.builder()

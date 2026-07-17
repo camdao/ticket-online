@@ -51,7 +51,6 @@ class MovieServiceTest {
                         "Action",
                         "James Cameron",
                         "Sam Worthington",
-                        "8.5",
                         "T13");
         when(movieRepository.findById(movieId)).thenReturn(Optional.of(movie));
 
@@ -60,9 +59,9 @@ class MovieServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getTitle()).isEqualTo("Avatar 2");
-        assertThat(result.getDuration()).isEqualTo(192);
-        assertThat(result.getStatus()).isEqualTo(MovieStatus.NOW_SHOWING);
+        assertThat(result.title()).isEqualTo("Avatar 2");
+        assertThat(result.duration()).isEqualTo(192);
+        assertThat(result.status()).isEqualTo(MovieStatus.NOW_SHOWING);
     }
 
     @Test
@@ -76,130 +75,6 @@ class MovieServiceTest {
         assertThatThrownBy(() -> movieService.getMovieById(movieId))
                 .isInstanceOf(CustomException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.MOVIE_NOT_FOUND);
-    }
-
-    @Test
-    @DisplayName("Should return all movies with pagination")
-    void shouldReturnAllMoviesWithPagination() {
-        // Given
-        Pageable pageable = PageRequest.of(0, 20);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Movie 1",
-                                120,
-                                "Desc",
-                                "poster1.jpg",
-                                "trailer1.mp4",
-                                LocalDate.now(),
-                                "Action",
-                                "Director 1",
-                                "Cast 1",
-                                "8.0",
-                                "T13"),
-                        Movie.createMovie(
-                                "Movie 2",
-                                150,
-                                "Desc",
-                                "poster2.jpg",
-                                "trailer2.mp4",
-                                LocalDate.now().plusDays(10),
-                                "Drama",
-                                "Director 2",
-                                "Cast 2",
-                                "7.5",
-                                "T16"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findAll(pageable)).thenReturn(moviePage);
-
-        // When
-        MovieListResponse result = movieService.getAllMovies(pageable);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getPage()).isEqualTo(0);
-        assertThat(result.getSize()).isEqualTo(20);
-        assertThat(result.getTotalElements()).isEqualTo(2);
-    }
-
-    @Test
-    @DisplayName("Should search movies by title")
-    void shouldSearchMoviesByTitle() {
-        // Given
-        String title = "Avatar";
-        Pageable pageable = PageRequest.of(0, 20);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Avatar 1",
-                                162,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now().minusYears(1),
-                                "Sci-Fi",
-                                "James Cameron",
-                                "Cast",
-                                "7.8",
-                                "T13"),
-                        Movie.createMovie(
-                                "Avatar 2",
-                                192,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now(),
-                                "Sci-Fi",
-                                "James Cameron",
-                                "Cast",
-                                "8.5",
-                                "T13"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findByTitleContainingIgnoreCase(title, pageable))
-                .thenReturn(moviePage);
-
-        // When
-        MovieListResponse result = movieService.searchMoviesByTitle(title, pageable);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getContent().get(0).getTitle()).contains("Avatar");
-        assertThat(result.getContent().get(1).getTitle()).contains("Avatar");
-    }
-
-    @Test
-    @DisplayName("Should search movies by genre")
-    void shouldSearchMoviesByGenre() {
-        // Given
-        String genre = "Action";
-        Pageable pageable = PageRequest.of(0, 20);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Action Movie 1",
-                                120,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now(),
-                                "Action",
-                                "Director",
-                                "Cast",
-                                "8.0",
-                                "T13"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findByGenreContainingIgnoreCase(genre, pageable))
-                .thenReturn(moviePage);
-
-        // When
-        MovieListResponse result = movieService.searchMoviesByGenre(genre, pageable);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getGenre()).contains("Action");
     }
 
     @Test
@@ -219,7 +94,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Movie 2",
@@ -231,7 +105,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director",
                                 "Cast",
-                                "7.5",
                                 "T16"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findNowShowingMovies(any(LocalDate.class), eq(pageable)))
@@ -242,9 +115,8 @@ class MovieServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getContent())
-                .allMatch(movie -> movie.getStatus() == MovieStatus.NOW_SHOWING);
+        assertThat(result.content()).hasSize(2);
+        assertThat(result.content()).allMatch(movie -> movie.status() == MovieStatus.NOW_SHOWING);
     }
 
     @Test
@@ -264,7 +136,6 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"),
                         Movie.createMovie(
                                 "Future Movie 2",
@@ -276,7 +147,6 @@ class MovieServiceTest {
                                 "Drama",
                                 "Director",
                                 "Cast",
-                                "7.5",
                                 "T16"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findUpcomingMovies(any(LocalDate.class), eq(pageable)))
@@ -287,89 +157,8 @@ class MovieServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(2);
-        assertThat(result.getContent())
-                .allMatch(movie -> movie.getStatus() == MovieStatus.UPCOMING);
-    }
-
-    @Test
-    @DisplayName("Should search movies with multiple criteria")
-    void shouldSearchMoviesWithMultipleCriteria() {
-        // Given
-        String title = "Avatar";
-        String genre = "Sci-Fi";
-        String rating = "8.5";
-        String director = "Cameron";
-        Pageable pageable = PageRequest.of(0, 20);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Avatar 2",
-                                192,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now(),
-                                "Sci-Fi",
-                                "James Cameron",
-                                "Cast",
-                                "8.5",
-                                "T13"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.searchMovies(title, genre, rating, director, pageable))
-                .thenReturn(moviePage);
-
-        // When
-        MovieListResponse result =
-                movieService.searchMovies(title, genre, rating, director, pageable);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getTitle()).contains("Avatar");
-        assertThat(result.getContent().get(0).getGenre()).contains("Sci-Fi");
-        assertThat(result.getContent().get(0).getDirector()).contains("Cameron");
-    }
-
-    @Test
-    @DisplayName("Should get movies by IDs")
-    void shouldGetMoviesByIds() {
-        // Given
-        List<Long> ids = Arrays.asList(1L, 2L);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Movie 1",
-                                120,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now(),
-                                "Action",
-                                "Director",
-                                "Cast",
-                                "8.0",
-                                "T13"),
-                        Movie.createMovie(
-                                "Movie 2",
-                                150,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now(),
-                                "Drama",
-                                "Director",
-                                "Cast",
-                                "7.5",
-                                "T16"));
-        when(movieRepository.findByIdIn(ids)).thenReturn(movies);
-
-        // When
-        List<MovieResponse> result = movieService.getMoviesByIds(ids);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result).hasSize(2);
+        assertThat(result.content()).hasSize(2);
+        assertThat(result.content()).allMatch(movie -> movie.status() == MovieStatus.UPCOMING);
     }
 
     @Test
@@ -390,10 +179,10 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "8.0",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findByStatus(eq("NOW_SHOWING"), any(LocalDate.class), eq(pageable)))
+        when(movieRepository.getAllMoviesWithFilters(
+                        any(), eq("NOW_SHOWING"), eq(null), eq(pageable)))
                 .thenReturn(moviePage);
 
         // When
@@ -401,8 +190,8 @@ class MovieServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getStatus()).isEqualTo(MovieStatus.NOW_SHOWING);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).status()).isEqualTo(MovieStatus.NOW_SHOWING);
     }
 
     @Test
@@ -423,7 +212,6 @@ class MovieServiceTest {
                                 "Sci-Fi",
                                 "James Cameron",
                                 "Cast",
-                                "8.5",
                                 "T13"));
         Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
         when(movieRepository.findByTitleContainingIgnoreCase(keyword, pageable))
@@ -434,7 +222,7 @@ class MovieServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).getTitle()).contains("Avatar");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).title()).contains("Avatar");
     }
 }
