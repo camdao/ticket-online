@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
-import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.movies.domain.Movie;
+import com.ticket_online.domain.rooms.Room;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
 import com.ticket_online.domain.showtimes.domain.ShowtimeStatus;

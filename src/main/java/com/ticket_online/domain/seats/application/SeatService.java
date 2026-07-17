@@ -1,7 +1,5 @@
 package com.ticket_online.domain.seats.application;
 
-import com.ticket_online.domain.cinemas.dao.ScreenRepository;
-import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatType;

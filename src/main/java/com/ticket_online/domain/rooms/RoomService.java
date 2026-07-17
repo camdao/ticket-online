@@ -1,8 +1,6 @@
-package com.ticket_online.domain.cinemas.application;
+package com.ticket_online.domain.rooms;
 
 import com.ticket_online.domain.cinemas.dao.CinemaRepository;
-import com.ticket_online.domain.cinemas.dao.RoomRepository;
-import com.ticket_online.domain.cinemas.domain.Room;
 import com.ticket_online.domain.cinemas.dto.request.RoomRequest;
 import com.ticket_online.domain.cinemas.dto.response.RoomResponse;
 import com.ticket_online.global.error.exception.CustomException;

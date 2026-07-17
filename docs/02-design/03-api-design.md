@@ -306,7 +306,7 @@ Lấy danh sách rạp chiếu.
         "district": "Quận 1",
         "city": "TP. Hồ Chí Minh",
         "phoneNumber": "1900xxxx",
-        "totalScreens": 8
+        "totalRooms": 8
       }
     ],
     "page": 0,
@@ -340,7 +340,7 @@ Lấy chi tiết rạp chiếu.
     "website": "https://cgv.vn",
     "description": "CGV Vincom Center là rạp chiếu phim hiện đại...",
     "totalScreens": 8,
-    "screens": [
+    "rooms": [
       {
         "id": 12,
         "name": "Screen 3",
@@ -352,81 +352,6 @@ Lấy chi tiết rạp chiếu.
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
-
----
-
-### GET /cinemas/{id}/showtimes
-Lấy danh sách suất chiếu tại rạp.
-
-**Query Parameters:**
-- `movieId` (optional): Lọc theo phim
-- `date` (optional): Lọc theo ngày (format: YYYY-MM-DD)
-- `startDate` (optional): Từ ngày
-- `endDate` (optional): Đến ngày
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": [
-    {
-      "id": 101,
-      "movieId": 1,
-      "movieTitle": "Avatar: The Way of Water",
-      "moviePosterUrl": "https://cdn.example.com/avatar2.jpg",
-      "movieDuration": 192,
-      "movieRating": 8.5,
-      "screenId": 12,
-      "screenName": "Screen 3",
-      "screenType": "IMAX",
-      "startTime": "2024-01-15T14:30:00",
-      "endTime": "2024-01-15T17:42:00",
-      "basePrice": 85000,
-      "status": "ACTIVE",
-      "availableSeats": 87,
-      "totalSeats": 120
-    }
-  ],
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### GET /cinemas/brands
-Lấy danh sách thương hiệu rạp.
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": ["CGV", "Lotte Cinema", "Galaxy Cinema", "BHD Star"],
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### GET /cinemas/cities
-Lấy danh sách thành phố có rạp.
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": [
-    "TP. Hồ Chí Minh",
-    "Hà Nội",
-    "Đà Nẵng",
-    "Cần Thơ"
-  ],
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
 ---
 
 ## 4.4. Rooms
@@ -491,125 +416,6 @@ Lấy danh sách phòng chiếu theo bộ lọc.
 ```
 
 **Note:** Nếu không có query parameter nào được cung cấp, API sẽ trả về danh sách rỗng.
-
----
-
-### POST /rooms
-Tạo phòng chiếu mới (Admin only).
-
-**Headers:**
-- `Authorization: Bearer <access_token>`
-
-**Request:**
-```json
-{
-  "cinemaId": 5,
-  "name": "Room 5",
-  "capacity": 100,
-  "roomType": "VIP"
-}
-```
-
-**Validation Rules:**
-- `cinemaId`: Bắt buộc, phải tồn tại trong hệ thống
-- `name`: Bắt buộc, tối đa 100 ký tự
-- `capacity`: Bắt buộc, tối thiểu 1
-- `roomType`: Tùy chọn, tối đa 50 ký tự
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "status": 201,
-  "data": {
-    "id": 14,
-    "cinemaId": 5,
-    "name": "Room 5",
-    "capacity": 100,
-    "roomType": "VIP",
-    "createdAt": "2024-01-15T14:30:00",
-    "updatedAt": "2024-01-15T14:30:00"
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
-**Error Response (404):**
-```json
-{
-  "success": false,
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### PUT /rooms/{id}
-Cập nhật thông tin phòng chiếu (Admin only).
-
-**Headers:**
-- `Authorization: Bearer <access_token>`
-
-**Request:**
-```json
-{
-  "cinemaId": 5,
-  "name": "Room 5 - Updated",
-  "capacity": 110,
-  "roomType": "VIP"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 201,
-  "data": {
-    "id": 14,
-    "cinemaId": 5,
-    "name": "Room 5 - Updated",
-    "capacity": 110,
-    "roomType": "VIP",
-    "createdAt": "2024-01-15T14:30:00",
-    "updatedAt": "2024-01-15T16:45:00"
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
-**Error Response (404):**
-```json
-{
-  "success": false,
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### DELETE /rooms/{id}
-Xóa phòng chiếu (Admin only).
-
-**Headers:**
-- `Authorization: Bearer <access_token>`
-
-**Response (204):**
-```
-No Content
-```
-
-**Error Response (404):**
-```json
-{
-  "success": false,
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
-**Note:** Xóa phòng chiếu sẽ xóa cascade các suất chiếu và ghế ngồi liên quan.
-
----
 
 ## 4.5. Showtimes
 

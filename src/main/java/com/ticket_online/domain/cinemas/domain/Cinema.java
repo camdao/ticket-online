@@ -89,27 +89,6 @@ public class Cinema extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateCinema(
-            String name,
-            String brand,
-            String logoUrl,
-            String address,
-            String district,
-            String city,
-            String phone,
-            String website,
-            String description) {
-        this.name = name;
-        this.brand = brand;
-        this.logoUrl = logoUrl;
-        this.address = address;
-        this.district = district;
-        this.city = city;
-        this.phone = phone;
-        this.website = website;
-        this.description = description;
-    }
-
     public String getFullAddress() {
         StringBuilder fullAddress = new StringBuilder();
         if (address != null) fullAddress.append(address);

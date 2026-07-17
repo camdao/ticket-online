@@ -1,6 +1,5 @@
 package com.ticket_online.domain.seats.domain;
 
-import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,5 +1,6 @@
-package com.ticket_online.domain.cinemas.domain;
+package com.ticket_online.domain.rooms;
 
+import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "rooms")
-public class Screen extends BaseTimeEntity {
+public class Room extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,16 +35,15 @@ public class Screen extends BaseTimeEntity {
     private String roomType;
 
     @Builder(access = AccessLevel.PRIVATE)
-    Screen(Long cinemaId, String name, Integer capacity, String roomType) {
+    Room(Long cinemaId, String name, Integer capacity, String roomType) {
         this.cinemaId = cinemaId;
         this.name = name;
         this.capacity = capacity;
         this.roomType = roomType;
     }
 
-    public static Screen createScreen(
-            Long cinemaId, String name, Integer capacity, String roomType) {
-        return Screen.builder()
+    public static Room createRoom(Long cinemaId, String name, Integer capacity, String roomType) {
+        return Room.builder()
                 .cinemaId(cinemaId)
                 .name(name)
                 .capacity(capacity)
@@ -51,7 +51,7 @@ public class Screen extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateScreen(String name, Integer capacity, String roomType) {
+    public void updateRoom(String name, Integer capacity, String roomType) {
         this.name = name;
         this.capacity = capacity;
         this.roomType = roomType;

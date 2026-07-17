@@ -1,6 +1,6 @@
 package com.ticket_online.domain.cinemas.dto.response;
 
-import com.ticket_online.domain.cinemas.domain.Room;
+import com.ticket_online.domain.rooms.Room;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
