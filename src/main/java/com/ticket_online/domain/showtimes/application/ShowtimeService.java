@@ -5,7 +5,6 @@ import com.ticket_online.domain.rooms.Room;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatStatus;
-import com.ticket_online.domain.seats.dto.response.ScreenLayoutResponse;
 import com.ticket_online.domain.seats.dto.response.SeatResponse;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
@@ -34,10 +33,10 @@ public class ShowtimeService {
     private final SeatRepository seatRepository;
 
     /**
-     * Get seat layout and availability for a specific showtime
+     * Get seat availability for a specific showtime
      *
      * @param showtimeId the ID of the showtime
-     * @return ShowtimeSeatsResponse containing showtime ID, screen layout, and seat list
+     * @return ShowtimeSeatsResponse containing showtime ID and seat list
      */
     public ShowtimeSeatsResponse getShowtimeSeats(Long showtimeId) {
         // Fetch showtime with room details
@@ -51,9 +50,6 @@ public class ShowtimeService {
         // Fetch all active seats for the room
         List<Seat> seats = seatRepository.findByRoomId(room.getId());
 
-        // Build screen layout from seats
-        ScreenLayoutResponse screenLayout = buildScreenLayout(seats);
-
         // Map seats to response with AVAILABLE status (Option B - simplified version)
         // TODO: Implement Redis check for HELD status and database check for BOOKED status
         List<SeatResponse> seatResponses =
@@ -61,35 +57,7 @@ public class ShowtimeService {
                         .map(seat -> SeatResponse.from(seat, SeatStatus.AVAILABLE))
                         .collect(Collectors.toList());
 
-        return ShowtimeSeatsResponse.of(showtimeId, screenLayout, seatResponses);
-    }
-
-    /**
-     * Build screen layout from list of seats
-     *
-     * @param seats list of seats
-     * @return ScreenLayoutResponse containing rows and seats per row
-     */
-    private ScreenLayoutResponse buildScreenLayout(List<Seat> seats) {
-        if (seats.isEmpty()) {
-            return ScreenLayoutResponse.of(List.of(), 0);
-        }
-
-        // Get distinct rows in sorted order
-        List<String> rows =
-                seats.stream().map(Seat::getRow).distinct().sorted().collect(Collectors.toList());
-
-        // Calculate maximum number of seats per row
-        Integer maxSeatsPerRow =
-                seats.stream()
-                        .collect(Collectors.groupingBy(Seat::getRow, Collectors.counting()))
-                        .values()
-                        .stream()
-                        .mapToInt(Long::intValue)
-                        .max()
-                        .orElse(0);
-
-        return ScreenLayoutResponse.of(rows, maxSeatsPerRow);
+        return ShowtimeSeatsResponse.of(showtimeId, seatResponses);
     }
 
     public List<ShowtimeResponse> getShowtimesByMovieId(

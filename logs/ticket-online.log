@@ -9838,3 +9838,720 @@ java.lang.IllegalStateException: cannot be started once stopped
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
 	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-18 19:58:13.229 [background-preinit] DEBUG org.jboss.logging - Logging Provider: org.jboss.logging.Slf4jLoggerProvider found via system property
+2026-07-18 19:58:13.305 [restartedMain] INFO  c.t.TicketOnlineApplication - Starting TicketOnlineApplication using Java 17.0.19 with PID 165269 (/home/camdao/Desktop/ticket-online/build/classes/java/main started by camdao in /home/camdao/Desktop/ticket-online)
+2026-07-18 19:58:13.306 [restartedMain] DEBUG c.t.TicketOnlineApplication - Running with Spring Boot v3.3.8, Spring v6.1.16
+2026-07-18 19:58:13.307 [restartedMain] INFO  c.t.TicketOnlineApplication - The following 4 profiles are active: "redis", "datasource", "security", "dev"
+2026-07-18 19:58:13.379 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-07-18 19:58:13.380 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-07-18 19:58:14.754 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-07-18 19:58:14.755 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-07-18 19:58:14.782 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2026-07-18 19:58:15.470 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-07-18 19:58:15.471 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-18 19:58:15.532 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data JPA - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.auth.dao.RefreshTokenRepository; If you want this repository to be a JPA repository, consider annotating your entities with one of these annotations: jakarta.persistence.Entity, jakarta.persistence.MappedSuperclass (preferred), or consider extending one of the following types with your repository: org.springframework.data.jpa.repository.JpaRepository
+2026-07-18 19:58:15.743 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 267 ms. Found 9 JPA repository interfaces.
+2026-07-18 19:58:15.753 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-07-18 19:58:15.753 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-07-18 19:58:15.780 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.bookings.dao.BookingDetailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.780 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.bookings.dao.BookingRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.781 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.cinemas.dao.CinemaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.781 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.movies.dao.MovieRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.782 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.payments.dao.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.782 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.rooms.RoomRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.783 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.seats.dao.SeatRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.784 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.showtimes.dao.ShowtimeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.784 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.ticket_online.domain.user.dao.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-07-18 19:58:15.798 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 1 Redis repository interface.
+2026-07-18 19:58:16.736 [restartedMain] DEBUG o.a.c.core.AprLifecycleListener - The Apache Tomcat Native library could not be found using names [tcnative-2, libtcnative-2, tcnative-1, libtcnative-1] on the java.library.path [/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib]. The errors reported were [Can't load library: /home/camdao/Desktop/ticket-online/bin/libtcnative-2.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/liblibtcnative-2.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/libtcnative-1.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/liblibtcnative-1.so, no tcnative-2 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no libtcnative-2 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no tcnative-1 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no libtcnative-1 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib]
+org.apache.tomcat.jni.LibraryNotFoundError: Can't load library: /home/camdao/Desktop/ticket-online/bin/libtcnative-2.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/liblibtcnative-2.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/libtcnative-1.so, Can't load library: /home/camdao/Desktop/ticket-online/bin/liblibtcnative-1.so, no tcnative-2 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no libtcnative-2 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no tcnative-1 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib, no libtcnative-1 in java.library.path: /usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+	at org.apache.tomcat.jni.Library.<init>(Library.java:91)
+	at org.apache.tomcat.jni.Library.initialize(Library.java:147)
+	at org.apache.catalina.core.AprLifecycleListener.init(AprLifecycleListener.java:211)
+	at org.apache.catalina.core.AprLifecycleListener.isAprAvailable(AprLifecycleListener.java:113)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getDefaultServerLifecycleListeners(TomcatServletWebServerFactory.java:191)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.<init>(TomcatServletWebServerFactory.java:138)
+	at org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration$EmbeddedTomcat.tomcatServletWebServerFactory(ServletWebServerFactoryConfiguration.java:73)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:146)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:644)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1185)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getWebServerFactory(ServletWebServerApplicationContext.java:223)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:186)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:619)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.ticket_online.TicketOnlineApplication.main(TicketOnlineApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2026-07-18 19:58:17.055 [restartedMain] DEBUG o.a.tomcat.util.compat.Jre19Compat - Class not found so assuming code is running on a pre-Java 19 JVM
+java.lang.ClassNotFoundException: java.lang.WrongThreadException
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:377)
+	at org.apache.tomcat.util.compat.Jre19Compat.<clinit>(Jre19Compat.java:37)
+	at org.apache.tomcat.util.compat.JreCompat.<clinit>(JreCompat.java:60)
+	at org.apache.catalina.startup.Tomcat.<clinit>(Tomcat.java:1193)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:203)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:619)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.ticket_online.TicketOnlineApplication.main(TicketOnlineApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2026-07-18 19:58:17.056 [restartedMain] DEBUG o.a.tomcat.util.compat.Jre21Compat - Class not found so assuming code is running on a pre-Java 21 JVM
+java.lang.ClassNotFoundException: java.lang.Thread$Builder
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:377)
+	at org.apache.tomcat.util.compat.Jre21Compat.<clinit>(Jre21Compat.java:49)
+	at org.apache.tomcat.util.compat.JreCompat.<clinit>(JreCompat.java:60)
+	at org.apache.catalina.startup.Tomcat.<clinit>(Tomcat.java:1193)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:203)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:619)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.ticket_online.TicketOnlineApplication.main(TicketOnlineApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2026-07-18 19:58:17.056 [restartedMain] DEBUG o.a.tomcat.util.compat.Jre22Compat - Class not found so assuming code is running on a pre-Java 22 JVM
+java.lang.ClassNotFoundException: java.text.ListFormat
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:377)
+	at org.apache.tomcat.util.compat.Jre22Compat.<clinit>(Jre22Compat.java:37)
+	at org.apache.tomcat.util.compat.JreCompat.<clinit>(JreCompat.java:60)
+	at org.apache.catalina.startup.Tomcat.<clinit>(Tomcat.java:1193)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:203)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:619)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.ticket_online.TicketOnlineApplication.main(TicketOnlineApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+2026-07-18 19:58:17.138 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardHost[localhost]] to container [StandardEngine[Tomcat]]
+2026-07-18 19:58:17.161 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [TomcatEmbeddedContext[]] to container [StandardEngine[Tomcat].StandardHost[localhost]]
+2026-07-18 19:58:17.218 [restartedMain] DEBUG jdk.event.security - X509Certificate: Alg:SHA1withRSA, Serial:0c:e7:e0:e5:17:d8:46:fe:8f:e5:60:fc:1b:f0:30:39, Subject:CN=DigiCert Assured ID Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US, Issuer:CN=DigiCert Assured ID Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US, Key type:RSA, Length:2048, Cert Id:-860404528, Valid from:11/10/06, 7:00 AM, Valid until:11/10/31, 7:00 AM
+2026-07-18 19:58:17.223 [restartedMain] DEBUG jdk.event.security - X509Certificate: Alg:SHA256withRSA, Serial:04:09:18:1b:5f:d5:bb:66:75:53:43:b5:6f:95:50:08, Subject:CN=DigiCert SHA2 Assured ID Code Signing CA, OU=www.digicert.com, O=DigiCert Inc, C=US, Issuer:CN=DigiCert Assured ID Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US, Key type:RSA, Length:2048, Cert Id:-888240198, Valid from:10/22/13, 7:00 PM, Valid until:10/22/28, 7:00 PM
+2026-07-18 19:58:17.225 [restartedMain] DEBUG jdk.event.security - X509Certificate: Alg:SHA256withRSA, Serial:03:4a:44:75:70:d9:70:98:24:09:eb:b3:da:98:b6:9d, Subject:EMAILADDRESS=webmaster@eclipse.org, CN="Eclipse.org Foundation, Inc.", OU=IT, O="Eclipse.org Foundation, Inc.", L=Ottawa, ST=Ontario, C=CA, Issuer:CN=DigiCert SHA2 Assured ID Code Signing CA, OU=www.digicert.com, O=DigiCert Inc, C=US, Key type:RSA, Length:2048, Cert Id:1542280108, Valid from:3/16/21, 7:00 AM, Valid until:5/19/22, 6:59 AM
+2026-07-18 19:58:17.232 [restartedMain] DEBUG jdk.event.security - X509Certificate: Alg:SHA256withRSA, Serial:7b:05:b1:d4:49:68:51:44:f7:c9:89:d2:9c:19:9d:12, Subject:CN=Symantec SHA256 TimeStamping CA, OU=Symantec Trust Network, O=Symantec Corporation, C=US, Issuer:CN=VeriSign Universal Root Certification Authority, OU="(c) 2008 VeriSign, Inc. - For authorized use only", OU=VeriSign Trust Network, O="VeriSign, Inc.", C=US, Key type:RSA, Length:2048, Cert Id:679469769, Valid from:1/12/16, 7:00 AM, Valid until:1/12/31, 6:59 AM
+2026-07-18 19:58:17.233 [restartedMain] DEBUG jdk.event.security - X509Certificate: Alg:SHA256withRSA, Serial:7b:d4:e5:af:ba:cc:07:3f:a1:01:23:04:22:41:4d:12, Subject:CN=Symantec SHA256 TimeStamping Signer - G3, OU=Symantec Trust Network, O=Symantec Corporation, C=US, Issuer:CN=Symantec SHA256 TimeStamping CA, OU=Symantec Trust Network, O=Symantec Corporation, C=US, Key type:RSA, Length:2048, Cert Id:-1917605033, Valid from:12/23/17, 7:00 AM, Valid until:3/23/29, 6:59 AM
+2026-07-18 19:58:17.283 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-07-18 19:58:17.287 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardServer[-1]] to [INITIALIZING]
+2026-07-18 19:58:17.293 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@795c6cd6] to [INITIALIZING]
+2026-07-18 19:58:17.294 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@795c6cd6] to [INITIALIZED]
+2026-07-18 19:58:17.294 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardService[Tomcat]] to [INITIALIZING]
+2026-07-18 19:58:17.294 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat]] to [INITIALIZING]
+2026-07-18 19:58:17.294 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat]] to [INITIALIZED]
+2026-07-18 19:58:17.295 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.mapper.MapperListener@3100317b] to [INITIALIZING]
+2026-07-18 19:58:17.295 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.mapper.MapperListener@3100317b] to [INITIALIZED]
+2026-07-18 19:58:17.295 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [Connector["http-nio-8081"]] to [INITIALIZING]
+2026-07-18 19:58:17.303 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-07-18 19:58:17.305 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [Connector["http-nio-8081"]] to [INITIALIZED]
+2026-07-18 19:58:17.305 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardService[Tomcat]] to [INITIALIZED]
+2026-07-18 19:58:17.305 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardServer[-1]] to [INITIALIZED]
+2026-07-18 19:58:17.305 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardServer[-1]] to [STARTING_PREP]
+2026-07-18 19:58:17.306 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardServer[-1]] to [STARTING]
+2026-07-18 19:58:17.309 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@795c6cd6] to [STARTING_PREP]
+2026-07-18 19:58:17.309 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@795c6cd6] to [STARTING]
+2026-07-18 19:58:17.309 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@795c6cd6] to [STARTED]
+2026-07-18 19:58:17.309 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardService[Tomcat]] to [STARTING_PREP]
+2026-07-18 19:58:17.310 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-18 19:58:17.310 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardService[Tomcat]] to [STARTING]
+2026-07-18 19:58:17.310 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat]] to [STARTING_PREP]
+2026-07-18 19:58:17.311 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.34]
+2026-07-18 19:58:17.312 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [SimpleRealm[StandardEngine[Tomcat]]] to [INITIALIZING]
+2026-07-18 19:58:17.314 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [SimpleRealm[StandardEngine[Tomcat]]] to [INITIALIZED]
+2026-07-18 19:58:17.316 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [SimpleRealm[StandardEngine[Tomcat]]] to [STARTING_PREP]
+2026-07-18 19:58:17.316 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [SimpleRealm[StandardEngine[Tomcat]]] to [STARTING]
+2026-07-18 19:58:17.317 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [SimpleRealm[StandardEngine[Tomcat]]] to [STARTED]
+2026-07-18 19:58:17.318 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost]] to [INITIALIZING]
+2026-07-18 19:58:17.318 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost]] to [INITIALIZED]
+2026-07-18 19:58:17.319 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost]] to [STARTING_PREP]
+2026-07-18 19:58:17.322 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]] to [INITIALIZING]
+2026-07-18 19:58:17.323 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]] to [INITIALIZED]
+2026-07-18 19:58:17.323 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]] to [STARTING_PREP]
+2026-07-18 19:58:17.347 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.StandardRoot@24f3290f] to [INITIALIZING]
+2026-07-18 19:58:17.351 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.StandardRoot@24f3290f] to [INITIALIZED]
+2026-07-18 19:58:17.351 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.StandardRoot@24f3290f] to [STARTING_PREP]
+2026-07-18 19:58:17.354 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.DirResourceSet@7cc09d06] to [INITIALIZING]
+2026-07-18 19:58:17.355 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.DirResourceSet@7cc09d06] to [INITIALIZED]
+2026-07-18 19:58:17.356 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.DirResourceSet@7cc09d06] to [STARTING_PREP]
+2026-07-18 19:58:17.356 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.DirResourceSet@7cc09d06] to [STARTING]
+2026-07-18 19:58:17.356 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.DirResourceSet@7cc09d06] to [STARTED]
+2026-07-18 19:58:17.357 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.StandardRoot@24f3290f] to [STARTING]
+2026-07-18 19:58:17.357 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.StandardRoot@24f3290f] to [STARTED]
+2026-07-18 19:58:17.357 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [WebappLoader[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZING]
+2026-07-18 19:58:17.358 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [WebappLoader[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZED]
+2026-07-18 19:58:17.358 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [WebappLoader[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING_PREP]
+2026-07-18 19:58:17.358 [restartedMain] DEBUG o.a.catalina.loader.WebappLoader - Starting this Loader
+2026-07-18 19:58:17.364 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [532] for item [org.apache.catalina.webresources.CachedResource@95f037d] at [/WEB-INF/classes] making total cache size [532]
+2026-07-18 19:58:17.368 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [WebappLoader[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING]
+2026-07-18 19:58:17.368 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [WebappLoader[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTED]
+2026-07-18 19:58:17.396 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.JarResourceSet@53d86c4] to [INITIALIZING]
+2026-07-18 19:58:17.397 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.JarResourceSet@53d86c4] to [INITIALIZED]
+2026-07-18 19:58:17.398 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.JarResourceSet@53d86c4] to [STARTING_PREP]
+2026-07-18 19:58:17.398 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.JarResourceSet@53d86c4] to [STARTING]
+2026-07-18 19:58:17.398 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.webresources.JarResourceSet@53d86c4] to [STARTED]
+2026-07-18 19:58:17.399 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZING]
+2026-07-18 19:58:17.399 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZED]
+2026-07-18 19:58:17.399 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING_PREP]
+2026-07-18 19:58:17.399 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [NonLoginAuthenticator[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZING]
+2026-07-18 19:58:17.400 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [NonLoginAuthenticator[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZED]
+2026-07-18 19:58:17.400 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [NonLoginAuthenticator[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING_PREP]
+2026-07-18 19:58:17.402 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [NonLoginAuthenticator[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING]
+2026-07-18 19:58:17.402 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [NonLoginAuthenticator[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTED]
+2026-07-18 19:58:17.402 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardContextValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZING]
+2026-07-18 19:58:17.403 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardContextValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZED]
+2026-07-18 19:58:17.403 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardContextValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING_PREP]
+2026-07-18 19:58:17.403 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardContextValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING]
+2026-07-18 19:58:17.403 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardContextValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTED]
+2026-07-18 19:58:17.404 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING]
+2026-07-18 19:58:17.404 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTED]
+2026-07-18 19:58:17.404 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@4e6e3e53] to [INITIALIZING]
+2026-07-18 19:58:17.405 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@4e6e3e53] to [INITIALIZED]
+2026-07-18 19:58:17.405 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@4e6e3e53] to [STARTING_PREP]
+2026-07-18 19:58:17.405 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@4e6e3e53] to [STARTING]
+2026-07-18 19:58:17.405 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.deploy.NamingResourcesImpl@4e6e3e53] to [STARTED]
+2026-07-18 19:58:17.416 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-07-18 19:58:17.416 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4035 ms
+2026-07-18 19:58:17.494 [restartedMain] DEBUG i.m.c.u.i.l.InternalLoggerFactory - Using SLF4J as the default logging framework
+2026-07-18 19:58:17.508 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [575] for item [org.apache.catalina.webresources.CachedResource@452bd56d] at [/WEB-INF/classes/prometheus.properties] making total cache size [1107]
+2026-07-18 19:58:17.837 [restartedMain] DEBUG i.n.u.i.l.InternalLoggerFactory - Using SLF4J as the default logging framework
+2026-07-18 19:58:17.845 [restartedMain] DEBUG i.l.c.r.AddressResolverGroupProvider - Starting without optional netty's non-blocking DNS resolver library
+2026-07-18 19:58:17.847 [restartedMain] DEBUG i.l.c.r.DefaultClientResources - -Dio.netty.eventLoopThreads: 6
+2026-07-18 19:58:17.855 [restartedMain] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Creating executor io.netty.util.concurrent.DefaultEventExecutorGroup
+2026-07-18 19:58:17.873 [restartedMain] DEBUG i.n.u.concurrent.GlobalEventExecutor - -Dio.netty.globalEventExecutor.quietPeriodSeconds: 1
+2026-07-18 19:58:17.881 [restartedMain] DEBUG i.n.u.i.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+2026-07-18 19:58:17.881 [restartedMain] DEBUG i.n.u.i.InternalThreadLocalMap - -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+2026-07-18 19:58:17.888 [restartedMain] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.level: simple
+2026-07-18 19:58:17.889 [restartedMain] DEBUG io.netty.util.ResourceLeakDetector - -Dio.netty.leakDetection.targetRecords: 4
+2026-07-18 19:58:17.891 [restartedMain] DEBUG i.n.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@1885ef0a
+2026-07-18 19:58:17.922 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - -Dio.netty.noUnsafe: false
+2026-07-18 19:58:17.923 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - Java version: 17
+2026-07-18 19:58:17.924 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - sun.misc.Unsafe.theUnsafe: available
+2026-07-18 19:58:17.925 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - sun.misc.Unsafe base methods: all available
+2026-07-18 19:58:17.926 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - sun.misc.Unsafe.storeFence: available
+2026-07-18 19:58:17.927 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - java.nio.Buffer.address: available
+2026-07-18 19:58:17.927 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+2026-07-18 19:58:17.928 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - java.nio.Bits.unaligned: available, true
+2026-07-18 19:58:17.930 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @19469ea2
+2026-07-18 19:58:17.931 [restartedMain] DEBUG i.n.util.internal.PlatformDependent0 - java.nio.DirectByteBuffer.<init>(long, {int,long}): unavailable
+2026-07-18 19:58:17.931 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - sun.misc.Unsafe: available
+2026-07-18 19:58:17.932 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+2026-07-18 19:58:17.932 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.bitMode: 64 (sun.arch.data.model)
+2026-07-18 19:58:17.933 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.maxDirectMemory: -1 bytes
+2026-07-18 19:58:17.933 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.uninitializedArrayAllocationThreshold: -1
+2026-07-18 19:58:17.934 [restartedMain] DEBUG io.netty.util.internal.CleanerJava9 - java.nio.ByteBuffer.cleaner(): available
+2026-07-18 19:58:17.934 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - -Dio.netty.noPreferDirect: false
+2026-07-18 19:58:17.945 [restartedMain] DEBUG i.n.util.internal.PlatformDependent - org.jctools-core.MpscChunkedArrayQueue: available
+2026-07-18 19:58:17.958 [restartedMain] DEBUG reactor.util.Loggers - Using Slf4j logging framework
+2026-07-18 19:58:17.964 [restartedMain] DEBUG i.l.c.event.jfr.EventRecorderHolder - Starting with JFR support
+2026-07-18 19:58:18.243 [restartedMain] DEBUG io.lettuce.core.RedisClient - Trying to get a Redis connection for: redis://localhost?timeout=1s
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numHeapArenas: 12
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.numDirectArenas: 12
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.pageSize: 8192
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxOrder: 9
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.chunkSize: 4194304
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.smallCacheSize: 256
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.normalCacheSize: 64
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimInterval: 8192
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.useCacheForAllThreads: false
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+2026-07-18 19:58:18.455 [restartedMain] DEBUG i.n.buffer.PooledByteBufAllocator - -Dio.netty.allocator.disableCacheFinalizersForFastThreadLocalThreads: false
+2026-07-18 19:58:18.468 [restartedMain] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.allocator.type: pooled
+2026-07-18 19:58:18.468 [restartedMain] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.threadLocalDirectBufferSize: 0
+2026-07-18 19:58:18.468 [restartedMain] DEBUG io.netty.buffer.ByteBufUtil - -Dio.netty.maxThreadLocalCharBufferSize: 16384
+2026-07-18 19:58:18.471 [restartedMain] DEBUG i.l.core.resource.KqueueProvider - Starting without optional kqueue library
+2026-07-18 19:58:18.473 [restartedMain] DEBUG i.l.core.resource.IOUringProvider - Starting without optional io_uring library
+2026-07-18 19:58:18.474 [restartedMain] DEBUG i.l.core.resource.EpollProvider - Starting without optional epoll library
+2026-07-18 19:58:18.482 [restartedMain] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Allocating executor io.netty.channel.nio.NioEventLoopGroup
+2026-07-18 19:58:18.482 [restartedMain] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Creating executor io.netty.channel.nio.NioEventLoopGroup
+2026-07-18 19:58:18.484 [restartedMain] DEBUG i.n.c.MultithreadEventLoopGroup - -Dio.netty.eventLoopThreads: 12
+2026-07-18 19:58:18.491 [restartedMain] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.noKeySetOptimization: false
+2026-07-18 19:58:18.491 [restartedMain] DEBUG io.netty.channel.nio.NioEventLoop - -Dio.netty.selectorAutoRebuildThreshold: 512
+2026-07-18 19:58:18.496 [restartedMain] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Adding reference to io.netty.channel.nio.NioEventLoopGroup@9e66d94, existing ref count 0
+2026-07-18 19:58:18.609 [restartedMain] DEBUG io.lettuce.core.RedisClient - Resolved SocketAddress localhost/<unresolved>:6379 using redis://localhost?timeout=1s
+2026-07-18 19:58:18.610 [restartedMain] DEBUG io.lettuce.core.AbstractRedisClient - Connecting to Redis at localhost/<unresolved>:6379
+2026-07-18 19:58:18.625 [restartedMain] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.processId: 165269 (auto-detected)
+2026-07-18 19:58:18.627 [restartedMain] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv4Stack: false
+2026-07-18 19:58:18.627 [restartedMain] DEBUG io.netty.util.NetUtil - -Djava.net.preferIPv6Addresses: false
+2026-07-18 19:58:18.630 [restartedMain] DEBUG i.netty.util.NetUtilInitializations - Loopback interface: lo (lo, 0:0:0:0:0:0:0:1%lo)
+2026-07-18 19:58:18.631 [restartedMain] DEBUG io.netty.util.NetUtil - /proc/sys/net/core/somaxconn: 4096
+2026-07-18 19:58:18.632 [restartedMain] DEBUG io.netty.channel.DefaultChannelId - -Dio.netty.machineId: 00:0c:29:ff:fe:60:28:26 (auto-detected)
+2026-07-18 19:58:18.663 [restartedMain] DEBUG i.n.b.ChannelInitializerExtensions - -Dio.netty.bootstrap.extensions: null
+2026-07-18 19:58:18.711 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, [id: 0x52bad2f1] (inactive), epid=0x1, chid=0x1] channelRegistered()
+2026-07-18 19:58:18.717 [lettuce-nioEventLoop-4-1] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.maxCapacityPerThread: 4096
+2026-07-18 19:58:18.717 [lettuce-nioEventLoop-4-1] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.ratio: 8
+2026-07-18 19:58:18.717 [lettuce-nioEventLoop-4-1] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.chunkSize: 32
+2026-07-18 19:58:18.717 [lettuce-nioEventLoop-4-1] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.blocking: false
+2026-07-18 19:58:18.717 [lettuce-nioEventLoop-4-1] DEBUG io.netty.util.Recycler - -Dio.netty.recycler.batchFastThreadLocalOnly: true
+2026-07-18 19:58:18.727 [lettuce-nioEventLoop-4-1] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkAccessible: true
+2026-07-18 19:58:18.727 [lettuce-nioEventLoop-4-1] DEBUG io.netty.buffer.AbstractByteBuf - -Dio.netty.buffer.checkBounds: true
+2026-07-18 19:58:18.727 [lettuce-nioEventLoop-4-1] DEBUG i.n.util.ResourceLeakDetectorFactory - Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@3ea7d765
+2026-07-18 19:58:18.770 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] write(ctx, AsyncCommand [type=HELLO, output=GenericMapOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command], promise)
+2026-07-18 19:58:18.777 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandEncoder - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=HELLO, output=GenericMapOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.785 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Received: 687 bytes, 1 commands in the stack
+2026-07-18 19:58:18.786 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Stack contains: 1 commands
+2026-07-18 19:58:18.798 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.813 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Completing command LatencyMeteredCommand [type=HELLO, output=GenericMapOutput [output={server=redis, version=8.8.0, proto=3, id=89, mode=standalone, role=master, modules=name, search=ver, 80800=path, /usr/local/lib/redis/modules//redisearch.so=args, name=vectorset, ver=1, path=, args=name, bf=ver, /usr/local/lib/redis/modules//redisbloom.so=args, ReJSON=ver, /usr/local/lib/redis/modules//rejson.so=args}, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.816 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] write(ctx, [AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command], AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]], promise)
+2026-07-18 19:58:18.817 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandEncoder - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.817 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandEncoder - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.819 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Received: 10 bytes, 2 commands in the stack
+2026-07-18 19:58:18.819 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Stack contains: 2 commands
+2026-07-18 19:58:18.820 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.821 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Completing command LatencyMeteredCommand [type=CLIENT, output=StatusOutput [output=OK, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.821 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Stack contains: 1 commands
+2026-07-18 19:58:18.821 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.821 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Completing command LatencyMeteredCommand [type=CLIENT, output=StatusOutput [output=OK, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.821 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] channelActive()
+2026-07-18 19:58:18.822 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] activateEndpointAndExecuteBufferedCommands 0 command(s) buffered
+2026-07-18 19:58:18.822 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] activating endpoint
+2026-07-18 19:58:18.822 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] flushCommands()
+2026-07-18 19:58:18.823 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] flushCommands() Flushing 0 commands
+2026-07-18 19:58:18.825 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] channelActive()
+2026-07-18 19:58:18.825 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] channelActive() done
+2026-07-18 19:58:18.826 [lettuce-nioEventLoop-4-1] DEBUG io.lettuce.core.AbstractRedisClient - Connecting to Redis at localhost/<unresolved>:6379: Success
+2026-07-18 19:58:18.845 [restartedMain] DEBUG io.lettuce.core.RedisChannelHandler - dispatching command AsyncCommand [type=CONFIG, output=MapOutput [output={}, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.848 [restartedMain] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] write() writeAndFlush command AsyncCommand [type=CONFIG, output=MapOutput [output={}, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.850 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] write(ctx, AsyncCommand [type=CONFIG, output=MapOutput [output={}, error='null'], commandType=io.lettuce.core.protocol.Command], promise)
+2026-07-18 19:58:18.851 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandEncoder - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=CONFIG, output=MapOutput [output={}, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.852 [restartedMain] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] write() done
+2026-07-18 19:58:18.853 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Received: 41 bytes, 1 commands in the stack
+2026-07-18 19:58:18.853 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Stack contains: 1 commands
+2026-07-18 19:58:18.854 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.854 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] Completing command LatencyMeteredCommand [type=CONFIG, output=MapOutput [output={notify-keyspace-events=xE}, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.964 [restartedMain] DEBUG io.lettuce.core.RedisClient - Resolved SocketAddress localhost/<unresolved>:6379 using redis://localhost?timeout=1s
+2026-07-18 19:58:18.964 [restartedMain] DEBUG io.lettuce.core.AbstractRedisClient - Connecting to Redis at localhost/<unresolved>:6379
+2026-07-18 19:58:18.968 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, [id: 0xbba27f1d] (inactive), epid=0x2, chid=0x2] channelRegistered()
+2026-07-18 19:58:18.976 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] write(ctx, AsyncCommand [type=HELLO, output=GenericMapOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command], promise)
+2026-07-18 19:58:18.977 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandEncoder - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=HELLO, output=GenericMapOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.983 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Received: 687 bytes, 1 commands in the stack
+2026-07-18 19:58:18.984 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Stack contains: 1 commands
+2026-07-18 19:58:18.987 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.988 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Completing command LatencyMeteredCommand [type=HELLO, output=GenericMapOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.989 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] write(ctx, [AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command], AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]], promise)
+2026-07-18 19:58:18.990 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandEncoder - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.990 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandEncoder - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.992 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Received: 10 bytes, 2 commands in the stack
+2026-07-18 19:58:18.992 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Stack contains: 2 commands
+2026-07-18 19:58:18.992 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.993 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Completing command LatencyMeteredCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.993 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Stack contains: 1 commands
+2026-07-18 19:58:18.993 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:18.993 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Completing command LatencyMeteredCommand [type=CLIENT, output=StatusOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.AsyncCommand]
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] channelActive()
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] activateEndpointAndExecuteBufferedCommands 0 command(s) buffered
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] activating endpoint
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] flushCommands()
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] flushCommands() Flushing 0 commands
+2026-07-18 19:58:18.994 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] channelActive()
+2026-07-18 19:58:18.995 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] channelActive() done
+2026-07-18 19:58:18.995 [lettuce-nioEventLoop-4-2] DEBUG io.lettuce.core.AbstractRedisClient - Connecting to Redis at localhost/<unresolved>:6379: Success
+2026-07-18 19:58:18.998 [restartedMain] DEBUG io.lettuce.core.RedisChannelHandler - dispatching command AsyncCommand [type=PSUBSCRIBE, output=PubSubOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.998 [restartedMain] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] write() writeAndFlush command AsyncCommand [type=PSUBSCRIBE, output=PubSubOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:18.999 [restartedMain] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] write() done
+2026-07-18 19:58:18.999 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] write(ctx, AsyncCommand [type=PSUBSCRIBE, output=PubSubOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command], promise)
+2026-07-18 19:58:19.000 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandEncoder - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379] writing command AsyncCommand [type=PSUBSCRIBE, output=PubSubOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 19:58:19.002 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] Received: 54 bytes, 1 commands in the stack
+2026-07-18 19:58:19.005 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.RedisStateMachine - Decode done, empty stack: true
+2026-07-18 19:58:19.209 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[dispatcherServlet]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2026-07-18 19:58:19.209 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]] to [INITIALIZING]
+2026-07-18 19:58:19.210 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]] to [INITIALIZED]
+2026-07-18 19:58:19.210 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]] to [STARTING_PREP]
+2026-07-18 19:58:19.210 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [INITIALIZING]
+2026-07-18 19:58:19.211 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [INITIALIZED]
+2026-07-18 19:58:19.211 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTING_PREP]
+2026-07-18 19:58:19.211 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [INITIALIZING]
+2026-07-18 19:58:19.214 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [INITIALIZED]
+2026-07-18 19:58:19.214 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTING_PREP]
+2026-07-18 19:58:19.214 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTING]
+2026-07-18 19:58:19.214 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTED]
+2026-07-18 19:58:19.215 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTING]
+2026-07-18 19:58:19.215 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]]] to [STARTED]
+2026-07-18 19:58:19.215 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]] to [STARTING]
+2026-07-18 19:58:19.215 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[dispatcherServlet]] to [STARTED]
+2026-07-18 19:58:19.219 [restartedMain] DEBUG o.apache.catalina.core.ContainerBase - Add container child [StandardWrapper[h2Console]] to container [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]
+2026-07-18 19:58:19.219 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]] to [INITIALIZING]
+2026-07-18 19:58:19.219 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]] to [INITIALIZED]
+2026-07-18 19:58:19.219 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]] to [STARTING_PREP]
+2026-07-18 19:58:19.220 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [INITIALIZING]
+2026-07-18 19:58:19.220 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [INITIALIZED]
+2026-07-18 19:58:19.220 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTING_PREP]
+2026-07-18 19:58:19.220 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [INITIALIZING]
+2026-07-18 19:58:19.221 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [INITIALIZED]
+2026-07-18 19:58:19.221 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTING_PREP]
+2026-07-18 19:58:19.221 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTING]
+2026-07-18 19:58:19.221 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardWrapperValve[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTED]
+2026-07-18 19:58:19.221 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTING]
+2026-07-18 19:58:19.222 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]]] to [STARTED]
+2026-07-18 19:58:19.222 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]] to [STARTING]
+2026-07-18 19:58:19.222 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[].StandardWrapper[h2Console]] to [STARTED]
+2026-07-18 19:58:19.253 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardManager[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZING]
+2026-07-18 19:58:19.254 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardManager[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [INITIALIZED]
+2026-07-18 19:58:19.254 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardManager[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING_PREP]
+2026-07-18 19:58:19.254 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.springframework.boot.web.embedded.tomcat.LazySessionIdGenerator@5e175f83] to [INITIALIZING]
+2026-07-18 19:58:19.254 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.springframework.boot.web.embedded.tomcat.LazySessionIdGenerator@5e175f83] to [INITIALIZED]
+2026-07-18 19:58:19.255 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.springframework.boot.web.embedded.tomcat.LazySessionIdGenerator@5e175f83] to [STARTING_PREP]
+2026-07-18 19:58:19.255 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.springframework.boot.web.embedded.tomcat.LazySessionIdGenerator@5e175f83] to [STARTING]
+2026-07-18 19:58:19.255 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.springframework.boot.web.embedded.tomcat.LazySessionIdGenerator@5e175f83] to [STARTED]
+2026-07-18 19:58:19.256 [restartedMain] DEBUG o.a.catalina.session.StandardManager - Persisted data file [/tmp/DFC808BFAA4F8CAE71A839480230929E23F0CD24/servlet-sessions/SESSIONS.ser] was not found
+2026-07-18 19:58:19.256 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardManager[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTING]
+2026-07-18 19:58:19.256 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardManager[StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]]] to [STARTED]
+2026-07-18 19:58:19.265 [restartedMain] DEBUG c.t.g.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-07-18 19:58:19.267 [restartedMain] DEBUG o.s.w.f.ServerHttpObservationFilter - Filter 'webMvcObservationFilter' configured for use
+2026-07-18 19:58:19.268 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]] to [STARTING]
+2026-07-18 19:58:19.268 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost].TomcatEmbeddedContext[]] to [STARTED]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZING]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZED]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING_PREP]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [ErrorReportValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZING]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [ErrorReportValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZED]
+2026-07-18 19:58:19.269 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [ErrorReportValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING_PREP]
+2026-07-18 19:58:19.270 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [ErrorReportValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING]
+2026-07-18 19:58:19.270 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [ErrorReportValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTED]
+2026-07-18 19:58:19.270 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardHostValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZING]
+2026-07-18 19:58:19.270 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardHostValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [INITIALIZED]
+2026-07-18 19:58:19.270 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardHostValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING_PREP]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardHostValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardHostValve[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTED]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTING]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat].StandardHost[localhost]]] to [STARTED]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost]] to [STARTING]
+2026-07-18 19:58:19.271 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat].StandardHost[localhost]] to [STARTED]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat]]] to [INITIALIZING]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat]]] to [INITIALIZED]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat]]] to [STARTING_PREP]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngineValve[StandardEngine[Tomcat]]] to [INITIALIZING]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngineValve[StandardEngine[Tomcat]]] to [INITIALIZED]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngineValve[StandardEngine[Tomcat]]] to [STARTING_PREP]
+2026-07-18 19:58:19.272 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngineValve[StandardEngine[Tomcat]]] to [STARTING]
+2026-07-18 19:58:19.273 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngineValve[StandardEngine[Tomcat]]] to [STARTED]
+2026-07-18 19:58:19.273 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat]]] to [STARTING]
+2026-07-18 19:58:19.273 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardPipeline[StandardEngine[Tomcat]]] to [STARTED]
+2026-07-18 19:58:19.273 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat]] to [STARTING]
+2026-07-18 19:58:19.277 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardEngine[Tomcat]] to [STARTED]
+2026-07-18 19:58:19.278 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.mapper.MapperListener@3100317b] to [STARTING_PREP]
+2026-07-18 19:58:19.278 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.mapper.MapperListener@3100317b] to [STARTING]
+2026-07-18 19:58:19.279 [restartedMain] DEBUG org.apache.catalina.mapper.Mapper - Registered host [localhost]
+2026-07-18 19:58:19.280 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [h2Console] in Context [] for service [StandardService[Tomcat]]
+2026-07-18 19:58:19.280 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Wrapper [dispatcherServlet] in Context [] for service [StandardService[Tomcat]]
+2026-07-18 19:58:19.280 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register Context [] for service [StandardService[Tomcat]]
+2026-07-18 19:58:19.280 [restartedMain] DEBUG o.a.catalina.mapper.MapperListener - Register host [localhost] at domain [null] for service [StandardService[Tomcat]]
+2026-07-18 19:58:19.281 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [org.apache.catalina.mapper.MapperListener@3100317b] to [STARTED]
+2026-07-18 19:58:19.281 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardService[Tomcat]] to [STARTED]
+2026-07-18 19:58:19.281 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [StandardServer[-1]] to [STARTED]
+2026-07-18 19:58:19.318 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-07-18 19:58:19.506 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-18 19:58:19.803 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@30c53ec3
+2026-07-18 19:58:19.805 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-18 19:58:20.555 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-18 19:58:22.417 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-18 19:58:22.894 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-07-18 19:58:25.154 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-18 19:58:25.342 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-07-18 19:58:25.529 [restartedMain] DEBUG o.apache.catalina.webresources.Cache - Increased cache size by [521] for item [org.apache.catalina.webresources.CachedResource@52cff88a] at [/index.html] making total cache size [1628]
+2026-07-18 19:58:25.622 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.a.a.AuthController:
+	{POST [/api/v1/auth/login]}: login(UsernamePasswordRequest)
+	{POST [/api/v1/auth/logout]}: logout()
+	{POST [/api/v1/auth/refresh]}: refreshToken(RefreshTokenRequest)
+	{POST [/api/v1/auth/register]}: register(RegisterRequest)
+2026-07-18 19:58:25.634 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.b.a.BookingController:
+	{POST [/api/v1/bookings/hold-seats]}: holdSeats(HoldSeatsRequest)
+	{POST [/api/v1/bookings]}: createBooking(CreateBookingRequest)
+	{GET [/api/v1/bookings]}: getUserBookings(BookingStatus,Pageable)
+	{GET [/api/v1/bookings/{id}]}: getBookingDetail(Long)
+	{DELETE [/api/v1/bookings/{id}]}: cancelBooking(Long)
+2026-07-18 19:58:25.642 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.c.a.CinemaController:
+	{GET [/api/v1/cinemas/{id}/showtimes]}: getCinemaShowtimes(Long,Long,String,String,String)
+	{GET [/api/v1/cinemas/{id}]}: getCinemaById(Long)
+	{GET [/api/v1/cinemas]}: getAllCinemas(int,int,String,String,String)
+2026-07-18 19:58:25.649 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.m.a.MovieController:
+	{GET [/api/v1/movies/search]}: searchMovies(String,int,int)
+	{GET [/api/v1/movies/{id}]}: getMovieById(Long)
+	{GET [/api/v1/movies/{id}/showtimes]}: getMovieShowtimes(Long,Long,String,String,String,String)
+	{GET [/api/v1/movies/now-showing]}: getNowShowingMovies(int,int,String,String)
+	{GET [/api/v1/movies/upcoming]}: getUpcomingMovies(int,int,String,String)
+	{GET [/api/v1/movies]}: getAllMovies(int,int,MovieStatus,String,String,String)
+2026-07-18 19:58:25.655 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.p.a.PaymentController:
+	{POST [/api/v1/payments/{id}/verify]}: verifyPayment(Long)
+	{GET [/api/v1/payments/callback]}: handlePaymentCallback(Map)
+	{POST [/api/v1/payments]}: initiatePayment(PaymentRequest,HttpServletRequest)
+2026-07-18 19:58:25.658 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.r.RoomController:
+	{GET [/api/v1/rooms/{id}]}: getRoomById(Long)
+	{POST [/api/v1/rooms]}: createRoom(RoomRequest)
+	{PUT [/api/v1/rooms/{id}]}: updateRoom(Long,RoomRequest)
+	{DELETE [/api/v1/rooms/{id}]}: deleteRoom(Long)
+	{GET [/api/v1/rooms]}: getRooms(Long,String)
+2026-07-18 19:58:25.663 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.s.a.SeatController:
+	{GET [/api/v1/seats/layout]}: getRoomLayout(Long)
+	{POST [/api/v1/seats]}: createSeat(CreateSeatRequest)
+	{PUT [/api/v1/seats/{id}]}: updateSeat(Long,UpdateSeatRequest)
+	{DELETE [/api/v1/seats/{id}]}: deleteSeat(Long)
+	{POST [/api/v1/seats/bulk]}: bulkCreateSeats(Long,String[],int,SeatType,Long)
+	{GET [/api/v1/seats]}: getSeatsByRoom(Long)
+2026-07-18 19:58:25.666 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	c.t.d.s.a.ShowtimeController:
+	{GET [/api/v1/showtimes/{id}/seats]}: getShowtimeSeats(Long)
+2026-07-18 19:58:25.673 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.b.a.w.s.e.BasicErrorController:
+	{ [/error], produces [text/html]}: errorHtml(HttpServletRequest,HttpServletResponse)
+	{ [/error]}: error(HttpServletRequest)
+2026-07-18 19:58:25.692 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.w.a.OpenApiWebMvcResource:
+	{GET [/v3/api-docs.yaml], produces [application/vnd.oai.openapi]}: openapiYaml(HttpServletRequest,String,Locale)
+	{GET [/v3/api-docs], produces [application/json]}: openapiJson(HttpServletRequest,String,Locale)
+2026-07-18 19:58:25.706 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.w.u.SwaggerWelcomeWebMvc:
+	{GET [/swagger-ui]}: redirectToUi(HttpServletRequest)
+2026-07-18 19:58:25.709 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 
+	o.s.w.u.SwaggerConfigResource:
+	{GET [/v3/api-docs/swagger-config], produces [application/json]}: openapiJson(HttpServletRequest)
+2026-07-18 19:58:25.712 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 39 mappings in 'requestMappingHandlerMapping'
+2026-07-18 19:58:25.731 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'beanNameHandlerMapping' {}
+2026-07-18 19:58:25.799 [restartedMain] DEBUG _.s.w.s.HandlerMapping.Mappings - 'resourceHandlerMapping' {/webjars/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /**=ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]], /swagger-ui*/*swagger-initializer.js=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]], /swagger-ui*/**=ResourceHttpRequestHandler [classpath [META-INF/resources/webjars/]]}
+2026-07-18 19:58:25.981 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-07-18 19:58:26.366 [restartedMain] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 2 ResponseBodyAdvice
+2026-07-18 19:58:26.431 [restartedMain] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 2 ResponseBodyAdvice
+2026-07-18 19:58:26.647 [restartedMain] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Creating executor io.netty.util.concurrent.DefaultEventExecutorGroup
+2026-07-18 19:58:26.901 [restartedMain] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/ticket?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true&tinyInt1isBit=false'
+2026-07-18 19:58:27.100 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [Connector["http-nio-8081"]] to [STARTING_PREP]
+2026-07-18 19:58:27.101 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [Connector["http-nio-8081"]] to [STARTING]
+2026-07-18 19:58:27.101 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-07-18 19:58:27.124 [restartedMain] DEBUG o.apache.catalina.util.LifecycleBase - Setting state for [Connector["http-nio-8081"]] to [STARTED]
+2026-07-18 19:58:27.130 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-07-18 19:58:27.166 [restartedMain] INFO  c.t.TicketOnlineApplication - Started TicketOnlineApplication in 14.824 seconds (process running for 15.773)
+2026-07-18 19:58:27.358 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 19:59:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:00:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:01:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:02:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:03:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:04:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:05:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:06:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:07:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:08:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:09:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:10:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:11:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:12:27.173 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:13:27.174 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:14:27.168 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:15:27.173 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:16:27.175 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:17:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:18:27.174 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:19:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:20:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:21:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:22:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:23:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:24:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:25:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:26:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:27:27.173 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:28:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:29:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:30:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:31:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:32:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:33:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:34:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:35:27.168 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:36:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:37:27.174 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:38:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:39:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:40:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:41:00.605 [http-nio-8081-exec-1] DEBUG o.a.coyote.http11.Http11Processor - Error parsing HTTP request header
+java.io.EOFException: null
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.fillReadBuffer(NioEndpoint.java:1293)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.read(NioEndpoint.java:1181)
+	at org.apache.coyote.http11.Http11InputBuffer.fill(Http11InputBuffer.java:792)
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:348)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:270)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-18 20:41:00.606 [http-nio-8081-exec-1] DEBUG o.a.coyote.http11.Http11Processor - Error state [CLOSE_CONNECTION_NOW] reported while processing request
+java.io.EOFException: null
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.fillReadBuffer(NioEndpoint.java:1293)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.read(NioEndpoint.java:1181)
+	at org.apache.coyote.http11.Http11InputBuffer.fill(Http11InputBuffer.java:792)
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:348)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:270)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-07-18 20:41:27.168 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:42:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:43:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:44:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:45:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:46:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:47:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:48:27.174 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:49:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:50:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:51:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:52:27.168 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:53:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:54:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:55:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:56:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:57:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:58:27.171 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 20:59:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:00:27.168 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:01:27.175 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:02:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:03:27.170 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:04:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:05:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:06:27.174 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:07:27.172 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:08:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:09:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:10:27.169 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:11:27.167 [scheduling-1] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.booking_code,b1_0.confirmed_at,b1_0.created_at,b1_0.expires_at,b1_0.showtime_id,b1_0.status,b1_0.total_amount,b1_0.updated_at,b1_0.user_id from bookings b1_0 where b1_0.status='PENDING' and b1_0.expires_at<? order by b1_0.expires_at
+2026-07-18 21:12:03.156 [SpringApplicationShutdownHook] DEBUG io.lettuce.core.RedisChannelHandler - closeAsync()
+2026-07-18 21:12:03.156 [SpringApplicationShutdownHook] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] closeAsync()
+2026-07-18 21:12:03.162 [SpringApplicationShutdownHook] DEBUG io.lettuce.core.AbstractRedisClient - Initiate shutdown (0, 0, MILLISECONDS)
+2026-07-18 21:12:03.162 [SpringApplicationShutdownHook] DEBUG io.lettuce.core.RedisChannelHandler - closeAsync()
+2026-07-18 21:12:03.162 [SpringApplicationShutdownHook] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] closeAsync()
+2026-07-18 21:12:03.164 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] channelInactive()
+2026-07-18 21:12:03.166 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] channelInactive()
+2026-07-18 21:12:03.169 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1] deactivating endpoint handler
+2026-07-18 21:12:03.169 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.DefaultEndpoint - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2] deactivating endpoint handler
+2026-07-18 21:12:03.170 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] channelInactive() done
+2026-07-18 21:12:03.171 [SpringApplicationShutdownHook] DEBUG i.l.c.r.DefaultClientResources - Initiate shutdown (0, 0, MILLISECONDS)
+2026-07-18 21:12:03.171 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] channelInactive() done
+2026-07-18 21:12:03.174 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] channelInactive()
+2026-07-18 21:12:03.174 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] Reconnect scheduling disabled
+2026-07-18 21:12:03.174 [lettuce-nioEventLoop-4-1] DEBUG i.l.core.protocol.CommandHandler - [channel=0x0b12238a, /127.0.0.1:50922 -> localhost/127.0.0.1:6379, epid=0x1, chid=0x1] channelUnregistered()
+2026-07-18 21:12:03.175 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] channelInactive()
+2026-07-18 21:12:03.175 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.ConnectionWatchdog - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, last known addr=localhost/127.0.0.1:6379] Reconnect scheduling disabled
+2026-07-18 21:12:03.176 [lettuce-nioEventLoop-4-2] DEBUG i.l.core.protocol.CommandHandler - [channel=0xaf6e36a5, /127.0.0.1:50926 -> localhost/127.0.0.1:6379, epid=0x2, chid=0x2] channelUnregistered()
+2026-07-18 21:12:03.176 [SpringApplicationShutdownHook] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Initiate shutdown (0, 0, MILLISECONDS)
+2026-07-18 21:12:03.176 [SpringApplicationShutdownHook] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Release executor io.netty.channel.nio.NioEventLoopGroup@9e66d94
+2026-07-18 21:12:03.177 [lettuce-nioEventLoop-4-2] DEBUG io.netty.buffer.PoolThreadCache - Freed 6 thread-local buffer(s) from thread: lettuce-nioEventLoop-4-2
+2026-07-18 21:12:03.178 [lettuce-nioEventLoop-4-1] DEBUG io.netty.buffer.PoolThreadCache - Freed 6 thread-local buffer(s) from thread: lettuce-nioEventLoop-4-1
+2026-07-18 21:12:03.192 [SpringApplicationShutdownHook] DEBUG i.l.c.r.DefaultClientResources - Initiate shutdown (0, 2, SECONDS)
+2026-07-18 21:12:03.192 [SpringApplicationShutdownHook] DEBUG i.l.c.r.DefaultEventLoopGroupProvider - Initiate shutdown (0, 2, SECONDS)
+2026-07-18 21:12:03.202 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-18 21:12:03.207 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-18 21:12:03.212 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-18 21:12:03.215 [SpringApplicationShutdownHook] DEBUG io.lettuce.core.RedisChannelHandler - dispatching command AsyncCommand [type=PUNSUBSCRIBE, output=PubSubOutput [output=null, error='null'], commandType=io.lettuce.core.protocol.Command]
+2026-07-18 21:12:03.215 [SpringApplicationShutdownHook] WARN  o.s.d.r.l.RedisMessageListenerContainer - Unable to unsubscribe from subscriptions
+java.lang.IllegalStateException: cannot be started once stopped
+	at io.netty.util.HashedWheelTimer.start(HashedWheelTimer.java:363)
+	at io.netty.util.HashedWheelTimer.newTimeout(HashedWheelTimer.java:445)
+	at io.lettuce.core.protocol.CommandExpiryWriter.potentiallyExpire(CommandExpiryWriter.java:176)
+	at io.lettuce.core.protocol.CommandExpiryWriter.write(CommandExpiryWriter.java:120)
+	at io.lettuce.core.RedisChannelHandler.dispatch(RedisChannelHandler.java:218)
+	at io.lettuce.core.StatefulRedisConnectionImpl.dispatch(StatefulRedisConnectionImpl.java:163)
+	at io.lettuce.core.AbstractRedisAsyncCommands.dispatch(AbstractRedisAsyncCommands.java:696)
+	at io.lettuce.core.pubsub.RedisPubSubAsyncCommandsImpl.punsubscribe(RedisPubSubAsyncCommandsImpl.java:58)
+	at org.springframework.data.redis.connection.lettuce.LettuceSubscription.doClose(LettuceSubscription.java:86)
+	at org.springframework.data.redis.connection.util.AbstractSubscription.close(AbstractSubscription.java:105)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.closeSubscription(RedisMessageListenerContainer.java:1361)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.doUnsubscribe(RedisMessageListenerContainer.java:1324)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.lambda$unsubscribeAll$2(RedisMessageListenerContainer.java:1317)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.lambda$doInLock$9(RedisMessageListenerContainer.java:1445)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.doInLock(RedisMessageListenerContainer.java:1455)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.doInLock(RedisMessageListenerContainer.java:1444)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer$Subscriber.unsubscribeAll(RedisMessageListenerContainer.java:1312)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer.doUnsubscribe(RedisMessageListenerContainer.java:512)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer.stopListening(RedisMessageListenerContainer.java:494)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer.removeListener(RedisMessageListenerContainer.java:764)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer.removeMessageListener(RedisMessageListenerContainer.java:587)
+	at org.springframework.data.redis.listener.RedisMessageListenerContainer.removeMessageListener(RedisMessageListenerContainer.java:614)
+	at org.springframework.data.redis.listener.KeyspaceEventMessageListener.destroy(KeyspaceEventMessageListener.java:110)
+	at org.springframework.data.redis.core.RedisKeyValueAdapter.destroy(RedisKeyValueAdapter.java:708)
+	at org.springframework.beans.factory.support.DisposableBeanAdapter.destroy(DisposableBeanAdapter.java:211)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroyBean(DefaultSingletonBeanRegistry.java:587)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingleton(DefaultSingletonBeanRegistry.java:559)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingleton(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.destroySingletons(DefaultSingletonBeanRegistry.java:520)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.destroySingletons(DefaultListableBeanFactory.java:1200)
+	at org.springframework.context.support.AbstractApplicationContext.destroyBeans(AbstractApplicationContext.java:1195)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1156)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.doClose(ServletWebServerApplicationContext.java:174)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:1102)
+	at org.springframework.boot.SpringApplicationShutdownHook.closeAndWait(SpringApplicationShutdownHook.java:147)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
+	at java.base/java.lang.Thread.run(Thread.java:840)

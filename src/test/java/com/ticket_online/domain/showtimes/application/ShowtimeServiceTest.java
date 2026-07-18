@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.ticket_online.domain.cinemas.dao.CinemaRepository;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.rooms.Room;
@@ -39,7 +38,7 @@ class ShowtimeServiceTest {
     @Mock private ShowtimeRepository showtimeRepository;
 
     @Mock private SeatRepository seatRepository;
-    @Mock private CinemaRepository cinemaRepository;
+
     @InjectMocks private ShowtimeService showtimeService;
 
     @Test
@@ -59,7 +58,6 @@ class ShowtimeServiceTest {
         // Then
         assertThat(result).isNotNull();
         assertThat(result.getShowtimeId()).isEqualTo(showtimeId);
-        assertThat(result.getScreenLayout()).isNotNull();
         assertThat(result.getSeats()).hasSize(6);
         verify(showtimeRepository).findByIdWithDetails(showtimeId);
         verify(seatRepository).findByRoomId(showtime.getRoom().getId());
@@ -100,26 +98,6 @@ class ShowtimeServiceTest {
     }
 
     @Test
-    @DisplayName("Should build screen layout correctly with multiple rows")
-    void shouldBuildScreenLayoutCorrectlyWithMultipleRows() {
-        // Given
-        Long showtimeId = 1L;
-        Showtime showtime = createTestShowtime();
-        List<Seat> seats = createTestSeats(showtime.getRoom());
-
-        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
-        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
-
-        // When
-        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
-
-        // Then
-        assertThat(result.getScreenLayout()).isNotNull();
-        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
-        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(3);
-    }
-
-    @Test
     @DisplayName("Should handle empty seats list")
     void shouldHandleEmptySeatsList() {
         // Given
@@ -136,8 +114,6 @@ class ShowtimeServiceTest {
         // Then
         assertThat(result).isNotNull();
         assertThat(result.getSeats()).isEmpty();
-        assertThat(result.getScreenLayout().getRows()).isEmpty();
-        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(0);
     }
 
     @Test
@@ -202,92 +178,6 @@ class ShowtimeServiceTest {
                 .allMatch(seat -> seat.getPrice() != null && seat.getPrice() > 0);
     }
 
-    @Test
-    @DisplayName("Should handle single row with multiple seats")
-    void shouldHandleSingleRowWithMultipleSeats() {
-        // Given
-        Long showtimeId = 1L;
-        Showtime showtime = createTestShowtime();
-        Room room = showtime.getRoom();
-
-        List<Seat> seats =
-                Arrays.asList(
-                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 3, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 4, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 5, SeatType.REGULAR, 85000L));
-
-        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
-        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
-
-        // When
-        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
-
-        // Then
-        assertThat(result.getScreenLayout().getRows()).containsExactly("A");
-        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(5);
-        assertThat(result.getSeats()).hasSize(5);
-    }
-
-    @Test
-    @DisplayName("Should calculate max seats per row correctly with uneven rows")
-    void shouldCalculateMaxSeatsPerRowCorrectlyWithUnevenRows() {
-        // Given
-        Long showtimeId = 1L;
-        Showtime showtime = createTestShowtime();
-        Room room = showtime.getRoom();
-
-        List<Seat> seats =
-                Arrays.asList(
-                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
-                        createSeat(room, "B", 1, SeatType.REGULAR, 85000L),
-                        createSeat(room, "B", 2, SeatType.REGULAR, 85000L),
-                        createSeat(room, "B", 3, SeatType.REGULAR, 85000L),
-                        createSeat(room, "B", 4, SeatType.REGULAR, 85000L),
-                        createSeat(room, "C", 1, SeatType.REGULAR, 85000L));
-
-        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
-        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
-
-        // When
-        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
-
-        // Then
-        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
-        assertThat(result.getScreenLayout().getSeatsPerRow())
-                .isEqualTo(4); // Max is row B with 4 seats
-        assertThat(result.getSeats()).hasSize(7);
-    }
-
-    @Test
-    @DisplayName("Should return rows in sorted order")
-    void shouldReturnRowsInSortedOrder() {
-        // Given
-        Long showtimeId = 1L;
-        Showtime showtime = createTestShowtime();
-        Room room = showtime.getRoom();
-
-        // Create seats in non-alphabetical order
-        List<Seat> seats =
-                Arrays.asList(
-                        createSeat(room, "C", 1, SeatType.REGULAR, 85000L),
-                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
-                        createSeat(room, "B", 1, SeatType.REGULAR, 85000L));
-
-        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
-        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
-
-        // When
-        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
-
-        // Then
-        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
-    }
-
-    // Helper methods to create test data
-
     private Showtime createTestShowtime() {
         Cinema cinema =
                 Cinema.createCinema(
@@ -300,10 +190,9 @@ class ShowtimeServiceTest {
                         "123456",
                         "website",
                         "desc");
-        Cinema cinemaSave = cinemaRepository.save(cinema);
         setId(cinema, 1L);
 
-        Room room = Room.createRoom(cinemaSave.getId(), "Screen 1", 100, "VIP");
+        Room room = Room.createRoom(cinema.getId(), "Screen 1", 100, "VIP");
         setId(room, 1L);
 
         Movie movie =
@@ -359,7 +248,6 @@ class ShowtimeServiceTest {
                         .type(type)
                         .basePrice(price)
                         .build();
-        // Set a unique ID based on row and number for testing
         setId(seat, Long.valueOf(row.charAt(0) - 'A' + 1) * 100 + number);
         return seat;
     }
