@@ -430,10 +430,6 @@ Lấy sơ đồ ghế của suất chiếu.
   "status": 200,
   "data": {
     "showtimeId": 101,
-    "screenLayout": {
-      "rows": ["A", "B", "C", "D", "E", "F", "G", "H"],
-      "seatsPerRow": 15
-    },
     "seats": [
       {
         "id": 1201,
