@@ -4,7 +4,6 @@ import com.ticket_online.domain.cinemas.dao.CinemaRepository;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
-import com.ticket_online.domain.cinemas.dto.response.RoomResponse;
 import com.ticket_online.domain.rooms.RoomRepository;
 import com.ticket_online.domain.showtimes.application.ShowtimeService;
 import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
@@ -53,13 +52,6 @@ public class CinemaService {
             Long cinemaId, Long movieId, String date, String startDate, String endDate) {
         findCinemaById(cinemaId);
         return showtimeService.getShowtimesByCinemaId(cinemaId, movieId, date, startDate, endDate);
-    }
-
-    public List<RoomResponse> getRoomsByCinemaId(Long cinemaId) {
-        findCinemaById(cinemaId);
-        return roomRepository.findByCinemaId(cinemaId).stream()
-                .map(RoomResponse::from)
-                .collect(Collectors.toList());
     }
 
     private Cinema findCinemaById(Long id) {
