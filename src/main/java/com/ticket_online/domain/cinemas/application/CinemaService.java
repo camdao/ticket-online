@@ -27,8 +27,9 @@ public class CinemaService {
     private final RoomRepository roomRepository;
     private final ShowtimeService showtimeService;
 
-    public CinemaListResponse getAllCinemas(Pageable pageable) {
-        Page<Cinema> cinemaPage = cinemaRepository.findAll(pageable);
+    public CinemaListResponse getCinemas(
+            Pageable pageable, String brand, String city, String district) {
+        Page<Cinema> cinemaPage = cinemaRepository.findByFilters(brand, city, district, pageable);
         List<CinemaResponse> cinemaResponses =
                 cinemaPage.getContent().stream()
                         .map(
@@ -51,37 +52,6 @@ public class CinemaService {
     public CinemaResponse getCinemaById(Long id) {
         Cinema cinema = findCinemaById(id);
         return CinemaResponse.from(cinema);
-    }
-
-    public CinemaListResponse getCinemasByBrand(String brand) {
-        List<Cinema> cinemas = cinemaRepository.findByBrand(brand);
-        return buildCinemaListResponse(cinemas);
-    }
-
-    public CinemaListResponse getCinemasByCity(String city) {
-        List<Cinema> cinemas = cinemaRepository.findByCity(city);
-        return buildCinemaListResponse(cinemas);
-    }
-
-    public CinemaListResponse getCinemasByCityAndDistrict(String city, String district) {
-        List<Cinema> cinemas = cinemaRepository.findByCityAndDistrict(city, district);
-        return buildCinemaListResponse(cinemas);
-    }
-
-    private CinemaListResponse buildCinemaListResponse(List<Cinema> cinemas) {
-        List<CinemaResponse> cinemaResponses =
-                cinemas.stream()
-                        .map(
-                                cinema -> {
-                                    Long totalRoomsLong =
-                                            roomRepository.countByCinemaId(cinema.getId());
-                                    Integer totalRooms =
-                                            totalRoomsLong != null ? totalRoomsLong.intValue() : 0;
-                                    return CinemaResponse.from(cinema, totalRooms);
-                                })
-                        .collect(Collectors.toList());
-        return new CinemaListResponse(
-                cinemaResponses, 0, cinemaResponses.size(), (long) cinemaResponses.size(), 1);
     }
 
     public List<ShowtimeResponse> getCinemaShowtimes(

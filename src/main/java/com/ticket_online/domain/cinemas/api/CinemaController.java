@@ -24,18 +24,8 @@ public class CinemaController {
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String district) {
 
-        CinemaListResponse response;
-
-        if (city != null && district != null) {
-            response = cinemaService.getCinemasByCityAndDistrict(city, district);
-        } else if (brand != null) {
-            response = cinemaService.getCinemasByBrand(brand);
-        } else if (city != null) {
-            response = cinemaService.getCinemasByCity(city);
-        } else {
-            Pageable pageable = PageRequest.of(page, size);
-            response = cinemaService.getAllCinemas(pageable);
-        }
+        Pageable pageable = PageRequest.of(page, size);
+        CinemaListResponse response = cinemaService.getCinemas(pageable, brand, city, district);
 
         return ResponseEntity.ok(response);
     }
