@@ -40,13 +40,12 @@ public class CinemaService {
                                     return CinemaResponse.from(cinema, totalRooms);
                                 })
                         .collect(Collectors.toList());
-        return CinemaListResponse.builder()
-                .content(cinemaResponses)
-                .page(cinemaPage.getNumber())
-                .size(cinemaPage.getSize())
-                .totalElements(cinemaPage.getTotalElements())
-                .totalPages(cinemaPage.getTotalPages())
-                .build();
+        return new CinemaListResponse(
+                cinemaResponses,
+                cinemaPage.getNumber(),
+                cinemaPage.getSize(),
+                cinemaPage.getTotalElements(),
+                cinemaPage.getTotalPages());
     }
 
     public CinemaResponse getCinemaById(Long id) {
@@ -81,13 +80,8 @@ public class CinemaService {
                                     return CinemaResponse.from(cinema, totalRooms);
                                 })
                         .collect(Collectors.toList());
-        return CinemaListResponse.builder()
-                .content(cinemaResponses)
-                .page(0)
-                .size(cinemaResponses.size())
-                .totalElements(cinemaResponses.size())
-                .totalPages(1)
-                .build();
+        return new CinemaListResponse(
+                cinemaResponses, 0, cinemaResponses.size(), (long) cinemaResponses.size(), 1);
     }
 
     public List<ShowtimeResponse> getCinemaShowtimes(

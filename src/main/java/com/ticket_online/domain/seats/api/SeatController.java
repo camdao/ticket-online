@@ -21,17 +21,17 @@ public class SeatController {
 
     private final SeatService seatService;
 
-    /** Get all seats for a specific screen GET /api/v1/seats?screenId={screenId} */
+    /** Get all seats for a specific room GET /api/v1/seats?roomId={roomId} */
     @GetMapping
-    public ResponseEntity<List<SeatResponse>> getSeatsByScreen(@RequestParam Long screenId) {
-        List<SeatResponse> seats = seatService.getSeatsByScreenId(screenId);
+    public ResponseEntity<List<SeatResponse>> getSeatsByRoom(@RequestParam Long roomId) {
+        List<SeatResponse> seats = seatService.getSeatsByRoomId(roomId);
         return ResponseEntity.ok(seats);
     }
 
-    /** Get screen layout information GET /api/v1/seats/layout?screenId={screenId} */
+    /** Get room layout information GET /api/v1/seats/layout?roomId={roomId} */
     @GetMapping("/layout")
-    public ResponseEntity<ScreenLayoutResponse> getScreenLayout(@RequestParam Long screenId) {
-        ScreenLayoutResponse layout = seatService.getScreenLayout(screenId);
+    public ResponseEntity<ScreenLayoutResponse> getRoomLayout(@RequestParam Long roomId) {
+        ScreenLayoutResponse layout = seatService.getRoomLayout(roomId);
         return ResponseEntity.ok(layout);
     }
 
@@ -57,16 +57,16 @@ public class SeatController {
         return ResponseEntity.noContent().build();
     }
 
-    /** Bulk create seats for a screen POST /api/v1/seats/bulk */
+    /** Bulk create seats for a room POST /api/v1/seats/bulk */
     @PostMapping("/bulk")
     public ResponseEntity<List<SeatResponse>> bulkCreateSeats(
-            @RequestParam Long screenId,
+            @RequestParam Long roomId,
             @RequestParam String[] rows,
             @RequestParam int seatsPerRow,
             @RequestParam SeatType type,
             @RequestParam Long basePrice) {
         List<SeatResponse> seats =
-                seatService.bulkCreateSeats(screenId, rows, seatsPerRow, type, basePrice);
+                seatService.bulkCreateSeats(roomId, rows, seatsPerRow, type, basePrice);
         return ResponseEntity.status(HttpStatus.CREATED).body(seats);
     }
 }

@@ -38,13 +38,10 @@ public class RoomService {
 
     @Transactional
     public RoomResponse createRoom(RoomRequest request) {
-        validateCinemaExists(request.getCinemaId());
+        validateCinemaExists(request.cinemaId());
         Room room =
                 Room.createRoom(
-                        request.getCinemaId(),
-                        request.getName(),
-                        request.getCapacity(),
-                        request.getRoomType());
+                        request.cinemaId(), request.name(), request.capacity(), request.roomType());
         Room savedRoom = roomRepository.save(room);
         return RoomResponse.from(savedRoom);
     }
@@ -52,8 +49,8 @@ public class RoomService {
     @Transactional
     public RoomResponse updateRoom(Long id, RoomRequest request) {
         Room room = findRoomById(id);
-        validateCinemaExists(request.getCinemaId());
-        room.updateRoom(request.getName(), request.getCapacity(), request.getRoomType());
+        validateCinemaExists(request.cinemaId());
+        room.updateRoom(request.name(), request.capacity(), request.roomType());
         Room updatedRoom = roomRepository.save(room);
         return RoomResponse.from(updatedRoom);
     }
