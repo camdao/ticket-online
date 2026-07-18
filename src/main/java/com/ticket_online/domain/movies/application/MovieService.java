@@ -1,5 +1,6 @@
 package com.ticket_online.domain.movies.application;
 
+import com.ticket_online.domain.cinemas.dto.response.ShowtimeResponse;
 import com.ticket_online.domain.movies.dao.MovieRepository;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.movies.domain.MovieStatus;
@@ -7,7 +8,6 @@ import com.ticket_online.domain.movies.dto.MovieListResponse;
 import com.ticket_online.domain.movies.dto.MovieResponse;
 import com.ticket_online.domain.showtimes.application.ShowtimeService;
 import com.ticket_online.domain.showtimes.domain.ShowtimeStatus;
-import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.time.LocalDate;

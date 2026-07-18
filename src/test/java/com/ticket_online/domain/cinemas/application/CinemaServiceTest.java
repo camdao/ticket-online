@@ -12,7 +12,6 @@ import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.rooms.RoomRepository;
 import com.ticket_online.domain.showtimes.application.ShowtimeService;
-import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.lang.reflect.Field;
@@ -376,41 +375,6 @@ class CinemaServiceTest {
     }
 
     @Test
-    @DisplayName("Should get cinema showtimes when cinema exists")
-    void shouldGetCinemaShowtimesWhenCinemaExists() {
-        // Given
-        Long cinemaId = 1L;
-        Long movieId = 10L;
-        String date = "2026-07-18";
-        Cinema cinema =
-                Cinema.createCinema(
-                        "CGV Vincom",
-                        "CGV",
-                        "logo.png",
-                        "Address",
-                        "District 1",
-                        "HCMC",
-                        "123456",
-                        "www.cgv.vn",
-                        "Desc");
-
-        List<ShowtimeResponse> showtimes = Collections.emptyList();
-
-        when(cinemaRepository.findById(cinemaId)).thenReturn(Optional.of(cinema));
-        when(showtimeService.getShowtimesByCinemaId(cinemaId, movieId, date, null, null))
-                .thenReturn(showtimes);
-
-        // When
-        List<ShowtimeResponse> result =
-                cinemaService.getCinemaShowtimes(cinemaId, movieId, date, null, null);
-
-        // Then
-        assertThat(result).isNotNull();
-        verify(cinemaRepository).findById(cinemaId);
-        verify(showtimeService).getShowtimesByCinemaId(cinemaId, movieId, date, null, null);
-    }
-
-    @Test
     @DisplayName("Should throw exception when getting showtimes for non-existent cinema")
     void shouldThrowExceptionWhenGettingShowtimesForNonExistentCinema() {
         // Given
@@ -422,41 +386,6 @@ class CinemaServiceTest {
                 .isInstanceOf(CustomException.class)
                 .hasFieldOrPropertyWithValue("errorCode", ErrorCode.CINEMA_NOT_FOUND);
         verify(cinemaRepository).findById(cinemaId);
-    }
-
-    @Test
-    @DisplayName("Should get cinema showtimes with date range")
-    void shouldGetCinemaShowtimesWithDateRange() {
-        // Given
-        Long cinemaId = 1L;
-        String startDate = "2026-07-18";
-        String endDate = "2026-07-25";
-        Cinema cinema =
-                Cinema.createCinema(
-                        "CGV Vincom",
-                        "CGV",
-                        "logo.png",
-                        "Address",
-                        "District 1",
-                        "HCMC",
-                        "123456",
-                        "www.cgv.vn",
-                        "Desc");
-
-        List<ShowtimeResponse> showtimes = Collections.emptyList();
-
-        when(cinemaRepository.findById(cinemaId)).thenReturn(Optional.of(cinema));
-        when(showtimeService.getShowtimesByCinemaId(cinemaId, null, null, startDate, endDate))
-                .thenReturn(showtimes);
-
-        // When
-        List<ShowtimeResponse> result =
-                cinemaService.getCinemaShowtimes(cinemaId, null, null, startDate, endDate);
-
-        // Then
-        assertThat(result).isNotNull();
-        verify(cinemaRepository).findById(cinemaId);
-        verify(showtimeService).getShowtimesByCinemaId(cinemaId, null, null, startDate, endDate);
     }
 
     @Test

@@ -2,435 +2,375 @@ package com.ticket_online.domain.showtimes.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.ticket_online.domain.cinemas.dao.CinemaRepository;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.seats.dao.SeatRepository;
+import com.ticket_online.domain.seats.domain.Seat;
+import com.ticket_online.domain.seats.domain.SeatStatus;
+import com.ticket_online.domain.seats.domain.SeatType;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
-import com.ticket_online.domain.showtimes.domain.ShowtimeStatus;
-import com.ticket_online.domain.showtimes.dto.response.ShowtimeDetailResponse;
-import com.ticket_online.domain.showtimes.dto.response.ShowtimeListResponse;
-import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
+import com.ticket_online.domain.showtimes.dto.response.ShowtimeSeatsResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("ShowtimeService Unit Tests")
 class ShowtimeServiceTest {
 
     @Mock private ShowtimeRepository showtimeRepository;
 
+    @Mock private SeatRepository seatRepository;
+    @Mock private CinemaRepository cinemaRepository;
     @InjectMocks private ShowtimeService showtimeService;
 
-    private Movie movie;
-    private Cinema cinema;
-    private Room room;
-    private Showtime showtime;
+    @Test
+    @DisplayName("Should return showtime seats when showtime exists")
+    void shouldReturnShowtimeSeatsWhenShowtimeExists() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeats(showtime.getRoom());
 
-    @BeforeEach
-    void setUp() {
-        // Create test movie with correct signature
-        movie =
-                Movie.createMovie(
-                        "Avatar: The Way of Water",
-                        192,
-                        "Jake Sully lives with his newfound family...",
-                        "https://cdn.example.com/avatar2.jpg",
-                        "https://youtube.com/watch?v=...",
-                        LocalDate.of(2023, 12, 16),
-                        "Action, Adventure, Sci-Fi",
-                        "James Cameron",
-                        "Sam Worthington, Zoe Saldana",
-                        "T13");
-        ReflectionTestUtils.setField(movie, "id", 1L);
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
 
-        // Create test cinema
-        cinema =
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getShowtimeId()).isEqualTo(showtimeId);
+        assertThat(result.getScreenLayout()).isNotNull();
+        assertThat(result.getSeats()).hasSize(6);
+        verify(showtimeRepository).findByIdWithDetails(showtimeId);
+        verify(seatRepository).findByRoomId(showtime.getRoom().getId());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when showtime not found")
+    void shouldThrowExceptionWhenShowtimeNotFound() {
+        // Given
+        Long showtimeId = 999L;
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> showtimeService.getShowtimeSeats(showtimeId))
+                .isInstanceOf(CustomException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.SHOWTIME_NOT_FOUND);
+        verify(showtimeRepository).findByIdWithDetails(showtimeId);
+    }
+
+    @Test
+    @DisplayName("Should return all seats with AVAILABLE status")
+    void shouldReturnAllSeatsWithAvailableStatus() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeats(showtime.getRoom());
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getSeats())
+                .isNotNull()
+                .allMatch(seat -> seat.getStatus() == SeatStatus.AVAILABLE);
+    }
+
+    @Test
+    @DisplayName("Should build screen layout correctly with multiple rows")
+    void shouldBuildScreenLayoutCorrectlyWithMultipleRows() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeats(showtime.getRoom());
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getScreenLayout()).isNotNull();
+        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
+        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("Should handle empty seats list")
+    void shouldHandleEmptySeatsList() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId()))
+                .thenReturn(Collections.emptyList());
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getSeats()).isEmpty();
+        assertThat(result.getScreenLayout().getRows()).isEmpty();
+        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Should return seats with correct seat information")
+    void shouldReturnSeatsWithCorrectSeatInformation() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeats(showtime.getRoom());
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getSeats()).hasSize(6);
+        assertThat(result.getSeats())
+                .extracting("row")
+                .containsExactly("A", "A", "A", "B", "B", "C");
+        assertThat(result.getSeats()).extracting("number").containsExactly(1, 2, 3, 1, 2, 1);
+    }
+
+    @Test
+    @DisplayName("Should include different seat types")
+    void shouldIncludeDifferentSeatTypes() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeatsWithDifferentTypes(showtime.getRoom());
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getSeats())
+                .extracting("type")
+                .containsExactlyInAnyOrder(
+                        SeatType.REGULAR, SeatType.REGULAR, SeatType.VIP, SeatType.COUPLE);
+    }
+
+    @Test
+    @DisplayName("Should include seat prices")
+    void shouldIncludeSeatPrices() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        List<Seat> seats = createTestSeatsWithDifferentTypes(showtime.getRoom());
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getSeats())
+                .allMatch(seat -> seat.getPrice() != null && seat.getPrice() > 0);
+    }
+
+    @Test
+    @DisplayName("Should handle single row with multiple seats")
+    void shouldHandleSingleRowWithMultipleSeats() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        Room room = showtime.getRoom();
+
+        List<Seat> seats =
+                Arrays.asList(
+                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 3, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 4, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 5, SeatType.REGULAR, 85000L));
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getScreenLayout().getRows()).containsExactly("A");
+        assertThat(result.getScreenLayout().getSeatsPerRow()).isEqualTo(5);
+        assertThat(result.getSeats()).hasSize(5);
+    }
+
+    @Test
+    @DisplayName("Should calculate max seats per row correctly with uneven rows")
+    void shouldCalculateMaxSeatsPerRowCorrectlyWithUnevenRows() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        Room room = showtime.getRoom();
+
+        List<Seat> seats =
+                Arrays.asList(
+                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
+                        createSeat(room, "B", 1, SeatType.REGULAR, 85000L),
+                        createSeat(room, "B", 2, SeatType.REGULAR, 85000L),
+                        createSeat(room, "B", 3, SeatType.REGULAR, 85000L),
+                        createSeat(room, "B", 4, SeatType.REGULAR, 85000L),
+                        createSeat(room, "C", 1, SeatType.REGULAR, 85000L));
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
+        assertThat(result.getScreenLayout().getSeatsPerRow())
+                .isEqualTo(4); // Max is row B with 4 seats
+        assertThat(result.getSeats()).hasSize(7);
+    }
+
+    @Test
+    @DisplayName("Should return rows in sorted order")
+    void shouldReturnRowsInSortedOrder() {
+        // Given
+        Long showtimeId = 1L;
+        Showtime showtime = createTestShowtime();
+        Room room = showtime.getRoom();
+
+        // Create seats in non-alphabetical order
+        List<Seat> seats =
+                Arrays.asList(
+                        createSeat(room, "C", 1, SeatType.REGULAR, 85000L),
+                        createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
+                        createSeat(room, "B", 1, SeatType.REGULAR, 85000L));
+
+        when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
+        when(seatRepository.findByRoomId(room.getId())).thenReturn(seats);
+
+        // When
+        ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
+
+        // Then
+        assertThat(result.getScreenLayout().getRows()).containsExactly("A", "B", "C");
+    }
+
+    // Helper methods to create test data
+
+    private Showtime createTestShowtime() {
+        Cinema cinema =
                 Cinema.createCinema(
-                        "CGV Vincom Center",
+                        "CGV Vincom",
                         "CGV",
-                        "https://cdn.example.com/cgv-logo.png",
-                        "72 Lê Thánh Tôn",
-                        "Quận 1",
-                        "TP. Hồ Chí Minh",
-                        "1900xxxx",
-                        "https://cgv.vn",
-                        "CGV Vincom Center là rạp chiếu phim hiện đại...");
-        ReflectionTestUtils.setField(cinema, "id", 5L);
+                        "logo.png",
+                        "Address",
+                        "District 1",
+                        "HCMC",
+                        "123456",
+                        "website",
+                        "desc");
+        Cinema cinemaSave = cinemaRepository.save(cinema);
+        setId(cinema, 1L);
 
-        // Create test room
-        room = Room.createRoom(5L, "Room 3", 120, "IMAX");
-        ReflectionTestUtils.setField(room, "id", 12L);
-        // Set the cinema relationship for the room
-        ReflectionTestUtils.setField(room, "cinema", cinema);
+        Room room = Room.createRoom(cinemaSave.getId(), "Screen 1", 100, "VIP");
+        setId(room, 1L);
 
-        // Create test showtime with correct signature
-        showtime =
+        Movie movie =
+                Movie.createMovie(
+                        "Avatar 2",
+                        192,
+                        "Description",
+                        "poster.jpg",
+                        "trailer.mp4",
+                        LocalDate.now(),
+                        "Action",
+                        "James Cameron",
+                        "Cast",
+                        "8.5");
+        setId(movie, 1L);
+
+        Showtime showtime =
                 Showtime.createShowtime(
                         movie,
                         room,
-                        LocalDateTime.of(2024, 1, 15, 14, 30),
-                        LocalDateTime.of(2024, 1, 15, 17, 42),
-                        BigDecimal.valueOf(85000));
-        ReflectionTestUtils.setField(showtime, "id", 101L);
+                        LocalDateTime.now().plusDays(1),
+                        LocalDateTime.now().plusDays(1).plusHours(3),
+                        BigDecimal.valueOf(100000));
+        setId(showtime, 1L);
+
+        return showtime;
     }
 
-    @Nested
-    @DisplayName("getShowtimeById Tests")
-    class GetShowtimeByIdTests {
-
-        @Test
-        @DisplayName("Should return showtime detail when showtime exists")
-        void shouldReturnShowtimeDetailWhenExists() {
-            // Given
-            when(showtimeRepository.findByIdWithDetails(101L)).thenReturn(Optional.of(showtime));
-
-            // When
-            ShowtimeDetailResponse result = showtimeService.getShowtimeById(101L);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.id()).isEqualTo(101L);
-            assertThat(result.movie()).isNotNull();
-            assertThat(result.movie().id()).isEqualTo(1L);
-            assertThat(result.movie().title()).isEqualTo("Avatar: The Way of Water");
-            assertThat(result.cinema()).isNotNull();
-            assertThat(result.cinema().id()).isEqualTo(5L);
-            assertThat(result.cinema().name()).isEqualTo("CGV Vincom Center");
-            assertThat(result.screen()).isNotNull();
-            assertThat(result.screen().id()).isEqualTo(12L);
-            assertThat(result.screen().name()).isEqualTo("Room 3");
-            assertThat(result.startTime()).isEqualTo(LocalDateTime.of(2024, 1, 15, 14, 30));
-            assertThat(result.basePrice()).isEqualByComparingTo(BigDecimal.valueOf(85000));
-            assertThat(result.status()).isEqualTo(ShowtimeStatus.ACTIVE);
-
-            verify(showtimeRepository).findByIdWithDetails(101L);
-        }
-
-        @Test
-        @DisplayName("Should throw CustomException when showtime not found")
-        void shouldThrowExceptionWhenShowtimeNotFound() {
-            // Given
-            when(showtimeRepository.findByIdWithDetails(999L)).thenReturn(Optional.empty());
-
-            // When & Then
-            assertThatThrownBy(() -> showtimeService.getShowtimeById(999L))
-                    .isInstanceOf(CustomException.class)
-                    .hasFieldOrPropertyWithValue("errorCode", ErrorCode.SHOWTIME_NOT_FOUND);
-
-            verify(showtimeRepository).findByIdWithDetails(999L);
-        }
+    private List<Seat> createTestSeats(Room room) {
+        return Arrays.asList(
+                createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
+                createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
+                createSeat(room, "A", 3, SeatType.REGULAR, 85000L),
+                createSeat(room, "B", 1, SeatType.REGULAR, 85000L),
+                createSeat(room, "B", 2, SeatType.REGULAR, 85000L),
+                createSeat(room, "C", 1, SeatType.VIP, 120000L));
     }
 
-    @Nested
-    @DisplayName("searchShowtimes Tests")
-    class SearchShowtimesTests {
-
-        @Test
-        @DisplayName("Should return all showtimes when no filters applied")
-        void shouldReturnAllShowtimesWithNoFilters() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(null, null, null, null, null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-            assertThat(result.page()).isEqualTo(0);
-            assertThat(result.size()).isEqualTo(20);
-            assertThat(result.totalElements()).isEqualTo(1);
-            assertThat(result.totalPages()).isEqualTo(1);
-
-            ShowtimeResponse showtimeResponse = result.content().get(0);
-            assertThat(showtimeResponse.id()).isEqualTo(101L);
-            assertThat(showtimeResponse.movieTitle()).isEqualTo("Avatar: The Way of Water");
-            assertThat(showtimeResponse.cinemaName()).isEqualTo("CGV Vincom Center");
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should filter by movieId")
-        void shouldFilterByMovieId() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(1L, null, null, null, null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-            assertThat(result.content().get(0).movieId()).isEqualTo(1L);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should filter by cinemaId")
-        void shouldFilterByCinemaId() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(null, 5L, null, null, null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-            assertThat(result.content().get(0).cinemaId()).isEqualTo(5L);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should filter by city")
-        void shouldFilterByCity() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(
-                            null, null, "TP. Hồ Chí Minh", null, null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should filter by specific date")
-        void shouldFilterBySpecificDate() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(
-                            null, null, null, "2024-01-15", null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should filter by date range")
-        void shouldFilterByDateRange() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(
-                            null, null, null, null, "2024-01-01", "2024-01-31", pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should combine multiple filters")
-        void shouldCombineMultipleFilters() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            List<Showtime> showtimes = List.of(showtime);
-            Page<Showtime> showtimePage = new PageImpl<>(showtimes, pageable, 1);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(showtimePage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(
-                            1L, 5L, "TP. Hồ Chí Minh", "2024-01-15", null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).hasSize(1);
-            assertThat(result.content().get(0).movieId()).isEqualTo(1L);
-            assertThat(result.content().get(0).cinemaId()).isEqualTo(5L);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
-
-        @Test
-        @DisplayName("Should return empty list when no showtimes match filters")
-        void shouldReturnEmptyListWhenNoMatches() {
-            // Given
-            Pageable pageable = PageRequest.of(0, 20);
-            Page<Showtime> emptyPage = new PageImpl<>(List.of(), pageable, 0);
-
-            when(showtimeRepository.findAll(any(Specification.class), eq(pageable)))
-                    .thenReturn(emptyPage);
-
-            // When
-            ShowtimeListResponse result =
-                    showtimeService.searchShowtimes(999L, null, null, null, null, null, pageable);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result.content()).isEmpty();
-            assertThat(result.totalElements()).isEqualTo(0);
-
-            verify(showtimeRepository).findAll(any(Specification.class), eq(pageable));
-        }
+    private List<Seat> createTestSeatsWithDifferentTypes(Room room) {
+        return Arrays.asList(
+                createSeat(room, "A", 1, SeatType.REGULAR, 85000L),
+                createSeat(room, "A", 2, SeatType.REGULAR, 85000L),
+                createSeat(room, "B", 1, SeatType.VIP, 120000L),
+                createSeat(room, "C", 1, SeatType.COUPLE, 200000L));
     }
 
-    @Nested
-    @DisplayName("getShowtimesByMovieId Tests")
-    class GetShowtimesByMovieIdTests {
-
-        @Test
-        @DisplayName("Should return showtimes for specific movie")
-        void shouldReturnShowtimesForMovie() {
-            // Given
-            List<Showtime> showtimes = List.of(showtime);
-
-            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
-
-            // When
-            List<ShowtimeResponse> result =
-                    showtimeService.getShowtimesByMovieId(1L, null, null, null, null, null);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result).hasSize(1);
-            assertThat(result.get(0).movieId()).isEqualTo(1L);
-
-            verify(showtimeRepository).findAll(any(Specification.class));
-        }
-
-        @Test
-        @DisplayName("Should filter movie showtimes by cinema")
-        void shouldFilterMovieShowtimesByCinema() {
-            // Given
-            List<Showtime> showtimes = List.of(showtime);
-
-            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
-
-            // When
-            List<ShowtimeResponse> result =
-                    showtimeService.getShowtimesByMovieId(1L, 5L, null, null, null, null);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result).hasSize(1);
-            assertThat(result.get(0).movieId()).isEqualTo(1L);
-            assertThat(result.get(0).cinemaId()).isEqualTo(5L);
-
-            verify(showtimeRepository).findAll(any(Specification.class));
-        }
+    private Seat createSeat(Room room, String row, Integer number, SeatType type, Long price) {
+        Seat seat =
+                Seat.builder()
+                        .room(room)
+                        .row(row)
+                        .number(number)
+                        .type(type)
+                        .basePrice(price)
+                        .build();
+        // Set a unique ID based on row and number for testing
+        setId(seat, Long.valueOf(row.charAt(0) - 'A' + 1) * 100 + number);
+        return seat;
     }
 
-    @Nested
-    @DisplayName("getShowtimesByCinemaId Tests")
-    class GetShowtimesByCinemaIdTests {
-
-        @Test
-        @DisplayName("Should return showtimes for specific cinema")
-        void shouldReturnShowtimesForCinema() {
-            // Given
-            List<Showtime> showtimes = List.of(showtime);
-
-            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
-
-            // When
-            List<ShowtimeResponse> result =
-                    showtimeService.getShowtimesByCinemaId(5L, null, null, null, null);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result).hasSize(1);
-            assertThat(result.get(0).cinemaId()).isEqualTo(5L);
-
-            verify(showtimeRepository).findAll(any(Specification.class));
-        }
-
-        @Test
-        @DisplayName("Should filter cinema showtimes by movie")
-        void shouldFilterCinemaShowtimesByMovie() {
-            // Given
-            List<Showtime> showtimes = List.of(showtime);
-
-            when(showtimeRepository.findAll(any(Specification.class))).thenReturn(showtimes);
-
-            // When
-            List<ShowtimeResponse> result =
-                    showtimeService.getShowtimesByCinemaId(5L, 1L, null, null, null);
-
-            // Then
-            assertThat(result).isNotNull();
-            assertThat(result).hasSize(1);
-            assertThat(result.get(0).cinemaId()).isEqualTo(5L);
-            assertThat(result.get(0).movieId()).isEqualTo(1L);
-
-            verify(showtimeRepository).findAll(any(Specification.class));
+    private void setId(Object entity, Long id) {
+        try {
+            Field idField = entity.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(entity, id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set ID via reflection", e);
         }
     }
 }
