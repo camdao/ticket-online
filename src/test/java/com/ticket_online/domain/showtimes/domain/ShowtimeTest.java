@@ -28,8 +28,7 @@ class ShowtimeTest {
                         "https://poster.jpg",
                         "https://trailer.com",
                         "T13",
-                        "Sam Worthington",
-                        "https://banner.jpg");
+                        "Sam Worthington");
 
         Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 
@@ -65,8 +64,7 @@ class ShowtimeTest {
                         "https://poster.jpg",
                         "https://trailer.com",
                         "T13",
-                        "Sam Worthington",
-                        "https://banner.jpg");
+                        "Sam Worthington");
 
         Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 
@@ -98,8 +96,7 @@ class ShowtimeTest {
                         "https://poster.jpg",
                         "https://trailer.com",
                         "T13",
-                        "Sam Worthington",
-                        "https://banner.jpg");
+                        "Sam Worthington");
 
         Room room = Room.createRoom(1L, "Room 1", 100, "Standard");
 

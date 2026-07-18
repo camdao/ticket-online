@@ -27,8 +27,8 @@ public class Movie extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "poster_url", length = 1000)
-    private String posterUrl;
+    @Column(name = "image_url", length = 1000)
+    private String imageUrl;
 
     @Column(name = "trailer_url", length = 1000)
     private String trailerUrl;
@@ -48,59 +48,52 @@ public class Movie extends BaseTimeEntity {
     @Column(length = 10)
     private String rating;
 
-    @Column(name = "age_rating", length = 10)
-    private String ageRating;
-
     @Builder(access = AccessLevel.PRIVATE)
     Movie(
             String title,
             Integer duration,
             String description,
-            String posterUrl,
+            String imageUrl,
             String trailerUrl,
             LocalDate releaseDate,
             String genre,
             String director,
             String cast,
-            String rating,
-            String ageRating) {
+            String rating) {
         this.title = title;
         this.duration = duration;
         this.description = description;
-        this.posterUrl = posterUrl;
+        this.imageUrl = imageUrl;
         this.trailerUrl = trailerUrl;
         this.releaseDate = releaseDate;
         this.genre = genre;
         this.director = director;
         this.cast = cast;
         this.rating = rating;
-        this.ageRating = ageRating;
     }
 
     public static Movie createMovie(
             String title,
             Integer duration,
             String description,
-            String posterUrl,
+            String imageUrl,
             String trailerUrl,
             LocalDate releaseDate,
             String genre,
             String director,
             String cast,
-            String rating,
-            String ageRating) {
+            String rating) {
         return Movie.builder()
                 .title(title)
                 .duration(duration)
                 .description(description)
-                .posterUrl(posterUrl)
+                .imageUrl(imageUrl)
                 .trailerUrl(trailerUrl)
                 .releaseDate(releaseDate)
                 .genre(genre)
                 .director(director)
                 .cast(cast)
                 .rating(rating)
-                .ageRating(ageRating)
                 .build();
     }
 
@@ -108,25 +101,23 @@ public class Movie extends BaseTimeEntity {
             String title,
             Integer duration,
             String description,
-            String posterUrl,
+            String imageUrl,
             String trailerUrl,
             LocalDate releaseDate,
             String genre,
             String director,
             String cast,
-            String rating,
-            String ageRating) {
+            String rating) {
         this.title = title;
         this.duration = duration;
         this.description = description;
-        this.posterUrl = posterUrl;
+        this.imageUrl = imageUrl;
         this.trailerUrl = trailerUrl;
         this.releaseDate = releaseDate;
         this.genre = genre;
         this.director = director;
         this.cast = cast;
         this.rating = rating;
-        this.ageRating = ageRating;
     }
 
     public boolean isUpcoming() {
