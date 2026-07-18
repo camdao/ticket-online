@@ -22,4 +22,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT SUM(r.capacity) FROM Room r WHERE r.cinemaId = :cinemaId")
     Integer getTotalCapacityByCinemaId(@Param("cinemaId") Long cinemaId);
+
+    @Query(
+            "SELECT r.cinemaId, COUNT(r) FROM Room r WHERE r.cinemaId IN :cinemaIds GROUP BY"
+                    + " r.cinemaId")
+    List<Object[]> countByCinemaIds(@Param("cinemaIds") List<Long> cinemaIds);
 }

@@ -11,6 +11,7 @@ import com.ticket_online.domain.showtimes.dto.response.ShowtimeResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,23 +31,17 @@ public class CinemaService {
     public CinemaListResponse getCinemas(
             Pageable pageable, String brand, String city, String district) {
         Page<Cinema> cinemaPage = cinemaRepository.findByFilters(brand, city, district, pageable);
-        List<CinemaResponse> cinemaResponses =
-                cinemaPage.getContent().stream()
-                        .map(
-                                cinema -> {
-                                    Long totalRoomsLong =
-                                            roomRepository.countByCinemaId(cinema.getId());
-                                    Integer totalRooms =
-                                            totalRoomsLong != null ? totalRoomsLong.intValue() : 0;
-                                    return CinemaResponse.from(cinema, totalRooms);
-                                })
-                        .collect(Collectors.toList());
-        return new CinemaListResponse(
-                cinemaResponses,
-                cinemaPage.getNumber(),
-                cinemaPage.getSize(),
-                cinemaPage.getTotalElements(),
-                cinemaPage.getTotalPages());
+
+        List<Long> cinemaIds =
+                cinemaPage.getContent().stream().map(Cinema::getId).collect(Collectors.toList());
+
+        Map<Long, Integer> roomCountMap =
+                roomRepository.countByCinemaIds(cinemaIds).stream()
+                        .collect(
+                                Collectors.toMap(
+                                        row -> (Long) row[0], row -> ((Long) row[1]).intValue()));
+
+        return CinemaListResponse.of(cinemaPage, roomCountMap);
     }
 
     public CinemaResponse getCinemaById(Long id) {
