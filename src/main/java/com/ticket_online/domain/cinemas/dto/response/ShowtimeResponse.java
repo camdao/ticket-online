@@ -1,4 +1,4 @@
-package com.ticket_online.domain.showtimes.dto.response;
+package com.ticket_online.domain.cinemas.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ticket_online.domain.showtimes.domain.Showtime;

@@ -1,20 +1,20 @@
 package com.ticket_online.domain.seats.domain;
 
-import com.ticket_online.domain.cinemas.domain.Screen;
 import com.ticket_online.domain.model.BaseTimeEntity;
+import com.ticket_online.domain.rooms.Room;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/** Entity representing a physical seat in a cinema screen */
+/** Entity representing a physical seat in a cinema room */
 @Entity
 @Table(
         name = "seats",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"screen_id", "row", "number"})},
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"room_id", "row", "number"})},
         indexes = {
-            @Index(name = "idx_seat_screen", columnList = "screen_id"),
+            @Index(name = "idx_seat_room", columnList = "room_id"),
             @Index(name = "idx_seat_row_number", columnList = "row, number")
         })
 @Getter
@@ -26,8 +26,8 @@ public class Seat extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "screen_id", nullable = false)
-    private Screen screen;
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
     @Column(name = "row", nullable = false, length = 2)
     private String row;
@@ -46,8 +46,8 @@ public class Seat extends BaseTimeEntity {
     private Boolean isActive = true;
 
     @Builder
-    public Seat(Screen screen, String row, Integer number, SeatType type, Long basePrice) {
-        this.screen = screen;
+    public Seat(Room room, String row, Integer number, SeatType type, Long basePrice) {
+        this.room = room;
         this.row = row;
         this.number = number;
         this.type = type;

@@ -1,7 +1,7 @@
 package com.ticket_online.domain.seats.application;
 
-import com.ticket_online.domain.cinemas.dao.ScreenRepository;
-import com.ticket_online.domain.cinemas.domain.Screen;
+import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.RoomRepository;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatType;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** Service for managing seats in cinema screens */
+/** Service for managing seats in cinema rooms */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,21 +27,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeatService {
 
     private final SeatRepository seatRepository;
-    private final ScreenRepository screenRepository;
+    private final RoomRepository roomRepository;
 
-    /** Get all seats for a screen */
-    public List<SeatResponse> getSeatsByScreenId(Long screenId) {
-        validateScreenExists(screenId);
+    /** Get all seats for a room */
+    public List<SeatResponse> getSeatsByRoomId(Long roomId) {
+        validateRoomExists(roomId);
 
-        List<Seat> seats = seatRepository.findActiveByScreenId(screenId);
+        List<Seat> seats = seatRepository.findActiveByRoomId(roomId);
         return seats.stream().map(SeatResponse::from).collect(Collectors.toList());
     }
 
-    /** Get screen layout information */
-    public ScreenLayoutResponse getScreenLayout(Long screenId) {
-        validateScreenExists(screenId);
+    /** Get room layout information */
+    public ScreenLayoutResponse getRoomLayout(Long roomId) {
+        validateRoomExists(roomId);
 
-        List<Seat> seats = seatRepository.findActiveByScreenId(screenId);
+        List<Seat> seats = seatRepository.findActiveByRoomId(roomId);
 
         if (seats.isEmpty()) {
             return ScreenLayoutResponse.of(List.of(), 0);
@@ -61,22 +61,22 @@ public class SeatService {
     /** Create a new seat */
     @Transactional
     public SeatResponse createSeat(CreateSeatRequest request) {
-        // Validate screen exists
-        Screen screen =
-                screenRepository
-                        .findById(request.getScreenId())
-                        .orElseThrow(() -> new CustomException(ErrorCode.SCREEN_NOT_FOUND));
+        // Validate room exists
+        Room room =
+                roomRepository
+                        .findById(request.getRoomId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.ROOM_NOT_FOUND));
 
         // Check if seat already exists
-        if (seatRepository.existsByScreenIdAndRowAndNumber(
-                request.getScreenId(), request.getRow(), request.getNumber())) {
+        if (seatRepository.existsByRoomIdAndRowAndNumber(
+                request.getRoomId(), request.getRow(), request.getNumber())) {
             throw new CustomException(ErrorCode.SEAT_ALREADY_EXISTS);
         }
 
         // Create seat
         Seat seat =
                 Seat.builder()
-                        .screen(screen)
+                        .room(room)
                         .row(request.getRow())
                         .number(request.getNumber())
                         .type(request.getType())
@@ -84,7 +84,7 @@ public class SeatService {
                         .build();
 
         Seat savedSeat = seatRepository.save(seat);
-        log.info("Created new seat: {} for screen: {}", savedSeat.getSeatLabel(), screen.getName());
+        log.info("Created new seat: {} for room: {}", savedSeat.getSeatLabel(), room.getName());
 
         return SeatResponse.from(savedSeat);
     }
@@ -133,24 +133,24 @@ public class SeatService {
         log.info("Deactivated seat: {}", seat.getSeatLabel());
     }
 
-    /** Bulk create seats for a screen (useful for initial setup) */
+    /** Bulk create seats for a room (useful for initial setup) */
     @Transactional
     public List<SeatResponse> bulkCreateSeats(
-            Long screenId, String[] rows, int seatsPerRow, SeatType defaultType, Long basePrice) {
-        Screen screen =
-                screenRepository
-                        .findById(screenId)
-                        .orElseThrow(() -> new CustomException(ErrorCode.SCREEN_NOT_FOUND));
+            Long roomId, String[] rows, int seatsPerRow, SeatType defaultType, Long basePrice) {
+        Room room =
+                roomRepository
+                        .findById(roomId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ROOM_NOT_FOUND));
 
         List<Seat> seats = new java.util.ArrayList<>();
 
         for (String row : rows) {
             for (int number = 1; number <= seatsPerRow; number++) {
                 // Check if seat already exists
-                if (!seatRepository.existsByScreenIdAndRowAndNumber(screenId, row, number)) {
+                if (!seatRepository.existsByRoomIdAndRowAndNumber(roomId, row, number)) {
                     Seat seat =
                             Seat.builder()
-                                    .screen(screen)
+                                    .room(room)
                                     .row(row)
                                     .number(number)
                                     .type(defaultType)
@@ -162,7 +162,7 @@ public class SeatService {
         }
 
         List<Seat> savedSeats = seatRepository.saveAll(seats);
-        log.info("Bulk created {} seats for screen: {}", savedSeats.size(), screen.getName());
+        log.info("Bulk created {} seats for room: {}", savedSeats.size(), room.getName());
 
         return savedSeats.stream().map(SeatResponse::from).collect(Collectors.toList());
     }
@@ -172,9 +172,9 @@ public class SeatService {
         return seatRepository.findByIdIn(seatIds);
     }
 
-    private void validateScreenExists(Long screenId) {
-        if (!screenRepository.existsById(screenId)) {
-            throw new CustomException(ErrorCode.SCREEN_NOT_FOUND);
+    private void validateRoomExists(Long roomId) {
+        if (!roomRepository.existsById(roomId)) {
+            throw new CustomException(ErrorCode.ROOM_NOT_FOUND);
         }
     }
 }

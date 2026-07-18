@@ -1,6 +1,5 @@
-package com.ticket_online.domain.cinemas.api;
+package com.ticket_online.domain.rooms;
 
-import com.ticket_online.domain.cinemas.application.RoomService;
 import com.ticket_online.domain.cinemas.dto.request.RoomRequest;
 import com.ticket_online.domain.cinemas.dto.response.RoomResponse;
 import jakarta.validation.Valid;

@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateSeatRequest {
 
-    @NotNull(message = "Screen ID is required")
-    private Long screenId;
+    @NotNull(message = "Room ID is required")
+    private Long roomId;
 
     @NotBlank(message = "Row is required")
     @Pattern(regexp = "^[A-Z]{1,2}$", message = "Row must be 1-2 uppercase letters")
