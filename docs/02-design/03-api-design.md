@@ -81,7 +81,7 @@ Authorization: Bearer <access_token>
 ```json
 {
   "success": true,
-  "status": 201,
+  "status": 200,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -124,7 +124,7 @@ Làm mới access token.
 ```json
 {
   "success": true,
-  "status": 201,
+  "status": 200,
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "tokenType": "Bearer",
@@ -139,13 +139,10 @@ Làm mới access token.
 ## 4.2. Movies
 
 ### GET /movies
-Lấy danh sách phim với phân trang và lọc.
+Lấy danh sách phim đang chiếu.
 
 **Query Parameters:**
-- `page` (optional): Số trang (default: 0)
-- `size` (optional): Số phim mỗi trang (default: 20)
 - `status` (optional): Trạng thái phim (NOW_SHOWING, UPCOMING, ENDED)
-- `genre` (optional): Thể loại phim
 - `sortBy` (optional): Sắp xếp theo (releaseDate, title, rating)
 - `sortDirection` (optional): Hướng sắp xếp (ASC, DESC)
 
@@ -154,25 +151,19 @@ Lấy danh sách phim với phân trang và lọc.
 {
   "success": true,
   "status": 200,
-  "data": {
-    "content": [
-      {
-        "id": 1,
-        "title": "Avatar: The Way of Water",
-        "duration": 192,
-        "genre": "Action, Adventure, Sci-Fi",
-        "rating": 8.5,
-        "ageRating": "T13",
-        "releaseDate": "2023-12-16",
-        "posterUrl": "https://cdn.example.com/avatar2.jpg",
-        "status": "NOW_SHOWING"
-      }
-    ],
-    "page": 0,
-    "size": 20,
-    "totalElements": 45,
-    "totalPages": 3
-  },
+  "data": [
+    {
+      "id": 1,
+      "title": "Avatar: The Way of Water",
+      "duration": 192,
+      "genre": "Action, Adventure, Sci-Fi",
+      "rating": 8.5,
+      "ageRating": "T13",
+      "releaseDate": "2023-12-16",
+      "posterUrl": "https://cdn.example.com/avatar2.jpg",
+      "status": "NOW_SHOWING"
+    }
+  ],
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
@@ -205,13 +196,58 @@ Lấy chi tiết phim.
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
+---
+### GET /movies/search
+Tìm kiếm phim theo từ khóa.
+
+**Query Parameters:**
+- `keyword` (required): Từ khóa tìm kiếm
+
+**Response:** Tương tự GET /movies
 
 ---
 
-### GET /movies/{id}/showtimes
+## 4.3. Cinemas
+
+### GET /cinemas
+Lấy danh sách rạp chiếu.
+
+**Query Parameters:**
+- `brand` (optional): Thương hiệu rạp (CGV, Lotte, Galaxy)
+- `city` (optional): Thành phố
+- `district` (optional): Quận/huyện
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": [
+    {
+      "id": 5,
+      "name": "CGV Vincom Center",
+      "brand": "CGV",
+      "logoUrl": "https://cdn.example.com/cgv-logo.png",
+      "address": "72 Lê Thánh Tôn",
+      "district": "Quận 1",
+      "city": "TP. Hồ Chí Minh",
+      "phoneNumber": "1900xxxx",
+      "totalRooms": 8
+    }
+  ],
+  "timestamp": "2024-01-15T14:30:00"
+}
+```
+## 4.4.Showtimes
+
+
+---
+
+### GET /showtimes
 Lấy danh sách suất chiếu của phim.
 
 **Query Parameters:**
+- `movieId` (optional): Lọc theo phim
 - `cinemaId` (optional): Lọc theo rạp
 - `city` (optional): Lọc theo thành phố
 - `date` (optional): Lọc theo ngày (format: YYYY-MM-DD)
@@ -246,180 +282,6 @@ Lấy danh sách suất chiếu của phim.
 ```
 
 ---
-
-### GET /movies/now-showing
-Lấy danh sách phim đang chiếu.
-
-**Query Parameters:**
-- `page`, `size`, `sortBy`, `sortDirection` (tương tự GET /movies)
-
-**Response:** Tương tự GET /movies
-
----
-
-### GET /movies/upcoming
-Lấy danh sách phim sắp chiếu.
-
-**Query Parameters:**
-- `page`, `size`, `sortBy`, `sortDirection` (tương tự GET /movies)
-
-**Response:** Tương tự GET /movies
-
----
-
-### GET /movies/search
-Tìm kiếm phim theo từ khóa.
-
-**Query Parameters:**
-- `keyword` (required): Từ khóa tìm kiếm
-- `page`, `size` (optional)
-
-**Response:** Tương tự GET /movies
-
----
-
-## 4.3. Cinemas
-
-### GET /cinemas
-Lấy danh sách rạp chiếu.
-
-**Query Parameters:**
-- `page` (optional): Số trang (default: 0)
-- `size` (optional): Số rạp mỗi trang (default: 20)
-- `brand` (optional): Thương hiệu rạp (CGV, Lotte, Galaxy)
-- `city` (optional): Thành phố
-- `district` (optional): Quận/huyện
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    "content": [
-      {
-        "id": 5,
-        "name": "CGV Vincom Center",
-        "brand": "CGV",
-        "logoUrl": "https://cdn.example.com/cgv-logo.png",
-        "address": "72 Lê Thánh Tôn",
-        "district": "Quận 1",
-        "city": "TP. Hồ Chí Minh",
-        "phoneNumber": "1900xxxx",
-        "totalRooms": 8
-      }
-    ],
-    "page": 0,
-    "size": 20,
-    "totalElements": 52,
-    "totalPages": 3
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### GET /cinemas/{id}
-Lấy chi tiết rạp chiếu.
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    "id": 5,
-    "name": "CGV Vincom Center",
-    "brand": "CGV",
-    "logoUrl": "https://cdn.example.com/cgv-logo.png",
-    "address": "72 Lê Thánh Tôn",
-    "district": "Quận 1",
-    "city": "TP. Hồ Chí Minh",
-    "phoneNumber": "1900xxxx",
-    "website": "https://cgv.vn",
-    "description": "CGV Vincom Center là rạp chiếu phim hiện đại...",
-    "totalScreens": 8,
-    "rooms": [
-      {
-        "id": 12,
-        "name": "Screen 3",
-        "type": "IMAX",
-        "totalSeats": 120
-      }
-    ]
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
----
-
-## 4.4. Rooms
-
-### GET /rooms/{id}
-Lấy thông tin chi tiết phòng chiếu.
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    "id": 12,
-    "cinemaId": 5,
-    "name": "Room 3",
-    "capacity": 120,
-    "roomType": "IMAX",
-    "createdAt": "2024-01-01T10:00:00",
-    "updatedAt": "2024-01-10T15:30:00"
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
----
-
-### GET /rooms
-Lấy danh sách phòng chiếu theo bộ lọc.
-
-**Query Parameters:**
-- `cinemaId` (optional): Lọc theo rạp chiếu
-- `roomType` (optional): Lọc theo loại phòng (Standard, IMAX, VIP, 4DX)
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": [
-    {
-      "id": 12,
-      "cinemaId": 5,
-      "name": "Room 3",
-      "capacity": 120,
-      "roomType": "IMAX",
-      "createdAt": "2024-01-01T10:00:00",
-      "updatedAt": "2024-01-10T15:30:00"
-    },
-    {
-      "id": 13,
-      "cinemaId": 5,
-      "name": "Room 4",
-      "capacity": 80,
-      "roomType": "Standard",
-      "createdAt": "2024-01-01T10:00:00",
-      "updatedAt": "2024-01-10T15:30:00"
-    }
-  ],
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
-**Note:** Nếu không có query parameter nào được cung cấp, API sẽ trả về danh sách rỗng.
-
-
----
-
 ### GET /showtimes/{id}/seats
 Lấy sơ đồ ghế của suất chiếu.
 
@@ -606,6 +468,11 @@ Tạo đơn đặt vé từ ghế đã giữ.
 ```json
 {
   "success": false,
+  "status": 400,
+  "data": {
+    "errorClassName": "InvalidBookingException",
+    "message": "Invalid booking data or hold token expired"
+  },
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
@@ -665,7 +532,7 @@ Lấy chi tiết đơn đặt vé.
 ```json
 {
   "success": true,
-  "status": 201,
+  "status": 200,
   "data": {
     "id": 5001,
     "bookingCode": "BK20240115001",
@@ -742,6 +609,11 @@ Hủy đơn đặt vé (chỉ được phép hủy đơn chưa thanh toán hoặ
 ```json
 {
   "success": false,
+  "status": 400,
+  "data": {
+    "errorClassName": "CancellationNotAllowedException",
+    "message": "Cannot cancel booking: either already confirmed and showtime is less than 2 hours away, or booking is already expired"
+  },
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
@@ -807,7 +679,7 @@ Xác minh trạng thái thanh toán.
 ```json
 {
   "success": true,
-  "status": 201,
+  "status": 200,
   "data": {
     "paymentId": 7001,
     "bookingId": 5001,
@@ -831,7 +703,6 @@ Xác minh trạng thái thanh toán.
   "success": true,
   "status": 200,
   "data": {
-    // Dữ liệu trả về
   },
   "timestamp": "2024-01-15T14:30:00"
 }
@@ -853,7 +724,7 @@ Xác minh trạng thái thanh toán.
   "status": 400,
   "data": {
     "errorClassName": "ValidationException",
-  "timestamp": "2024-01-15T14:30:00"
+    "message": "Validation failed for one or more fields"
   },
   "timestamp": "2024-01-15T14:30:00"
 }
@@ -928,30 +799,6 @@ Xác minh trạng thái thanh toán.
 
 ---
 
-# 9. Pagination
-
-Các endpoint trả về danh sách hỗ trợ pagination:
-
-**Query Parameters:**
-- `page`: Số trang (bắt đầu từ 0)
-- `size`: Số phần tử mỗi trang (max: 100, default: 20)
-- `sort`: Sắp xếp theo field (ví dụ: `createdAt,desc`)
-
-**Response format:**
-```json
-{
-  "content": [...],
-  "page": 0,
-  "size": 20,
-  "totalElements": 156,
-  "totalPages": 8,
-  "first": true,
-  "last": false
-}
-```
-
----
-
-# 10. Error Codes
+# 9. Error Codes
 
 | Code              | Message
