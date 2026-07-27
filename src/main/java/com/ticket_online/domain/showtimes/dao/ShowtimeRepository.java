@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ShowtimeRepository
-        extends JpaRepository<Showtime, Long>, JpaSpecificationExecutor<Showtime> {
+        extends JpaRepository<Showtime, Long>,
+                JpaSpecificationExecutor<Showtime>,
+                ShowResponseCustom {
 
     @Query(
             "SELECT s FROM Showtime s "
