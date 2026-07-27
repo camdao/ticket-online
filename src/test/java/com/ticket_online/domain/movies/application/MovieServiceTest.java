@@ -23,10 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class MovieServiceTest {
@@ -78,10 +75,11 @@ class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("Should get now showing movies")
-    void shouldGetNowShowingMovies() {
+    @DisplayName("Should get all movies with status filter")
+    void shouldGetAllMoviesWithStatusFilter() {
         // Given
-        Pageable pageable = PageRequest.of(0, 20);
+        MovieStatus status = MovieStatus.NOW_SHOWING;
+        Sort sort = Sort.by(Sort.Direction.DESC, "releaseDate");
         List<Movie> movies =
                 Arrays.asList(
                         Movie.createMovie(
@@ -106,67 +104,22 @@ class MovieServiceTest {
                                 "Director",
                                 "Cast",
                                 "T16"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findNowShowingMovies(any(LocalDate.class), eq(pageable)))
-                .thenReturn(moviePage);
+        when(movieRepository.findByStatus(eq(status), any(Sort.class))).thenReturn(movies);
 
         // When
-        MovieListResponse result = movieService.getNowShowingMovies(pageable);
+        MovieListResponse result = movieService.getAllMovies(status, sort);
 
         // Then
         assertThat(result).isNotNull();
         assertThat(result.content()).hasSize(2);
-        assertThat(result.content()).allMatch(movie -> movie.status() == MovieStatus.NOW_SHOWING);
+        assertThat(result.content().get(0).status()).isEqualTo(MovieStatus.NOW_SHOWING);
     }
 
     @Test
-    @DisplayName("Should get upcoming movies")
-    void shouldGetUpcomingMovies() {
+    @DisplayName("Should get all movies without status filter")
+    void shouldGetAllMoviesWithoutStatusFilter() {
         // Given
-        Pageable pageable = PageRequest.of(0, 20);
-        List<Movie> movies =
-                Arrays.asList(
-                        Movie.createMovie(
-                                "Future Movie 1",
-                                120,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now().plusDays(10),
-                                "Action",
-                                "Director",
-                                "Cast",
-                                "T13"),
-                        Movie.createMovie(
-                                "Future Movie 2",
-                                150,
-                                "Desc",
-                                "poster.jpg",
-                                "trailer.mp4",
-                                LocalDate.now().plusDays(20),
-                                "Drama",
-                                "Director",
-                                "Cast",
-                                "T16"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findUpcomingMovies(any(LocalDate.class), eq(pageable)))
-                .thenReturn(moviePage);
-
-        // When
-        MovieListResponse result = movieService.getUpcomingMovies(pageable);
-
-        // Then
-        assertThat(result).isNotNull();
-        assertThat(result.content()).hasSize(2);
-        assertThat(result.content()).allMatch(movie -> movie.status() == MovieStatus.UPCOMING);
-    }
-
-    @Test
-    @DisplayName("Should get all movies with status filter")
-    void shouldGetAllMoviesWithStatusFilter() {
-        // Given
-        MovieStatus status = MovieStatus.NOW_SHOWING;
-        Pageable pageable = PageRequest.of(0, 20);
+        Sort sort = Sort.by(Sort.Direction.DESC, "releaseDate");
         List<Movie> movies =
                 Arrays.asList(
                         Movie.createMovie(
@@ -179,19 +132,26 @@ class MovieServiceTest {
                                 "Action",
                                 "Director",
                                 "Cast",
-                                "T13"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.getAllMoviesWithFilters(
-                        any(), eq("NOW_SHOWING"), eq(null), eq(pageable)))
-                .thenReturn(moviePage);
+                                "T13"),
+                        Movie.createMovie(
+                                "Movie 2",
+                                150,
+                                "Desc",
+                                "poster.jpg",
+                                "trailer.mp4",
+                                LocalDate.now().plusDays(10),
+                                "Drama",
+                                "Director",
+                                "Cast",
+                                "T16"));
+        when(movieRepository.findAll(any(Sort.class))).thenReturn(movies);
 
         // When
-        MovieListResponse result = movieService.getAllMoviesWithFilters(status, null, pageable);
+        MovieListResponse result = movieService.getAllMovies(null, sort);
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.content()).hasSize(1);
-        assertThat(result.content().get(0).status()).isEqualTo(MovieStatus.NOW_SHOWING);
+        assertThat(result.content()).hasSize(2);
     }
 
     @Test
@@ -199,7 +159,6 @@ class MovieServiceTest {
     void shouldSearchMoviesByKeyword() {
         // Given
         String keyword = "Avatar";
-        Pageable pageable = PageRequest.of(0, 20);
         List<Movie> movies =
                 Arrays.asList(
                         Movie.createMovie(
@@ -213,12 +172,10 @@ class MovieServiceTest {
                                 "James Cameron",
                                 "Cast",
                                 "T13"));
-        Page<Movie> moviePage = new PageImpl<>(movies, pageable, movies.size());
-        when(movieRepository.findByTitleContainingIgnoreCase(keyword, pageable))
-                .thenReturn(moviePage);
+        when(movieRepository.findByTitleContainingIgnoreCase(keyword)).thenReturn(movies);
 
         // When
-        MovieListResponse result = movieService.searchMoviesByKeyword(keyword, pageable);
+        MovieListResponse result = movieService.searchMoviesByKeyword(keyword);
 
         // Then
         assertThat(result).isNotNull();
