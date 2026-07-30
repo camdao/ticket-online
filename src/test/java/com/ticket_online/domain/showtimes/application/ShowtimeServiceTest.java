@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.movies.domain.Movie;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatStatus;

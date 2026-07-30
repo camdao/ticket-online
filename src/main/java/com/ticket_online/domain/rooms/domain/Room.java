@@ -1,4 +1,4 @@
-package com.ticket_online.domain.rooms;
+package com.ticket_online.domain.rooms.domain;
 
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.model.BaseTimeEntity;

@@ -4,7 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ticket_online.domain.cinemas.domain.QCinema;
 import com.ticket_online.domain.movies.domain.QMovie;
-import com.ticket_online.domain.rooms.QRoom;
+import com.ticket_online.domain.rooms.domain.QRoom;
 import com.ticket_online.domain.showtimes.domain.QShowtime;
 import com.ticket_online.domain.showtimes.domain.Showtime;
 import com.ticket_online.domain.showtimes.domain.ShowtimeStatus;

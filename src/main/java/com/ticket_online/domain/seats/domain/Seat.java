@@ -1,7 +1,7 @@
 package com.ticket_online.domain.seats.domain;
 
 import com.ticket_online.domain.model.BaseTimeEntity;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

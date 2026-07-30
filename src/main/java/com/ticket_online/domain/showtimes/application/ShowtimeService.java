@@ -1,7 +1,8 @@
 package com.ticket_online.domain.showtimes.application;
 
+import com.ticket_online.domain.bookings.dao.BookingDetailRepository;
 import com.ticket_online.domain.cinemas.dto.response.ShowtimeResponse;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatStatus;
@@ -11,10 +12,13 @@ import com.ticket_online.domain.showtimes.domain.Showtime;
 import com.ticket_online.domain.showtimes.dto.response.ShowtimeSeatsResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,8 @@ public class ShowtimeService {
 
     private final ShowtimeRepository showtimeRepository;
     private final SeatRepository seatRepository;
+    private final BookingDetailRepository bookingDetailRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     /**
      * Get seat availability for a specific showtime
@@ -45,11 +51,20 @@ public class ShowtimeService {
         // Fetch all active seats for the room
         List<Seat> seats = seatRepository.findByRoomId(room.getId());
 
-        // Map seats to response with AVAILABLE status (Option B - simplified version)
-        // TODO: Implement Redis check for HELD status and database check for BOOKED status
+        // Get confirmed (BOOKED) seat IDs from database
+        List<Long> confirmedSeatIds =
+                bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId);
+        Set<Long> bookedSeatIds = new HashSet<>(confirmedSeatIds);
+
+        // Map seats to response with proper status checking
         List<SeatResponse> seatResponses =
                 seats.stream()
-                        .map(seat -> SeatResponse.from(seat, SeatStatus.AVAILABLE))
+                        .map(
+                                seat -> {
+                                    SeatStatus status =
+                                            determineSeatStatus(seat, showtimeId, bookedSeatIds);
+                                    return SeatResponse.from(seat, status);
+                                })
                         .collect(Collectors.toList());
 
         return ShowtimeSeatsResponse.of(showtimeId, seatResponses);
@@ -104,5 +119,32 @@ public class ShowtimeService {
                         cinemaId, movieId, date, startDate, endDate);
 
         return showtimes.stream().map(ShowtimeResponse::from).toList();
+    }
+
+    /**
+     * Determine the status of a seat for a specific showtime
+     *
+     * @param seat the seat to check
+     * @param showtimeId the showtime ID
+     * @param bookedSeatIds set of confirmed (BOOKED) seat IDs
+     * @return the seat status (BOOKED, HELD, or AVAILABLE)
+     */
+    private SeatStatus determineSeatStatus(Seat seat, Long showtimeId, Set<Long> bookedSeatIds) {
+        Long seatId = seat.getId();
+
+        // Check if seat is confirmed/booked in database
+        if (bookedSeatIds.contains(seatId)) {
+            return SeatStatus.BOOKED;
+        }
+
+        // Check if seat is held in Redis
+        String redisKey = String.format("seat:hold:%d:%d", showtimeId, seatId);
+        Boolean isHeld = redisTemplate.hasKey(redisKey);
+        if (Boolean.TRUE.equals(isHeld)) {
+            return SeatStatus.HELD;
+        }
+
+        // Seat is available
+        return SeatStatus.AVAILABLE;
     }
 }
