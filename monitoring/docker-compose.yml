@@ -1,20 +1,6 @@
 version: '3.8'
 
 services:
-  redis:
-    image: redis:7
-    container_name: redis
-    restart: unless-stopped
-    networks:
-      - monitoring-network
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    networks:
-      - monitoring-network
-
   prometheus:
     image: prom/prometheus:latest
     command:
@@ -23,7 +9,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml 
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
@@ -40,18 +26,6 @@ services:
       - grafana_data:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      - monitoring-network
-
-  my-spring-app:
-    build: ../deploy
-    container_name: spring-app
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
     networks:
       - monitoring-network
 

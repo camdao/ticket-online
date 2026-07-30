@@ -37,7 +37,7 @@ out/
 .vscode/
 
 # dependencies
-k6/node_modules/
+monitoring/node_modules/
 
 # build output
 dist/
