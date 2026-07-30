@@ -1,5 +1,6 @@
-package com.ticket_online.domain.rooms;
+package com.ticket_online.domain.rooms.dao;
 
+import com.ticket_online.domain.rooms.domain.Room;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

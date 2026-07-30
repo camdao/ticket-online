@@ -2,7 +2,6 @@ package com.ticket_online.domain.cinemas.api;
 
 import com.ticket_online.domain.cinemas.application.CinemaService;
 import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
-import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,23 +26,6 @@ public class CinemaController {
         Pageable pageable = PageRequest.of(page, size);
         CinemaListResponse response = cinemaService.getCinemas(pageable, brand, city, district);
 
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{id}/showtimes")
-    public ResponseEntity<?> getCinemaShowtimes(
-            @PathVariable Long id,
-            @RequestParam(required = false) Long movieId,
-            @RequestParam(required = false) String date,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate) {
-        return ResponseEntity.ok(
-                cinemaService.getCinemaShowtimes(id, movieId, date, startDate, endDate));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CinemaResponse> getCinemaById(@PathVariable Long id) {
-        CinemaResponse response = cinemaService.getCinemaById(id);
         return ResponseEntity.ok(response);
     }
 }

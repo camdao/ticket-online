@@ -3,7 +3,7 @@ package com.ticket_online.domain.showtimes.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ticket_online.domain.movies.domain.Movie;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

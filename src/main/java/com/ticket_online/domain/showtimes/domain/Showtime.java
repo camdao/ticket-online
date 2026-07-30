@@ -3,7 +3,7 @@ package com.ticket_online.domain.showtimes.domain;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.model.BaseTimeEntity;
 import com.ticket_online.domain.movies.domain.Movie;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

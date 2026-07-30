@@ -2,12 +2,14 @@ package com.ticket_online.domain.showtimes.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ticket_online.domain.bookings.dao.BookingDetailRepository;
 import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.movies.domain.Movie;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.seats.domain.SeatStatus;
@@ -31,6 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class ShowtimeServiceTest {
@@ -38,6 +41,10 @@ class ShowtimeServiceTest {
     @Mock private ShowtimeRepository showtimeRepository;
 
     @Mock private SeatRepository seatRepository;
+
+    @Mock private BookingDetailRepository bookingDetailRepository;
+
+    @Mock private RedisTemplate<String, String> redisTemplate;
 
     @InjectMocks private ShowtimeService showtimeService;
 
@@ -51,6 +58,9 @@ class ShowtimeServiceTest {
 
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -87,6 +97,9 @@ class ShowtimeServiceTest {
 
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -107,6 +120,8 @@ class ShowtimeServiceTest {
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId()))
                 .thenReturn(Collections.emptyList());
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -126,6 +141,9 @@ class ShowtimeServiceTest {
 
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -148,6 +166,9 @@ class ShowtimeServiceTest {
 
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -169,6 +190,9 @@ class ShowtimeServiceTest {
 
         when(showtimeRepository.findByIdWithDetails(showtimeId)).thenReturn(Optional.of(showtime));
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
+        when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
+                .thenReturn(Collections.emptyList());
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);

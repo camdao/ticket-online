@@ -1,7 +1,7 @@
 package com.ticket_online.domain.cinemas.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ticket_online.domain.rooms.Room;
+import com.ticket_online.domain.rooms.domain.Room;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 

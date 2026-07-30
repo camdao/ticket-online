@@ -5,7 +5,7 @@ import com.ticket_online.domain.cinemas.domain.Cinema;
 import com.ticket_online.domain.cinemas.dto.response.CinemaListResponse;
 import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.cinemas.dto.response.ShowtimeResponse;
-import com.ticket_online.domain.rooms.RoomRepository;
+import com.ticket_online.domain.rooms.dao.RoomRepository;
 import com.ticket_online.domain.showtimes.application.ShowtimeService;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
