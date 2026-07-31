@@ -12,8 +12,8 @@ public enum UrlConstants {
 
     PROD_DOMAIN_URL(""),
     DEV_DOMAIN_URL(""),
-    LOCAL_DOMAIN_URL("http://localhost:3000"),
-    LOCAL_SECURE_DOMAIN_URL("https://localhost:3000"),
+    LOCAL_DOMAIN_URL("http://localhost:3001"),
+    LOCAL_SECURE_DOMAIN_URL("https://localhost:3001"),
     ;
 
     private String value;
