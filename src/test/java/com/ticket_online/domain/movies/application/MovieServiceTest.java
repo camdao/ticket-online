@@ -3,7 +3,6 @@ package com.ticket_online.domain.movies.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.ticket_online.domain.movies.dao.MovieRepository;
@@ -104,7 +103,8 @@ class MovieServiceTest {
                                 "Director",
                                 "Cast",
                                 "T16"));
-        when(movieRepository.findByStatus(eq(status), any(Sort.class))).thenReturn(movies);
+        when(movieRepository.findByReleaseDateLessThanEqual(any(LocalDate.class), any(Sort.class)))
+                .thenReturn(movies);
 
         // When
         MovieListResponse result = movieService.getAllMovies(status, sort);
