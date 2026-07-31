@@ -7,6 +7,7 @@ import com.ticket_online.domain.movies.dto.MovieListResponse;
 import com.ticket_online.domain.movies.dto.MovieResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -30,11 +31,20 @@ public class MovieService {
 
     public MovieListResponse getAllMovies(MovieStatus status, Sort sort) {
         List<Movie> movies;
-        if (status != null) {
-            movies = movieRepository.findByStatus(status, sort);
-        } else {
+
+        if (status == null) {
             movies = movieRepository.findAll(sort);
+        } else {
+            LocalDate today = LocalDate.now();
+
+            movies =
+                    switch (status) {
+                        case NOW_SHOWING ->
+                                movieRepository.findByReleaseDateLessThanEqual(today, sort);
+                        case UPCOMING -> movieRepository.findByReleaseDateAfter(today, sort);
+                    };
         }
+
         return MovieListResponse.of(movies);
     }
 
