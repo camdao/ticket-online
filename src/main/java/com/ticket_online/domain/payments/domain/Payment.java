@@ -53,9 +53,6 @@ public class Payment extends BaseTimeEntity {
     @Column(name = "gateway_response", columnDefinition = "TEXT")
     private String gatewayResponse;
 
-    @Column(name = "expires_at")
-    private LocalDateTime expiresAt;
-
     @Builder(access = AccessLevel.PRIVATE)
     Payment(
             Booking booking,
@@ -63,15 +60,13 @@ public class Payment extends BaseTimeEntity {
             PaymentMethod paymentMethod,
             BigDecimal amount,
             PaymentStatus status,
-            String paymentUrl,
-            LocalDateTime expiresAt) {
+            String paymentUrl) {
         this.booking = booking;
         this.transactionId = transactionId;
         this.paymentMethod = paymentMethod;
         this.amount = amount;
         this.status = status;
         this.paymentUrl = paymentUrl;
-        this.expiresAt = expiresAt;
     }
 
     public static Payment createPayment(
@@ -87,7 +82,6 @@ public class Payment extends BaseTimeEntity {
                 .amount(amount)
                 .status(PaymentStatus.PENDING)
                 .paymentUrl(paymentUrl)
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
                 .build();
     }
 
@@ -95,7 +89,6 @@ public class Payment extends BaseTimeEntity {
         this.status = PaymentStatus.SUCCESS;
         this.paidAt = LocalDateTime.now();
         this.gatewayResponse = gatewayResponse;
-        this.expiresAt = null;
     }
 
     public void markAsFailed(String gatewayResponse) {

@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +25,10 @@ public class CinemaService {
     private final RoomRepository roomRepository;
     private final ShowtimeService showtimeService;
 
-    public CinemaListResponse getCinemas(
-            Pageable pageable, String brand, String city, String district) {
-        Page<Cinema> cinemaPage = cinemaRepository.findByFilters(brand, city, district, pageable);
+    public CinemaListResponse getCinemas(String brand, String city, String district) {
+        List<Cinema> cinemas = cinemaRepository.findByFiltersWithoutPaging(brand, city, district);
 
-        List<Long> cinemaIds =
-                cinemaPage.getContent().stream().map(Cinema::getId).collect(Collectors.toList());
+        List<Long> cinemaIds = cinemas.stream().map(Cinema::getId).collect(Collectors.toList());
 
         Map<Long, Integer> roomCountMap =
                 roomRepository.countByCinemaIds(cinemaIds).stream()
@@ -40,7 +36,7 @@ public class CinemaService {
                                 Collectors.toMap(
                                         row -> (Long) row[0], row -> ((Long) row[1]).intValue()));
 
-        return CinemaListResponse.of(cinemaPage, roomCountMap);
+        return CinemaListResponse.of(cinemas, roomCountMap);
     }
 
     public CinemaResponse getCinemaById(Long id) {

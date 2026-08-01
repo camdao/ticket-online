@@ -5,20 +5,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Page;
 
-@Schema(description = "Paginated list of cinemas")
+@Schema(description = "List of cinemas")
 public record CinemaListResponse(
-        @Schema(description = "List of cinemas on the current page") List<CinemaResponse> content,
-        @Schema(description = "Current page number (0-indexed)", example = "0") int page,
-        @Schema(description = "Number of items per page", example = "10") int size,
-        @Schema(description = "Total number of cinemas across all pages", example = "45")
-                long totalElements,
-        @Schema(description = "Total number of pages", example = "5") int totalPages) {
+        @Schema(description = "List of cinemas") List<CinemaResponse> cinemas) {
 
-    public static CinemaListResponse of(Page<Cinema> cinemaPage, Map<Long, Integer> roomCountMap) {
+    public static CinemaListResponse of(List<Cinema> cinemas, Map<Long, Integer> roomCountMap) {
         List<CinemaResponse> cinemaResponses =
-                cinemaPage.getContent().stream()
+                cinemas.stream()
                         .map(
                                 cinema -> {
                                     Integer totalRooms =
@@ -26,11 +20,6 @@ public record CinemaListResponse(
                                     return CinemaResponse.from(cinema, totalRooms);
                                 })
                         .collect(Collectors.toList());
-        return new CinemaListResponse(
-                cinemaResponses,
-                cinemaPage.getNumber(),
-                cinemaPage.getSize(),
-                cinemaPage.getTotalElements(),
-                cinemaPage.getTotalPages());
+        return new CinemaListResponse(cinemaResponses);
     }
 }
