@@ -110,7 +110,7 @@ public class PaymentService {
                 .status(payment.getStatus())
                 .paymentUrl(payment.getPaymentUrl())
                 .transactionId(payment.getTransactionId())
-                .expiresAt(payment.getExpiresAt())
+                .expiresAt(booking.getExpiresAt())
                 .build();
     }
 

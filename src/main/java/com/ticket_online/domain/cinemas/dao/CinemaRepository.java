@@ -24,6 +24,16 @@ public interface CinemaRepository extends JpaRepository<Cinema, Long> {
             Pageable pageable);
 
     @Query(
+            "SELECT c FROM Cinema c WHERE "
+                    + "(:brand IS NULL OR c.brand = :brand) AND "
+                    + "(:city IS NULL OR c.city = :city) AND "
+                    + "(:district IS NULL OR c.district = :district)")
+    List<Cinema> findByFiltersWithoutPaging(
+            @Param("brand") String brand,
+            @Param("city") String city,
+            @Param("district") String district);
+
+    @Query(
             "SELECT c FROM Cinema c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) "
                     + "OR LOWER(c.brand) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Cinema> searchByKeyword(@Param("keyword") String keyword);
