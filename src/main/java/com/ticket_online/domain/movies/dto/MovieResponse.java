@@ -1,9 +1,11 @@
 package com.ticket_online.domain.movies.dto;
 
+import com.ticket_online.domain.cinemas.dto.response.CinemaResponse;
 import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.movies.domain.MovieStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+import java.util.List;
 
 @Schema(description = "Movie information response")
 public record MovieResponse(
@@ -23,7 +25,8 @@ public record MovieResponse(
                 String posterUrl,
         @Schema(description = "Movie trailer URL", example = "https://example.com/trailer.mp4")
                 String trailerUrl,
-        @Schema(description = "Movie status") MovieStatus status) {
+        @Schema(description = "Movie status") MovieStatus status,
+        @Schema(description = "List of cinemas showing this movie") List<CinemaResponse> cinemas) {
 
     public static MovieResponse from(Movie movie) {
         return new MovieResponse(
@@ -38,6 +41,24 @@ public record MovieResponse(
                 movie.getReleaseDate(),
                 movie.getImageUrl(),
                 movie.getTrailerUrl(),
-                movie.getStatus());
+                movie.getStatus(),
+                List.of());
+    }
+
+    public static MovieResponse from(Movie movie, List<CinemaResponse> cinemas) {
+        return new MovieResponse(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getDuration(),
+                movie.getDescription(),
+                movie.getGenre(),
+                movie.getDirector(),
+                movie.getCast(),
+                movie.getRating(),
+                movie.getReleaseDate(),
+                movie.getImageUrl(),
+                movie.getTrailerUrl(),
+                movie.getStatus(),
+                cinemas);
     }
 }

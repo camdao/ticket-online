@@ -10,10 +10,12 @@ import com.ticket_online.domain.movies.domain.Movie;
 import com.ticket_online.domain.movies.domain.MovieStatus;
 import com.ticket_online.domain.movies.dto.MovieListResponse;
 import com.ticket_online.domain.movies.dto.MovieResponse;
+import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +30,8 @@ import org.springframework.data.domain.Sort;
 class MovieServiceTest {
 
     @Mock private MovieRepository movieRepository;
+
+    @Mock private ShowtimeRepository showtimeRepository;
 
     @InjectMocks private MovieService movieService;
 
@@ -105,9 +109,10 @@ class MovieServiceTest {
                                 "T16"));
         when(movieRepository.findByReleaseDateLessThanEqual(any(LocalDate.class), any(Sort.class)))
                 .thenReturn(movies);
+        when(showtimeRepository.findCinemasByMovieId(any())).thenReturn(Collections.emptyList());
 
         // When
-        MovieListResponse result = movieService.getAllMovies(status, sort);
+        MovieListResponse result = movieService.getAllMovies(status, null, sort);
 
         // Then
         assertThat(result).isNotNull();
@@ -145,9 +150,10 @@ class MovieServiceTest {
                                 "Cast",
                                 "T16"));
         when(movieRepository.findAll(any(Sort.class))).thenReturn(movies);
+        when(showtimeRepository.findCinemasByMovieId(any())).thenReturn(Collections.emptyList());
 
         // When
-        MovieListResponse result = movieService.getAllMovies(null, sort);
+        MovieListResponse result = movieService.getAllMovies(null, null, sort);
 
         // Then
         assertThat(result).isNotNull();
