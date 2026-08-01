@@ -12,8 +12,8 @@ public class UpdateSeatRequest {
 
     private SeatType type;
 
-    @Min(value = 1000, message = "Base price must be at least 1000")
-    private Long basePrice;
+    @Min(value = 0, message = "Surcharge cannot be negative")
+    private Long surcharge;
 
     private Boolean isActive;
 }

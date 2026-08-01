@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(
         name = "seats",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"room_id", "row", "number"})},
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"room_id", "row_label", "seat_number"})
+        },
         indexes = {
             @Index(name = "idx_seat_room", columnList = "room_id"),
             @Index(name = "idx_seat_row_number", columnList = "row, number")
@@ -29,29 +31,29 @@ public class Seat extends BaseTimeEntity {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    @Column(name = "row", nullable = false, length = 2)
+    @Column(name = "row_label", nullable = false, length = 5)
     private String row;
 
-    @Column(name = "number", nullable = false)
+    @Column(name = "seat_number", nullable = false)
     private Integer number;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, length = 20)
+    @Column(name = "seat_type", nullable = false, length = 20)
     private SeatType type;
 
-    @Column(name = "base_price", nullable = false)
-    private Long basePrice;
+    @Column(name = "surcharge", nullable = false)
+    private Long surcharge;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
     @Builder
-    public Seat(Room room, String row, Integer number, SeatType type, Long basePrice) {
+    public Seat(Room room, String row, Integer number, SeatType type, Long surcharge) {
         this.room = room;
         this.row = row;
         this.number = number;
         this.type = type;
-        this.basePrice = basePrice;
+        this.surcharge = surcharge;
         this.isActive = true;
     }
 
@@ -60,9 +62,9 @@ public class Seat extends BaseTimeEntity {
         return row + "-" + number;
     }
 
-    /** Calculate the price for this seat based on seat type */
-    public Long calculatePrice() {
-        return basePrice;
+    /** Calculate the total price for this seat including surcharge */
+    public Long calculatePrice(Long showtimeBasePrice) {
+        return showtimeBasePrice + surcharge;
     }
 
     /** Deactivate the seat */
@@ -80,11 +82,11 @@ public class Seat extends BaseTimeEntity {
         this.type = newType;
     }
 
-    /** Update base price */
-    public void updateBasePrice(Long newPrice) {
-        if (newPrice <= 0) {
-            throw new IllegalArgumentException("Base price must be positive");
+    /** Update surcharge for special seat types */
+    public void updateSurcharge(Long newSurcharge) {
+        if (newSurcharge < 0) {
+            throw new IllegalArgumentException("Surcharge cannot be negative");
         }
-        this.basePrice = newPrice;
+        this.surcharge = newSurcharge;
     }
 }

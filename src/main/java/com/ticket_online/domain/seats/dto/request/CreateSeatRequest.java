@@ -27,7 +27,7 @@ public class CreateSeatRequest {
     @NotNull(message = "Seat type is required")
     private SeatType type;
 
-    @NotNull(message = "Base price is required")
-    @Min(value = 1000, message = "Base price must be at least 1000")
-    private Long basePrice;
+    @NotNull(message = "Surcharge is required")
+    @Min(value = 0, message = "Surcharge cannot be negative")
+    private Long surcharge;
 }
