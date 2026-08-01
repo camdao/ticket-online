@@ -9,6 +9,7 @@ import com.ticket_online.domain.seats.domain.SeatStatus;
 import com.ticket_online.domain.seats.dto.response.SeatResponse;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
+import com.ticket_online.domain.showtimes.dto.response.ShowtimeDetailResponse;
 import com.ticket_online.domain.showtimes.dto.response.ShowtimeSeatsResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
@@ -32,6 +33,46 @@ public class ShowtimeService {
     private final SeatRepository seatRepository;
     private final BookingDetailRepository bookingDetailRepository;
     private final RedisTemplate<String, String> redisTemplate;
+
+    /**
+     * Get detailed information for a specific showtime
+     *
+     * @param showtimeId the ID of the showtime
+     * @return ShowtimeDetailResponse with nested movie and cinema info
+     */
+    public ShowtimeDetailResponse getShowtimeById(Long showtimeId) {
+        // Fetch showtime with movie, cinema, and room details
+        Showtime showtime =
+                showtimeRepository
+                        .findByIdWithDetails(showtimeId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.SHOWTIME_NOT_FOUND));
+
+        Room room = showtime.getRoom();
+
+        // Get total seats count for the room
+        List<Seat> allSeats = seatRepository.findByRoomId(room.getId());
+        int totalSeats = allSeats.size();
+
+        // Get confirmed (BOOKED) seat count from database
+        List<Long> confirmedSeatIds =
+                bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId);
+        int bookedSeatsCount = confirmedSeatIds.size();
+
+        // Get held seats count from Redis
+        int heldSeatsCount = 0;
+        for (Seat seat : allSeats) {
+            String redisKey = String.format("seat:hold:%d:%d", showtimeId, seat.getId());
+            Boolean isHeld = redisTemplate.hasKey(redisKey);
+            if (Boolean.TRUE.equals(isHeld)) {
+                heldSeatsCount++;
+            }
+        }
+
+        // Calculate available seats
+        int availableSeats = totalSeats - bookedSeatsCount - heldSeatsCount;
+
+        return ShowtimeDetailResponse.from(showtime, availableSeats, totalSeats);
+    }
 
     /**
      * Get seat availability for a specific showtime

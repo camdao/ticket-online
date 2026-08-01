@@ -282,6 +282,44 @@ Lấy danh sách suất chiếu của phim.
 ```
 
 ---
+
+### GET /showtimes/{id}
+Lấy chi tiết suất chiếu.
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "id": 17,
+    "startTime": "2024-01-15T14:30:00",
+    "endTime": "2024-01-15T17:42:00",
+    "basePrice": 85000,
+    "status": "ACTIVE",
+    "availableSeats": 87,
+    "totalSeats": 120,
+    "movie": {
+      "id": 1,
+      "title": "Avatar: The Way of Water",
+      "duration": 192,
+      "genre": "Action, Adventure, Sci-Fi",
+      "ageRating": "T13",
+      "posterUrl": "https://cdn.example.com/avatar2.jpg"
+    },
+    "cinema": {
+      "id": 5,
+      "name": "CGV Vincom Center",
+      "brand": "CGV",
+      "address": "72 Lê Thánh Tôn, Quận 1, TP.HCM",
+      "phoneNumber": "1900xxxx"
+    }
+  },
+  "timestamp": "2024-01-15T14:30:00"
+}
+```
+
+---
 ### GET /showtimes/{id}/seats
 Lấy sơ đồ ghế của suất chiếu.
 

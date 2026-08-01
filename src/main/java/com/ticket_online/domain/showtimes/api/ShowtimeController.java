@@ -2,6 +2,7 @@ package com.ticket_online.domain.showtimes.api;
 
 import com.ticket_online.domain.cinemas.dto.response.ShowtimeResponse;
 import com.ticket_online.domain.showtimes.application.ShowtimeService;
+import com.ticket_online.domain.showtimes.dto.response.ShowtimeDetailResponse;
 import com.ticket_online.domain.showtimes.dto.response.ShowtimeSeatsResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShowtimeController {
 
     private final ShowtimeService showtimeService;
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get showtime details",
+            description =
+                    "Returns detailed information for a specific showtime including nested movie and"
+                            + " cinema information, along with seat availability.")
+    public ResponseEntity<ShowtimeDetailResponse> getShowtimeById(
+            @Parameter(description = "ID of the showtime", required = true, example = "17")
+                    @PathVariable
+                    Long id) {
+        ShowtimeDetailResponse response = showtimeService.getShowtimeById(id);
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping
     @Operation(
