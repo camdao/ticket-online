@@ -141,7 +141,7 @@ public class BookingService {
                         .map(
                                 seat ->
                                         showtime.getBasePrice()
-                                                .add(BigDecimal.valueOf(seat.getBasePrice())))
+                                                .add(BigDecimal.valueOf(seat.getSurcharge())))
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Generate unique booking code
@@ -166,7 +166,7 @@ public class BookingService {
                                 seat -> {
                                     BigDecimal seatPrice =
                                             showtime.getBasePrice()
-                                                    .add(BigDecimal.valueOf(seat.getBasePrice()));
+                                                    .add(BigDecimal.valueOf(seat.getSurcharge()));
                                     return BookingDetail.createBookingDetail(
                                             finalBooking, seat, seatPrice);
                                 })
@@ -282,7 +282,7 @@ public class BookingService {
                                                                 .add(
                                                                         BigDecimal.valueOf(
                                                                                 seat
-                                                                                        .getBasePrice())))
+                                                                                        .getSurcharge())))
                                                 .build())
                         .toList();
 

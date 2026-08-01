@@ -199,7 +199,7 @@ class ShowtimeServiceTest {
 
         // Then
         assertThat(result.getSeats())
-                .allMatch(seat -> seat.getPrice() != null && seat.getPrice() > 0);
+                .allMatch(seat -> seat.getSurcharge() != null && seat.getSurcharge() >= 0);
     }
 
     private Showtime createTestShowtime() {
@@ -270,7 +270,7 @@ class ShowtimeServiceTest {
                         .row(row)
                         .number(number)
                         .type(type)
-                        .basePrice(price)
+                        .surcharge(price)
                         .build();
         setId(seat, Long.valueOf(row.charAt(0) - 'A' + 1) * 100 + number);
         return seat;
