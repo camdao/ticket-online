@@ -15,7 +15,7 @@ public class SeatResponse {
     private String row;
     private Integer number;
     private SeatType type;
-    private Long price;
+    private Long surcharge;
     private SeatStatus status;
 
     /** Create SeatResponse from Seat entity */
@@ -25,7 +25,7 @@ public class SeatResponse {
                 .row(seat.getRow())
                 .number(seat.getNumber())
                 .type(seat.getType())
-                .price(seat.getBasePrice())
+                .surcharge(seat.getSurcharge())
                 .status(status)
                 .build();
     }
