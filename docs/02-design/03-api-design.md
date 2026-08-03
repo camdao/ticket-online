@@ -139,34 +139,84 @@ Làm mới access token.
 ## 4.2. Movies
 
 ### GET /movies
-Lấy danh sách phim đang chiếu.
+Lấy danh sách phim với thông tin rạp chiếu.
 
 **Query Parameters:**
-- `status` (optional): Trạng thái phim (NOW_SHOWING, UPCOMING, ENDED)
+- `status` (optional): Trạng thái phim (NOW_SHOWING, UPCOMING)
+- `cinemaId` (optional): Lọc phim theo rạp chiếu
 - `sortBy` (optional): Sắp xếp theo (releaseDate, title, rating)
 - `sortDirection` (optional): Hướng sắp xếp (ASC, DESC)
+
+**Examples:**
+- `GET /movies` - Lấy tất cả phim với danh sách rạp đang chiếu
+- `GET /movies?status=NOW_SHOWING` - Lấy phim đang chiếu
+- `GET /movies?cinemaId=5` - Lấy phim đang chiếu tại rạp có ID = 5
+- `GET /movies?status=NOW_SHOWING&cinemaId=5` - Lấy phim đang chiếu tại rạp có ID = 5
 
 **Response (200):**
 ```json
 {
   "success": true,
   "status": 200,
-  "data": [
-    {
-      "id": 1,
-      "title": "Avatar: The Way of Water",
-      "duration": 192,
-      "genre": "Action, Adventure, Sci-Fi",
-      "rating": 8.5,
-      "ageRating": "T13",
-      "releaseDate": "2023-12-16",
-      "posterUrl": "https://cdn.example.com/avatar2.jpg",
-      "status": "NOW_SHOWING"
-    }
-  ],
+  "data": {
+    "content": [
+      {
+        "id": 1,
+        "title": "Avatar: The Way of Water",
+        "duration": 192,
+        "description": "Jake Sully lives with his newfound family...",
+        "genre": "Action, Adventure, Sci-Fi",
+        "director": "James Cameron",
+        "cast": "Sam Worthington, Zoe Saldana, Sigourney Weaver",
+        "ageRating": "T13",
+        "releaseDate": "2023-12-16",
+        "posterUrl": "https://cdn.example.com/avatar2.jpg",
+        "trailerUrl": "https://youtube.com/watch?v=...",
+        "status": "NOW_SHOWING",
+        "cinemas": [
+          {
+            "id": 5,
+            "name": "CGV Vincom Center",
+            "brand": "CGV",
+            "logoUrl": "https://cdn.example.com/cgv-logo.png",
+            "address": "72 Lê Thánh Tôn",
+            "district": "Quận 1",
+            "city": "TP. Hồ Chí Minh",
+            "phone": "1900xxxx",
+            "website": "https://www.cgv.vn",
+            "description": "Premium cinema with IMAX",
+            "totalScreens": null,
+            "createdAt": "2024-01-15T10:00:00",
+            "updatedAt": "2024-01-15T10:00:00"
+          },
+          {
+            "id": 6,
+            "name": "CGV Aeon Tân Phú",
+            "brand": "CGV",
+            "logoUrl": "https://cdn.example.com/cgv-logo.png",
+            "address": "30 Bờ Bao Tân Thắng",
+            "district": "Tân Phú",
+            "city": "TP. Hồ Chí Minh",
+            "phone": "1900xxxx",
+            "website": "https://www.cgv.vn",
+            "description": null,
+            "totalScreens": null,
+            "createdAt": "2024-01-15T10:00:00",
+            "updatedAt": "2024-01-15T10:00:00"
+          }
+        ]
+      }
+    ],
+    "totalElements": 15
+  },
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
+
+**Lưu ý:**
+- Mảng `cinemas` chứa danh sách các rạp đang có suất chiếu cho phim này
+- Khi lọc theo `cinemaId`, chỉ trả về các phim đang chiếu tại rạp đó
+- Có thể kết hợp filter `status` và `cinemaId` để lọc phim đang chiếu/sắp chiếu tại một rạp cụ thể
 
 ---
 

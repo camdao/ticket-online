@@ -20,15 +20,16 @@ public class MovieController {
     @Operation(
             summary = "Get all movies",
             description =
-                    "Retrieves a list of movies with optional filters for status. Supports sorting by various fields.")
+                    "Retrieves a list of movies with optional filters for status and cinema. Supports sorting by various fields.")
     @GetMapping
     public ResponseEntity<MovieListResponse> getAllMovies(
             @RequestParam(required = false) MovieStatus status,
+            @RequestParam(required = false) Long cinemaId,
             @RequestParam(defaultValue = "releaseDate") String sortBy,
             @RequestParam(defaultValue = "DESC") String sortDirection) {
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         Sort sort = Sort.by(direction, sortBy);
-        MovieListResponse response = movieService.getAllMovies(status, sort);
+        MovieListResponse response = movieService.getAllMovies(status, cinemaId, sort);
         return ResponseEntity.ok(response);
     }
 
