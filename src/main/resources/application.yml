@@ -26,8 +26,7 @@ vnpay:
     tmn-code: U2BYG43H
     hash-secret: ${VNPAY_HASH_SECRET:}
     pay-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-    return-url: http://localhost:8080/payments/vnpay-return
-
+    return-url: http://localhost:8081/api/v1/payments/callback
 server:
     port: 8081
 

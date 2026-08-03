@@ -47,7 +47,7 @@ public class Payment extends BaseTimeEntity {
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
-    @Column(name = "payment_url", length = 500)
+    @Column(name = "payment_url", length = 2000)
     private String paymentUrl;
 
     @Column(name = "gateway_response", columnDefinition = "TEXT")

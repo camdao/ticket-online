@@ -11,6 +11,7 @@ import com.ticket_online.domain.payments.domain.PaymentMethod;
 import com.ticket_online.domain.payments.dto.request.PaymentRequest;
 import com.ticket_online.domain.payments.dto.response.PaymentResponse;
 import com.ticket_online.domain.payments.dto.response.PaymentVerificationResponse;
+import com.ticket_online.global.config.vnpay.VnpayProperties;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
@@ -36,6 +37,7 @@ public class PaymentService {
     private final VnpayService vnpayService;
     private final RedisSeatScripts redisSeatScripts;
     private final ObjectMapper objectMapper;
+    private final VnpayProperties vnpayProperties;
 
     @Transactional
     public PaymentResponse initiatePayment(
@@ -85,7 +87,7 @@ public class PaymentService {
                             transactionId,
                             booking.getTotalAmount().longValue(),
                             orderInfo,
-                            request.getReturnUrl(),
+                            vnpayProperties.returnUrl(),
                             ipAddress);
         } else {
             throw new CustomException(
