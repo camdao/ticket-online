@@ -14,31 +14,7 @@ Mục tiêu là xác định các vấn đề có thể xảy ra trong quá trì
 
 # 2. Quy trình nghiệp vụ
 
-```text
-Đăng nhập
-    │
-    ▼
-Chọn phim
-    │
-    ▼
-Chọn suất chiếu
-    │
-    ▼
-Chọn ghế
-    │
-    ▼
-Giữ ghế tạm thời
-    │
-    ▼
-Thanh toán
-    │
- ┌──┴────────┐
- │           │
-Thành công  Thất bại
- │           │
- ▼           ▼
-Xuất vé   Giải phóng ghế
-```
+![flow booking](../diagrams/flow-booking.svg)
 
 ---
 

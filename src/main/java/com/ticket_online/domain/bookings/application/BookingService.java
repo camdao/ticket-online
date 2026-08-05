@@ -6,17 +6,21 @@ import com.ticket_online.domain.bookings.domain.Booking;
 import com.ticket_online.domain.bookings.domain.BookingDetail;
 import com.ticket_online.domain.bookings.domain.BookingStatus;
 import com.ticket_online.domain.bookings.dto.request.CreateBookingRequest;
-import com.ticket_online.domain.bookings.dto.request.HoldSeatsRequest;
 import com.ticket_online.domain.bookings.dto.response.*;
+import com.ticket_online.domain.payments.application.VnpayService;
+import com.ticket_online.domain.payments.dao.PaymentRepository;
+import com.ticket_online.domain.payments.domain.Payment;
 import com.ticket_online.domain.seats.dao.SeatRepository;
 import com.ticket_online.domain.seats.domain.Seat;
 import com.ticket_online.domain.showtimes.dao.ShowtimeRepository;
 import com.ticket_online.domain.showtimes.domain.Showtime;
 import com.ticket_online.domain.user.dao.UserRepository;
 import com.ticket_online.domain.user.domain.User;
+import com.ticket_online.global.config.vnpay.VnpayProperties;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,99 +44,36 @@ public class BookingService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final RedisSeatScripts redisSeatScripts;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final PaymentRepository paymentRepository;
+    private final VnpayService vnpayService;
+    private final VnpayProperties vnpayProperties;
 
     private static final int SEAT_HOLD_TTL_SECONDS = 300; // 5 minutes
-    private static final String HOLD_TOKEN_PREFIX = "hold_token:";
 
     @Transactional
-    public HoldSeatsResponse holdSeats(HoldSeatsRequest request, Long userId) {
-        // Validate showtime exists
+    public BookingResponse createBooking(
+            CreateBookingRequest request, Long userId, HttpServletRequest httpRequest) {
+        // 1. Validate showtime exists
         Showtime showtime =
                 showtimeRepository
                         .findById(request.getShowtimeId())
                         .orElseThrow(() -> new CustomException(ErrorCode.SHOWTIME_NOT_FOUND));
 
-        // Validate seats exist
+        // 2. Validate seats exist
         List<Seat> seats = seatRepository.findByIdIn(request.getSeatIds());
         if (seats.size() != request.getSeatIds().size()) {
             throw new CustomException(ErrorCode.SEATS_NOT_FOUND);
         }
 
-        // Hold seats in Redis
+        // 3. Acquire seat lock in Redis (will throw exception if seats already held)
         redisSeatScripts.holdSeats(
                 request.getSeatIds(), request.getShowtimeId(), userId, SEAT_HOLD_TTL_SECONDS);
 
-        // Generate hold token and store in Redis
-        String holdToken = UUID.randomUUID().toString();
-        String holdTokenKey = HOLD_TOKEN_PREFIX + holdToken;
-
-        // Store hold info: userId, showtimeId, seatIds
-        String holdInfo =
-                userId
-                        + ":"
-                        + request.getShowtimeId()
-                        + ":"
-                        + String.join(
-                                ",", request.getSeatIds().stream().map(String::valueOf).toList());
-        redisTemplate
-                .opsForValue()
-                .set(holdTokenKey, holdInfo, java.time.Duration.ofSeconds(SEAT_HOLD_TTL_SECONDS));
-
-        LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(SEAT_HOLD_TTL_SECONDS);
-
-        return HoldSeatsResponse.builder()
-                .holdToken(holdToken)
-                .showtimeId(request.getShowtimeId())
-                .seatIds(request.getSeatIds())
-                .expiresAt(expiresAt)
-                .remainingSeconds(SEAT_HOLD_TTL_SECONDS)
-                .build();
-    }
-
-    @Transactional
-    public BookingResponse createBooking(CreateBookingRequest request, Long userId) {
-        // Validate hold token
-        String holdTokenKey = HOLD_TOKEN_PREFIX + request.getHoldToken();
-        String holdInfo = redisTemplate.opsForValue().get(holdTokenKey);
-
-        if (holdInfo == null) {
-            throw new CustomException(ErrorCode.INVALID_HOLD_TOKEN);
-        }
-
-        // Parse hold info
-        String[] parts = holdInfo.split(":");
-        Long holdUserId = Long.parseLong(parts[0]);
-        Long holdShowtimeId = Long.parseLong(parts[1]);
-        List<Long> holdSeatIds =
-                List.of(parts[2].split(",")).stream().map(Long::parseLong).toList();
-
-        // Validate hold token belongs to current user
-        if (!holdUserId.equals(userId)) {
-            throw new CustomException(ErrorCode.INVALID_HOLD_TOKEN);
-        }
-
-        // Validate request matches hold info
-        if (!holdShowtimeId.equals(request.getShowtimeId())
-                || !holdSeatIds.equals(request.getSeatIds())) {
-            throw new CustomException(ErrorCode.INVALID_HOLD_TOKEN);
-        }
-
-        // Get entities
+        // Get user entity
         User user =
                 userRepository
                         .findById(userId)
                         .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        Showtime showtime =
-                showtimeRepository
-                        .findById(request.getShowtimeId())
-                        .orElseThrow(() -> new CustomException(ErrorCode.SHOWTIME_NOT_FOUND));
-
-        List<Seat> seats = seatRepository.findByIdIn(request.getSeatIds());
-        if (seats.size() != request.getSeatIds().size()) {
-            throw new CustomException(ErrorCode.SEATS_NOT_FOUND);
-        }
 
         // Calculate total amount
         BigDecimal totalAmount =
@@ -147,7 +87,7 @@ public class BookingService {
         // Generate unique booking code
         String bookingCode = generateBookingCode();
 
-        // Create booking
+        // 4. Create booking
         Booking booking =
                 Booking.createBooking(
                         bookingCode,
@@ -173,10 +113,36 @@ public class BookingService {
                         .toList();
         bookingDetailRepository.saveAll(bookingDetails);
 
-        // Delete hold token (it's been used)
-        redisTemplate.delete(holdTokenKey);
+        // 5. Generate payment URL
+        String transactionId = generateTransactionId();
+        String ipAddress = getClientIp(httpRequest);
+        String orderInfo = "Thanh toan ve phim - Booking: " + booking.getBookingCode();
 
-        return buildBookingResponse(booking, seats, showtime);
+        String paymentUrl =
+                vnpayService.createPaymentUrl(
+                        transactionId,
+                        totalAmount.longValue(),
+                        orderInfo,
+                        vnpayProperties.returnUrl(),
+                        ipAddress);
+
+        // Create payment record
+        Payment payment =
+                Payment.createPayment(
+                        booking,
+                        transactionId,
+                        request.getPaymentMethod(),
+                        totalAmount,
+                        paymentUrl);
+        paymentRepository.save(payment);
+
+        log.info(
+                "Created booking {} with {} seats, transaction ID: {}",
+                bookingCode,
+                seats.size(),
+                transactionId);
+
+        return buildBookingResponse(booking, seats, showtime, paymentUrl, transactionId);
     }
 
     public Page<BookingListResponse> getUserBookings(
@@ -266,8 +232,33 @@ public class BookingService {
         return prefix + timestamp.substring(timestamp.length() - 10) + random;
     }
 
+    private String generateTransactionId() {
+        String prefix = "PAY";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String random = UUID.randomUUID().toString().substring(0, 8);
+        return prefix + timestamp.substring(timestamp.length() - 10) + random;
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty()) {
+            return xRealIp;
+        }
+
+        return request.getRemoteAddr();
+    }
+
     private BookingResponse buildBookingResponse(
-            Booking booking, List<Seat> seats, Showtime showtime) {
+            Booking booking,
+            List<Seat> seats,
+            Showtime showtime,
+            String paymentUrl,
+            String transactionId) {
         List<SeatDto> seatDtos =
                 seats.stream()
                         .map(
@@ -298,6 +289,8 @@ public class BookingService {
                 .seats(seatDtos)
                 .totalAmount(booking.getTotalAmount())
                 .status(booking.getStatus())
+                .paymentUrl(paymentUrl)
+                .transactionId(transactionId)
                 .createdAt(booking.getCreatedAt())
                 .expiresAt(booking.getExpiresAt())
                 .confirmedAt(booking.getConfirmedAt())

@@ -1,3 +1,0 @@
-- http://localhost:3001/cinemas vi tri thanh pho
-- redis trust book seat
-- payment vnpay-ipn

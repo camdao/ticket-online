@@ -42,32 +42,7 @@ Hệ thống được thiết kế nhằm giải quyết các bài toán trên t
 ---
 
 # 4. Quy trình đặt vé
-
-```text
-Đăng nhập
-    │
-    ▼
-Chọn phim
-    │
-    ▼
-Chọn suất chiếu
-    │
-    ▼
-Chọn ghế
-    │
-    ▼
-Hệ thống giữ ghế 5 phút
-    │
-    ▼
-Thanh toán
-    │
- ┌──┴────────┐
- │           │
-Thành công  Thất bại
- │           │
- ▼           ▼
-Xuất vé    Giải phóng ghế
-```
+![flow booking](../diagrams/flow-booking.svg)
 
 ---
 

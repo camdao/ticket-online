@@ -3,15 +3,14 @@ package com.ticket_online.domain.bookings.api;
 import com.ticket_online.domain.bookings.application.BookingService;
 import com.ticket_online.domain.bookings.domain.BookingStatus;
 import com.ticket_online.domain.bookings.dto.request.CreateBookingRequest;
-import com.ticket_online.domain.bookings.dto.request.HoldSeatsRequest;
 import com.ticket_online.domain.bookings.dto.response.BookingDetailResponse;
 import com.ticket_online.domain.bookings.dto.response.BookingListResponse;
 import com.ticket_online.domain.bookings.dto.response.BookingResponse;
-import com.ticket_online.domain.bookings.dto.response.HoldSeatsResponse;
 import com.ticket_online.global.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,32 +32,19 @@ public class BookingController {
     private final SecurityUtil securityUtil;
 
     @Operation(
-            summary = "Hold seats temporarily",
-            description =
-                    "Reserves selected seats for 5 minutes to allow the user to complete the booking"
-                            + " process. Returns a hold token that must be used to create the"
-                            + " booking. Requires authentication.")
-    @PostMapping("/hold-seats")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<HoldSeatsResponse> holdSeats(
-            @Valid @RequestBody HoldSeatsRequest request) {
-        Long userId = securityUtil.getCurrentUserId();
-        HoldSeatsResponse response = bookingService.holdSeats(request, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @Operation(
             summary = "Create a booking",
             description =
-                    "Creates a ticket booking from previously held seats. Requires a valid hold token"
-                            + " obtained from the hold-seats endpoint. The booking will be in PENDING"
-                            + " status until payment is confirmed. Requires authentication.")
+                    "Creates a ticket booking with seat reservation and payment URL generation in a"
+                            + " single atomic operation. Validates showtime and seats, acquires seat"
+                            + " locks in Redis, creates the booking, and returns a payment URL. The"
+                            + " booking will be in PENDING status until payment is confirmed. Requires"
+                            + " authentication.")
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<BookingResponse> createBooking(
-            @Valid @RequestBody CreateBookingRequest request) {
+            @Valid @RequestBody CreateBookingRequest request, HttpServletRequest httpRequest) {
         Long userId = securityUtil.getCurrentUserId();
-        BookingResponse response = bookingService.createBooking(request, userId);
+        BookingResponse response = bookingService.createBooking(request, userId, httpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

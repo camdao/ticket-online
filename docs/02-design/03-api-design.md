@@ -21,13 +21,11 @@ Tài liệu này mô tả các API cho người dùng cuối của hệ thống 
 
 # 3. Xác thực
 
+![Authentication Flow](../diagrams/api-authentication-flow.svg)
+
 Các API yêu cầu đăng nhập sử dụng JWT Bearer Token.
 
-Ví dụ:
-
-```http
-Authorization: Bearer <access_token>
-```
+Ví dụ: ``` http Authorization: Bearer <access_token> ```
 
 ---
 
@@ -441,56 +439,8 @@ Lấy sơ đồ ghế của suất chiếu.
 
 ## 4.6. Bookings
 
-### POST /bookings/hold-seats
-Giữ ghế tạm thời (5 phút).
-
-**Headers:**
-- `Authorization: Bearer <access_token>`
-
-**Request:**
-```json
-{
-  "showtimeId": 101,
-  "seatIds": [1201, 1202, 1203]
-}
-```
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "status": 201,
-  "data": {
-    "holdToken": "hold_abc123xyz",
-    "showtimeId": 101,
-    "seatIds": [1201, 1202, 1203],
-    "expiresAt": "2024-01-15T14:35:00",
-    "remainingSeconds": 300
-  },
-  "timestamp": "2024-01-15T14:30:00"
-}
-```
-
-**Error Response (409):**
-```json
-{
-  "success": false,
-  "status": 409,
-  "data": {
-    "errorClassName": "SeatConflictException",
-    "message": "Some seats are already booked or held"
-  },
-  "timestamp": "2024-01-15T14:30:00",
-  "data": {
-    "unavailableSeats": [1202]
-  }
-}
-```
-
----
-
 ### POST /bookings
-Tạo đơn đặt vé từ ghế đã giữ.
+Tạo đơn đặt vé với thanh toán (thao tác atomic: giữ ghế + tạo booking + tạo payment URL).
 
 **Headers:**
 - `Authorization: Bearer <access_token>`
@@ -498,11 +448,12 @@ Tạo đơn đặt vé từ ghế đã giữ.
 **Request:**
 ```json
 {
-  "holdToken": "hold_abc123xyz",
   "showtimeId": 101,
   "seatIds": [1201, 1202, 1203],
   "customerEmail": "john@example.com",
-  "customerPhone": "0912345678"
+  "customerPhone": "0912345678",
+  "paymentMethod": "VNPAY",
+  "returnUrl": "https://example.com/booking-success"
 }
 ```
 
@@ -545,6 +496,8 @@ Tạo đơn đặt vé từ ghế đã giữ.
     ],
     "totalAmount": 255000,
     "status": "PENDING",
+    "paymentUrl": "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=...",
+    "transactionId": "PAY20240115001",
     "createdAt": "2024-01-15T14:30:00",
     "expiresAt": "2024-01-15T14:45:00"
   },
@@ -559,11 +512,32 @@ Tạo đơn đặt vé từ ghế đã giữ.
   "status": 400,
   "data": {
     "errorClassName": "InvalidBookingException",
-    "message": "Invalid booking data or hold token expired"
+    "message": "Invalid booking data"
   },
   "timestamp": "2024-01-15T14:30:00"
 }
 ```
+
+**Error Response (409):**
+```json
+{
+  "success": false,
+  "status": 409,
+  "data": {
+    "errorClassName": "SeatConflictException",
+    "message": "Some seats are already booked or held"
+  },
+  "timestamp": "2024-01-15T14:30:00"
+}
+```
+
+**Lưu ý:**
+- API này thực hiện 3 thao tác trong một transaction:
+  1. Giữ ghế trong Redis (seat locking)
+  2. Tạo booking với trạng thái PENDING
+  3. Tạo payment URL để chuyển hướng người dùng
+- Booking sẽ tự động hết hạn sau 15 phút nếu không thanh toán
+- Ghế sẽ được giữ trong Redis cho đến khi booking được confirm hoặc hết hạn
 
 ---
 
@@ -574,8 +548,10 @@ Lấy lịch sử đặt vé của người dùng.
 - `Authorization: Bearer <access_token>`
 
 **Query Parameters:**
-- `status` (optional): Lọc theo trạng thái (PENDING, CONFIRMED, CANCELLED, EXPIRED)
 - `page`, `size` (optional)
+
+**Lưu ý:**
+- Mặc định chỉ lấy các booking có trạng thái CONFIRMED
 
 **Response (200):**
 ```json
@@ -843,50 +819,3 @@ Xác minh trạng thái thanh toán.
 | 500    | Lỗi hệ thống                                |
 
 ---
-
-# 7. Business Rules
-
-## 7.1. Seat Holding (Giữ ghế tạm thời)
-
-* Ghế được giữ trong **5 phút**
-* Một user chỉ được giữ tối đa **10 ghế** trong cùng một lúc
-* Ghế đang được giữ không thể được giữ bởi user khác
-* Sau 5 phút, ghế tự động được release nếu không tạo booking
-
-## 7.2. Booking Creation
-
-* Booking chỉ có thể tạo từ ghế đã được hold với holdToken hợp lệ
-* Booking ở trạng thái PENDING có thời gian hết hạn **15 phút** để thanh toán
-* Sau 15 phút, booking tự động chuyển sang EXPIRED và ghế được release
-* Không được tạo booking cho suất chiếu đã qua
-
-## 7.3. Payment
-
-* Payment phải hoàn thành trong **15 phút** từ khi tạo booking
-* Khi payment thành công, booking chuyển sang CONFIRMED
-* Khi payment thất bại, booking giữ nguyên PENDING cho đến khi hết hạn
-* Không được thanh toán cho booking đã CONFIRMED hoặc EXPIRED
-
-## 7.4. Cancellation
-
-* User có thể hủy booking ở trạng thái PENDING
-* User có thể hủy booking CONFIRMED nếu còn **ít nhất 2 giờ** trước giờ chiếu
-* Không thể hủy booking EXPIRED
-* Khi hủy booking CONFIRMED, tiền sẽ được hoàn lại (nếu đã thanh toán)
-
----
-
-# 8. Rate Limiting
-
-Để bảo vệ hệ thống khỏi abuse:
-
-* **Authentication endpoints**: 5 requests/minute/IP
-* **Seat holding**: 10 requests/minute/user
-* **Booking creation**: 5 requests/minute/user
-* **Other endpoints**: 100 requests/minute/user
-
----
-
-# 9. Error Codes
-
-| Code              | Message

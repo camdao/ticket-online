@@ -97,13 +97,31 @@ public class ShowtimeService {
                 bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId);
         Set<Long> bookedSeatIds = new HashSet<>(confirmedSeatIds);
 
+        // Batch-check held seats in Redis with a single operation
+        List<String> redisKeys =
+                seats.stream()
+                        .map(seat -> String.format("seat:hold:%d:%d", showtimeId, seat.getId()))
+                        .collect(Collectors.toList());
+
+        List<String> redisValues = redisTemplate.opsForValue().multiGet(redisKeys);
+
+        // Build set of held seat IDs (where Redis value is not null)
+        Set<Long> heldSeatIds = new HashSet<>();
+        if (redisValues != null) {
+            for (int i = 0; i < seats.size(); i++) {
+                if (redisValues.get(i) != null) {
+                    heldSeatIds.add(seats.get(i).getId());
+                }
+            }
+        }
+
         // Map seats to response with proper status checking
         List<SeatResponse> seatResponses =
                 seats.stream()
                         .map(
                                 seat -> {
                                     SeatStatus status =
-                                            determineSeatStatus(seat, showtimeId, bookedSeatIds);
+                                            determineSeatStatus(seat, bookedSeatIds, heldSeatIds);
                                     return SeatResponse.from(seat, status);
                                 })
                         .collect(Collectors.toList());
@@ -163,14 +181,15 @@ public class ShowtimeService {
     }
 
     /**
-     * Determine the status of a seat for a specific showtime
+     * Determine the status of a seat
      *
      * @param seat the seat to check
-     * @param showtimeId the showtime ID
      * @param bookedSeatIds set of confirmed (BOOKED) seat IDs
+     * @param heldSeatIds set of held seat IDs from Redis
      * @return the seat status (BOOKED, HELD, or AVAILABLE)
      */
-    private SeatStatus determineSeatStatus(Seat seat, Long showtimeId, Set<Long> bookedSeatIds) {
+    private SeatStatus determineSeatStatus(
+            Seat seat, Set<Long> bookedSeatIds, Set<Long> heldSeatIds) {
         Long seatId = seat.getId();
 
         // Check if seat is confirmed/booked in database
@@ -179,9 +198,7 @@ public class ShowtimeService {
         }
 
         // Check if seat is held in Redis
-        String redisKey = String.format("seat:hold:%d:%d", showtimeId, seatId);
-        Boolean isHeld = redisTemplate.hasKey(redisKey);
-        if (Boolean.TRUE.equals(isHeld)) {
+        if (heldSeatIds.contains(seatId)) {
             return SeatStatus.HELD;
         }
 

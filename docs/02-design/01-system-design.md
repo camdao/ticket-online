@@ -14,22 +14,7 @@ Các thiết kế chi tiết như cơ sở dữ liệu, API, Seat Reservation v�
 
 # 2. Kiến trúc tổng thể
 
-```text
-                    +------------------+
-                    |      Client      |
-                    +------------------+
-                             │
-                             ▼
-                    +------------------+
-                    | Spring Boot REST |
-                    +------------------+
-                             │
-        ┌────────────────────┼────────────────────┐
-        ▼                    ▼                    ▼
-+---------------+    +---------------+    +----------------+
-|     MySQL     |    |     Redis     |    | Payment Gateway|
-+---------------+    +---------------+    +----------------+
-```
+![System Architecture](../diagrams/diagrams-architecture.svg)
 
 ---
 
@@ -97,18 +82,7 @@ Chi tiết được trình bày trong **payment-design.md**.
 
 # 4. Kiến trúc ứng dụng
 
-```text
-Controller
-      │
-      ▼
-Service
-      │
-      ▼
-Repository
-      │
-      ▼
-Database
-```
+![layered-architecture](../diagrams/layered-architecture.svg)
 
 Mỗi tầng đảm nhiệm một vai trò riêng:
 
@@ -121,27 +95,7 @@ Mỗi tầng đảm nhiệm một vai trò riêng:
 
 # 5. Luồng xử lý tổng quát
 
-```text
-Đăng nhập
-      │
-      ▼
-Chọn phim
-      │
-      ▼
-Chọn suất chiếu
-      │
-      ▼
-Chọn ghế
-      │
-      ▼
-Thanh toán
-      │
-      ▼
-Nhận kết quả thanh toán
-      │
-      ▼
-Xuất vé điện tử
-```
+![](../diagrams/flow-system.svg)
 
 Các bước xử lý chi tiết được mô tả trong:
 

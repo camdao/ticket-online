@@ -2,7 +2,7 @@ package com.ticket_online.domain.showtimes.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +34,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 @ExtendWith(MockitoExtension.class)
 class ShowtimeServiceTest {
@@ -45,6 +46,8 @@ class ShowtimeServiceTest {
     @Mock private BookingDetailRepository bookingDetailRepository;
 
     @Mock private RedisTemplate<String, String> redisTemplate;
+
+    @Mock private ValueOperations<String, String> valueOperations;
 
     @InjectMocks private ShowtimeService showtimeService;
 
@@ -60,7 +63,10 @@ class ShowtimeServiceTest {
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
-        when(redisTemplate.hasKey(anyString())).thenReturn(false);
+        // Mock Redis multiGet to return all nulls (no seats held)
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList()))
+                .thenReturn(Collections.nCopies(seats.size(), null));
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -99,7 +105,10 @@ class ShowtimeServiceTest {
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
-        when(redisTemplate.hasKey(anyString())).thenReturn(false);
+        // Mock Redis multiGet to return all nulls (no seats held)
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList()))
+                .thenReturn(Collections.nCopies(seats.size(), null));
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -122,6 +131,9 @@ class ShowtimeServiceTest {
                 .thenReturn(Collections.emptyList());
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
+        // Mock Redis multiGet to return empty list for empty input
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList())).thenReturn(Collections.emptyList());
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -143,7 +155,10 @@ class ShowtimeServiceTest {
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
-        when(redisTemplate.hasKey(anyString())).thenReturn(false);
+        // Mock Redis multiGet to return all nulls (no seats held)
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList()))
+                .thenReturn(Collections.nCopies(seats.size(), null));
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -168,7 +183,10 @@ class ShowtimeServiceTest {
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
-        when(redisTemplate.hasKey(anyString())).thenReturn(false);
+        // Mock Redis multiGet to return all nulls (no seats held)
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList()))
+                .thenReturn(Collections.nCopies(seats.size(), null));
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
@@ -192,7 +210,10 @@ class ShowtimeServiceTest {
         when(seatRepository.findByRoomId(showtime.getRoom().getId())).thenReturn(seats);
         when(bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId))
                 .thenReturn(Collections.emptyList());
-        when(redisTemplate.hasKey(anyString())).thenReturn(false);
+        // Mock Redis multiGet to return all nulls (no seats held)
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.multiGet(anyList()))
+                .thenReturn(Collections.nCopies(seats.size(), null));
 
         // When
         ShowtimeSeatsResponse result = showtimeService.getShowtimeSeats(showtimeId);
