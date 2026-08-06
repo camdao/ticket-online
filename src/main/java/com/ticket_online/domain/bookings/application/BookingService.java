@@ -145,15 +145,10 @@ public class BookingService {
         return buildBookingResponse(booking, seats, showtime, paymentUrl, transactionId);
     }
 
-    public Page<BookingListResponse> getUserBookings(
-            Long userId, BookingStatus status, Pageable pageable) {
-        Page<Booking> bookings;
-        if (status != null) {
-            bookings = bookingRepository.findByUserIdAndStatus(userId, status, pageable);
-        } else {
-            bookings = bookingRepository.findByUserId(userId, pageable);
-        }
-
+    public Page<BookingListResponse> getUserBookings(Long userId, Pageable pageable) {
+        // Only return CONFIRMED bookings by default as per API design
+        Page<Booking> bookings =
+                bookingRepository.findByUserIdAndStatus(userId, BookingStatus.CONFIRMED, pageable);
         return bookings.map(this::buildBookingListResponse);
     }
 

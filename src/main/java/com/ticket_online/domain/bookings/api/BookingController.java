@@ -1,7 +1,6 @@
 package com.ticket_online.domain.bookings.api;
 
 import com.ticket_online.domain.bookings.application.BookingService;
-import com.ticket_online.domain.bookings.domain.BookingStatus;
 import com.ticket_online.domain.bookings.dto.request.CreateBookingRequest;
 import com.ticket_online.domain.bookings.dto.response.BookingDetailResponse;
 import com.ticket_online.domain.bookings.dto.response.BookingListResponse;
@@ -51,20 +50,16 @@ public class BookingController {
     @Operation(
             summary = "Get user booking history",
             description =
-                    "Retrieves a paginated list of all bookings for the authenticated user. Can be"
-                            + " filtered by booking status (PENDING, CONFIRMED, CANCELLED, EXPIRED)."
+                    "Retrieves a paginated list of confirmed bookings for the authenticated user."
                             + " Results are sorted by creation date in descending order. Requires"
                             + " authentication.")
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<BookingListResponse>> getUserBookings(
-            @Parameter(description = "Filter by booking status") @RequestParam(required = false)
-                    BookingStatus status,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
         Long userId = securityUtil.getCurrentUserId();
-        Page<BookingListResponse> response =
-                bookingService.getUserBookings(userId, status, pageable);
+        Page<BookingListResponse> response = bookingService.getUserBookings(userId, pageable);
         return ResponseEntity.ok(response);
     }
 

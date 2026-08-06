@@ -548,10 +548,8 @@ Lấy lịch sử đặt vé của người dùng.
 - `Authorization: Bearer <access_token>`
 
 **Query Parameters:**
+- `status` (optional): Lọc theo trạng thái (PENDING, CONFIRMED, CANCELLED, EXPIRED)
 - `page`, `size` (optional)
-
-**Lưu ý:**
-- Mặc định chỉ lấy các booking có trạng thái CONFIRMED
 
 **Response (200):**
 ```json
