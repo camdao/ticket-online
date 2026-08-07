@@ -4,6 +4,7 @@ spring:
             - redis
             - datasource
             - security
+            - storage
 
 # Actuator
 management:
