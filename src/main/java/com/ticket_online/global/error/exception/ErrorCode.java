@@ -83,7 +83,8 @@ public enum ErrorCode {
     // Payment
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "The requested payment was not found."),
     PAYMENT_ALREADY_COMPLETED(HttpStatus.CONFLICT, "Payment is already completed."),
-    INVALID_PAYMENT_CALLBACK(HttpStatus.BAD_REQUEST, "Invalid payment callback signature.");
+    INVALID_PAYMENT_CALLBACK(HttpStatus.BAD_REQUEST, "Invalid payment callback signature."),
+    IMAGE_FILE_EXTENSION_NOT_FOUND(HttpStatus.NOT_FOUND, "");
 
     private final HttpStatus status;
     private final String message;
