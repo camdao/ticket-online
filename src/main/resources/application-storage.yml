@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: "storage"
+storage:
+  accessKey: ${STORAGE_ACCESS_KEY:default}
+  secretKey: ${STORAGE_SECRET_KEY:default}
+  bucket: ${STORAGE_BUCKET:my-bucket}
+  region: ${STORAGE_REGION:ap-northeast-2}
+  endpoint: ${STORAGE_ENDPOINT:http://localhost:4566}

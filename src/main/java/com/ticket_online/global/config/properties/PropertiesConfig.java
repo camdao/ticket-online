@@ -1,11 +1,17 @@
 package com.ticket_online.global.config.properties;
 
 import com.ticket_online.global.config.redis.RedisProperties;
+import com.ticket_online.global.config.s3.S3Properties;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
 import com.ticket_online.global.jwt.JwtProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@EnableConfigurationProperties({RedisProperties.class, JwtProperties.class, VnpayProperties.class})
+@EnableConfigurationProperties({
+    RedisProperties.class,
+    JwtProperties.class,
+    VnpayProperties.class,
+    S3Properties.class
+})
 @Configuration
 public class PropertiesConfig {}
