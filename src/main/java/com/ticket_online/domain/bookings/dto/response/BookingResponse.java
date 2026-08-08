@@ -25,6 +25,8 @@ public class BookingResponse {
     private List<SeatDto> seats;
     private BigDecimal totalAmount;
     private BookingStatus status;
+    private String paymentUrl;
+    private String transactionId;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
     private LocalDateTime confirmedAt;

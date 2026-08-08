@@ -181,7 +181,7 @@ CREATE TABLE payments (
     amount DECIMAL(10,2) NOT NULL,
     status ENUM('PENDING', 'SUCCESS', 'FAILED', 'REFUNDED') NOT NULL DEFAULT 'PENDING',
     paid_at DATETIME NULL,
-    payment_url VARCHAR(500),
+    payment_url VARCHAR(2000),
     gateway_response TEXT COMMENT 'JSON response from payment gateway',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL ON UPDATE CURRENT_TIMESTAMP,
