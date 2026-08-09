@@ -40,7 +40,7 @@ public class PaymentController {
             paymentService.handleVnpayCallback(params);
 
             // Redirect to success page
-            String returnUrl = params.getOrDefault("returnUrl", "/booking-success");
+            String returnUrl = params.getOrDefault("returnUrl", "/bookings");
             return new RedirectView(returnUrl);
         } catch (Exception e) {
             log.error("Error handling payment callback", e);

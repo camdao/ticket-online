@@ -14,10 +14,6 @@ import lombok.NoArgsConstructor;
         name = "seats",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = {"room_id", "row_label", "seat_number"})
-        },
-        indexes = {
-            @Index(name = "idx_seat_room", columnList = "room_id"),
-            @Index(name = "idx_seat_row_number", columnList = "row, number")
         })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
