@@ -13,13 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(
-        name = "payments",
-        indexes = {
-            @Index(name = "idx_payment_booking", columnList = "booking_id"),
-            @Index(name = "idx_payment_transaction", columnList = "transaction_id"),
-            @Index(name = "idx_payment_status", columnList = "status")
-        })
+@Table(name = "payments")
 public class Payment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
