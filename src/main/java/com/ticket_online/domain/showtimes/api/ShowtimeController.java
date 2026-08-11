@@ -84,4 +84,23 @@ public class ShowtimeController {
         ShowtimeSeatsResponse response = showtimeService.getShowtimeSeats(id);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/dates")
+    @Operation(
+            summary = "Get available showtime dates",
+            description =
+                    "Returns a list of distinct dates where showtimes exist for a specific movie"
+                            + " at a specific cinema. Only includes active and future showtimes."
+                            + " Dates are returned in YYYY-MM-DD format, sorted in ascending"
+                            + " order.")
+    public ResponseEntity<List<String>> getShowtimeDates(
+            @Parameter(description = "ID of the movie", required = true, example = "1")
+                    @RequestParam
+                    Long movieId,
+            @Parameter(description = "ID of the cinema", required = true, example = "5")
+                    @RequestParam
+                    Long cinemaId) {
+        List<String> dates = showtimeService.getShowtimeDates(movieId, cinemaId);
+        return ResponseEntity.ok(dates);
+    }
 }

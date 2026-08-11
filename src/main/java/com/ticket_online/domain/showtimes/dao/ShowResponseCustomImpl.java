@@ -1,6 +1,7 @@
 package com.ticket_online.domain.showtimes.dao;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ticket_online.domain.cinemas.domain.QCinema;
 import com.ticket_online.domain.movies.domain.QMovie;
@@ -199,6 +200,36 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
                 .join(room.cinema, cinema)
                 .fetchJoin()
                 .where(builder)
+                .fetch();
+    }
+
+    @Override
+    public List<LocalDate> findDistinctShowtimeDates(Long movieId, Long cinemaId) {
+        QShowtime showtime = QShowtime.showtime;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // Filter by movie (required)
+        builder.and(showtime.movie.id.eq(movieId));
+
+        // Filter by cinema (required)
+        builder.and(showtime.room.cinema.id.eq(cinemaId));
+
+        // Only active showtimes
+        builder.and(showtime.status.eq(ShowtimeStatus.ACTIVE));
+
+        // Future showtimes only
+        builder.and(showtime.startTime.goe(LocalDateTime.now()));
+
+        // Extract date from startTime and get distinct dates
+        return jpaQueryFactory
+                .select(Expressions.dateTemplate(LocalDate.class, "DATE({0})", showtime.startTime))
+                .from(showtime)
+                .where(builder)
+                .distinct()
+                .orderBy(
+                        Expressions.dateTemplate(LocalDate.class, "DATE({0})", showtime.startTime)
+                                .asc())
                 .fetch();
     }
 }
