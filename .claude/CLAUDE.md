@@ -152,7 +152,7 @@ Prometheus metrics at `/actuator/prometheus`. Health check at `/actuator/health`
 
 ## Additional Documentation
 
-Vietnamese documentation in `docs/`:
+Vietnamese documentation in `../docs`:
 - `00-project-overview.md` - Business requirements and technical challenges
 - `02-design/` - System design, database design, seat reservation design, payment design
 - `03-development/` - Implementation guides per domain

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"README|CLAUDE|\\\\.md$\")",
+      "Bash(grep -E \"^-.*CLAUDE\\\\.md$|^-.*README\\\\.md$\")",
+      "Bash(./gradlew build *)",
+      "Bash(./gradlew test *)",
+      "Bash(./gradlew clean *)",
+      "Bash(./gradlew compileTestJava)",
+      "Bash(./gradlew spotlessApply *)",
+    ]
+  }
+}
