@@ -314,9 +314,6 @@ Lấy danh sách suất chiếu của phim.
       "cinemaId": 5,
       "cinemaName": "CGV Vincom Center",
       "cinemaAddress": "72 Lê Thánh Tôn, Quận 1, TP.HCM",
-      "screenId": 12,
-      "screenName": "Screen 3",
-      "screenType": "IMAX",
       "startTime": "2024-01-15T14:30:00",
       "endTime": "2024-01-15T17:42:00",
       "basePrice": 85000,
@@ -326,6 +323,34 @@ Lấy danh sách suất chiếu của phim.
     }
   ],
   "timestamp": "2024-01-15T14:30:00"
+}
+```
+
+---
+
+### GET /showtimes/dates
+Lấy danh sách các ngày có suất chiếu của phim tại rạp.
+
+**Query Parameters:**
+- `movieId` (required): ID của phim
+- `cinemaId` (required): ID của rạp chiếu
+
+**Example:**
+- `GET /showtimes/dates?movieId=1&cinemaId=5`
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": [
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-17"
+  ],
+  "timestamp": "2026-08-11T11:15:00"
 }
 ```
 
@@ -469,7 +494,6 @@ Tạo đơn đặt vé với thanh toán (thao tác atomic: giữ ghế + tạo 
     "showtimeId": 101,
     "movieTitle": "Avatar: The Way of Water",
     "cinemaName": "CGV Vincom Center",
-    "screenName": "Screen 3",
     "showtime": "2024-01-15T14:30:00",
     "seats": [
       {
@@ -564,7 +588,6 @@ Lấy lịch sử đặt vé của người dùng.
         "movieTitle": "Avatar: The Way of Water",
         "moviePosterUrl": "https://cdn.example.com/avatar2.jpg",
         "cinemaName": "CGV Vincom Center",
-        "screenName": "Screen 3",
         "showtime": "2024-01-15T14:30:00",
         "seatCount": 3,
         "totalAmount": 255000,
@@ -610,11 +633,6 @@ Lấy chi tiết đơn đặt vé.
       "id": 5,
       "name": "CGV Vincom Center",
       "address": "72 Lê Thánh Tôn, Quận 1, TP.HCM"
-    },
-    "screen": {
-      "id": 12,
-      "name": "Screen 3",
-      "type": "IMAX"
     },
     "showtime": "2024-01-15T14:30:00",
     "seats": [

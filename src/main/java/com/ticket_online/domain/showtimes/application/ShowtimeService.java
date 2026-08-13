@@ -13,6 +13,8 @@ import com.ticket_online.domain.showtimes.dto.response.ShowtimeDetailResponse;
 import com.ticket_online.domain.showtimes.dto.response.ShowtimeSeatsResponse;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -178,6 +180,21 @@ public class ShowtimeService {
                         cinemaId, movieId, date, startDate, endDate);
 
         return showtimes.stream().map(ShowtimeResponse::from).toList();
+    }
+
+    /**
+     * Get distinct dates where showtimes exist for a movie at a cinema
+     *
+     * @param movieId the ID of the movie
+     * @param cinemaId the ID of the cinema
+     * @return list of date strings (YYYY-MM-DD) sorted in ascending order
+     */
+    public List<String> getShowtimeDates(Long movieId, Long cinemaId) {
+        List<LocalDate> dates = showtimeRepository.findDistinctShowtimeDates(movieId, cinemaId);
+
+        // Convert LocalDate to String format (YYYY-MM-DD)
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        return dates.stream().map(date -> date.format(formatter)).toList();
     }
 
     /**
