@@ -29,3 +29,4 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
                     + " r.cinemaId")
     List<Object[]> countByCinemaIds(@Param("cinemaIds") List<Long> cinemaIds);
 }
+
