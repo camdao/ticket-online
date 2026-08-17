@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UrlConstants {
     PROD_SERVER_URL(""),
-    DEV_SERVER_URL("http://localhost:8081"),
+    DEV_SERVER_URL(""),
     LOCAL_SERVER_URL("http://localhost:8081"),
 
     PROD_DOMAIN_URL("https://ticket-client-gold.vercel.app"),
