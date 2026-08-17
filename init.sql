@@ -211,7 +211,6 @@ INSERT INTO movies (title, duration, description, image_url, trailer_url, releas
 ('Wicked', 140, 'The untold story of the witches of Oz, exploring the friendship between Elphaba and Glinda.', 'https://ticket-online-images-492767006533-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/posters/wicked.jpg', 'https://youtube.com/wicked', '2026-09-05', 'Fantasy, Musical, Romance', 'Jon M. Chu', 'Cynthia Erivo, Ariana Grande, Michelle Yeoh', 'P'),
 ('Fantastic Four', 135, 'Marvel Studios introduces the First Family of the Marvel Universe.', 'https://ticket-online-images-492767006533-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/posters/fantastic4.jpg', 'https://youtube.com/fantastic4', '2026-09-15', 'Action, Adventure, Sci-Fi', 'Matt Shakman', 'Pedro Pascal, Vanessa Kirby, Joseph Quinn', 'C13');
 
-
 -- --------------------------------------------
 -- Cinemas
 -- --------------------------------------------
@@ -222,7 +221,6 @@ INSERT INTO cinemas (brand, name, logo_url, address, district, city, phone, webs
 ('Lotte Cinema', 'Lotte Cinema Landmark 81', 'https://ticket-online-images-492767006533-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/posters/lotte-logo.png', '208 Nguyen Huu Canh, Ward 22', 'Binh Thanh District', 'Ho Chi Minh City', '1900-6520', 'https://lottecinema.com.vn', 'Premium cinema experience'),
 ('Galaxy Cinema', 'Galaxy Nguyen Du', 'https://ticket-online-images-492767006533-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/posters/galaxy-logo.png', '116 Nguyen Du, District 1', 'District 1', 'Ho Chi Minh City', '1900-2224', 'https://galaxycine.vn', 'Modern cinema with latest technology'),
 ('Galaxy Cinema', 'Galaxy Tan Binh', 'https://ticket-online-images-492767006533-ap-southeast-1-an.s3.ap-southeast-1.amazonaws.com/posters/galaxy-logo.png', '246 Nguyen Hong Dao, Ward 13', 'Tan Binh District', 'Ho Chi Minh City', '1900-2224', 'https://galaxycine.vn', 'Modern cinema with latest technology');
-
 
 -- --------------------------------------------
 -- Rooms
@@ -240,8 +238,10 @@ INSERT INTO rooms (cinema_id, name, capacity, room_type) VALUES
 (5, 'Room 2', 50, 'Standard'),
 (6, 'Room A', 60, 'Standard');
 
--- =====================================
+-- ============================================
+-- Insert sample seats for Room 1 (room_id=1)
 INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular seats)
 (1, 'A', 1, 'REGULAR', 0.00),
 (1, 'A', 2, 'REGULAR', 0.00),
 (1, 'A', 3, 'REGULAR', 0.00),
@@ -252,6 +252,7 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (1, 'A', 8, 'REGULAR', 0.00),
 (1, 'A', 9, 'REGULAR', 0.00),
 (1, 'A', 10, 'REGULAR', 0.00),
+-- Row B (VIP seats with surcharge)
 (1, 'B', 1, 'VIP', 20000.00),
 (1, 'B', 2, 'VIP', 20000.00),
 (1, 'B', 3, 'VIP', 20000.00),
@@ -262,11 +263,13 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (1, 'B', 8, 'VIP', 20000.00),
 (1, 'B', 9, 'VIP', 20000.00),
 (1, 'B', 10, 'VIP', 20000.00),
+-- Row C (Couple seats with surcharge)
 (1, 'C', 1, 'COUPLE', 30000.00),
 (1, 'C', 2, 'COUPLE', 30000.00),
 (1, 'C', 3, 'COUPLE', 30000.00),
 (1, 'C', 4, 'COUPLE', 30000.00),
 (1, 'C', 5, 'COUPLE', 30000.00),
+-- Row D (Regular seats)
 (1, 'D', 1, 'REGULAR', 0.00),
 (1, 'D', 2, 'REGULAR', 0.00),
 (1, 'D', 3, 'REGULAR', 0.00),
@@ -277,6 +280,7 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (1, 'D', 8, 'REGULAR', 0.00),
 (1, 'D', 9, 'REGULAR', 0.00),
 (1, 'D', 10, 'REGULAR', 0.00),
+-- Row E (Regular seats)
 (1, 'E', 1, 'REGULAR', 0.00),
 (1, 'E', 2, 'REGULAR', 0.00),
 (1, 'E', 3, 'REGULAR', 0.00),
@@ -286,31 +290,44 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (1, 'E', 7, 'REGULAR', 0.00),
 (1, 'E', 8, 'REGULAR', 0.00),
 (1, 'E', 9, 'REGULAR', 0.00),
-(1, 'E', 10, 'REGULAR', 0.00),
+(1, 'E', 10, 'REGULAR', 0.00);
+
+-- Insert seats for Room 2 (room_id=2, 60 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular seats)
 (2, 'A', 1, 'REGULAR', 0.00), (2, 'A', 2, 'REGULAR', 0.00), (2, 'A', 3, 'REGULAR', 0.00),
 (2, 'A', 4, 'REGULAR', 0.00), (2, 'A', 5, 'REGULAR', 0.00), (2, 'A', 6, 'REGULAR', 0.00),
 (2, 'A', 7, 'REGULAR', 0.00), (2, 'A', 8, 'REGULAR', 0.00), (2, 'A', 9, 'REGULAR', 0.00),
 (2, 'A', 10, 'REGULAR', 0.00),
+-- Row B (Regular seats)
 (2, 'B', 1, 'REGULAR', 0.00), (2, 'B', 2, 'REGULAR', 0.00), (2, 'B', 3, 'REGULAR', 0.00),
 (2, 'B', 4, 'REGULAR', 0.00), (2, 'B', 5, 'REGULAR', 0.00), (2, 'B', 6, 'REGULAR', 0.00),
 (2, 'B', 7, 'REGULAR', 0.00), (2, 'B', 8, 'REGULAR', 0.00), (2, 'B', 9, 'REGULAR', 0.00),
 (2, 'B', 10, 'REGULAR', 0.00),
+-- Row C (VIP seats)
 (2, 'C', 1, 'VIP', 20000.00), (2, 'C', 2, 'VIP', 20000.00), (2, 'C', 3, 'VIP', 20000.00),
 (2, 'C', 4, 'VIP', 20000.00), (2, 'C', 5, 'VIP', 20000.00), (2, 'C', 6, 'VIP', 20000.00),
 (2, 'C', 7, 'VIP', 20000.00), (2, 'C', 8, 'VIP', 20000.00), (2, 'C', 9, 'VIP', 20000.00),
 (2, 'C', 10, 'VIP', 20000.00),
+-- Row D (VIP seats)
 (2, 'D', 1, 'VIP', 20000.00), (2, 'D', 2, 'VIP', 20000.00), (2, 'D', 3, 'VIP', 20000.00),
 (2, 'D', 4, 'VIP', 20000.00), (2, 'D', 5, 'VIP', 20000.00), (2, 'D', 6, 'VIP', 20000.00),
 (2, 'D', 7, 'VIP', 20000.00), (2, 'D', 8, 'VIP', 20000.00), (2, 'D', 9, 'VIP', 20000.00),
 (2, 'D', 10, 'VIP', 20000.00),
+-- Row E (Regular seats)
 (2, 'E', 1, 'REGULAR', 0.00), (2, 'E', 2, 'REGULAR', 0.00), (2, 'E', 3, 'REGULAR', 0.00),
 (2, 'E', 4, 'REGULAR', 0.00), (2, 'E', 5, 'REGULAR', 0.00), (2, 'E', 6, 'REGULAR', 0.00),
 (2, 'E', 7, 'REGULAR', 0.00), (2, 'E', 8, 'REGULAR', 0.00), (2, 'E', 9, 'REGULAR', 0.00),
 (2, 'E', 10, 'REGULAR', 0.00),
+-- Row F (Regular seats)
 (2, 'F', 1, 'REGULAR', 0.00), (2, 'F', 2, 'REGULAR', 0.00), (2, 'F', 3, 'REGULAR', 0.00),
 (2, 'F', 4, 'REGULAR', 0.00), (2, 'F', 5, 'REGULAR', 0.00), (2, 'F', 6, 'REGULAR', 0.00),
 (2, 'F', 7, 'REGULAR', 0.00), (2, 'F', 8, 'REGULAR', 0.00), (2, 'F', 9, 'REGULAR', 0.00),
-(2, 'F', 10, 'REGULAR', 0.00),
+(2, 'F', 10, 'REGULAR', 0.00);
+
+-- Insert seats for Room 3 (room_id=3, 120 seats, IMAX)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Rows A-C (Regular seats - 36 total)
 (3, 'A', 1, 'REGULAR', 0.00), (3, 'A', 2, 'REGULAR', 0.00), (3, 'A', 3, 'REGULAR', 0.00),
 (3, 'A', 4, 'REGULAR', 0.00), (3, 'A', 5, 'REGULAR', 0.00), (3, 'A', 6, 'REGULAR', 0.00),
 (3, 'A', 7, 'REGULAR', 0.00), (3, 'A', 8, 'REGULAR', 0.00), (3, 'A', 9, 'REGULAR', 0.00),
@@ -323,6 +340,7 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (3, 'C', 4, 'REGULAR', 0.00), (3, 'C', 5, 'REGULAR', 0.00), (3, 'C', 6, 'REGULAR', 0.00),
 (3, 'C', 7, 'REGULAR', 0.00), (3, 'C', 8, 'REGULAR', 0.00), (3, 'C', 9, 'REGULAR', 0.00),
 (3, 'C', 10, 'REGULAR', 0.00), (3, 'C', 11, 'REGULAR', 0.00), (3, 'C', 12, 'REGULAR', 0.00),
+-- Rows D-E (VIP seats - 24 total)
 (3, 'D', 1, 'VIP', 30000.00), (3, 'D', 2, 'VIP', 30000.00), (3, 'D', 3, 'VIP', 30000.00),
 (3, 'D', 4, 'VIP', 30000.00), (3, 'D', 5, 'VIP', 30000.00), (3, 'D', 6, 'VIP', 30000.00),
 (3, 'D', 7, 'VIP', 30000.00), (3, 'D', 8, 'VIP', 30000.00), (3, 'D', 9, 'VIP', 30000.00),
@@ -331,10 +349,12 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (3, 'E', 4, 'VIP', 30000.00), (3, 'E', 5, 'VIP', 30000.00), (3, 'E', 6, 'VIP', 30000.00),
 (3, 'E', 7, 'VIP', 30000.00), (3, 'E', 8, 'VIP', 30000.00), (3, 'E', 9, 'VIP', 30000.00),
 (3, 'E', 10, 'VIP', 30000.00), (3, 'E', 11, 'VIP', 30000.00), (3, 'E', 12, 'VIP', 30000.00),
+-- Row F (Couple seats - 12 total)
 (3, 'F', 1, 'COUPLE', 40000.00), (3, 'F', 2, 'COUPLE', 40000.00), (3, 'F', 3, 'COUPLE', 40000.00),
 (3, 'F', 4, 'COUPLE', 40000.00), (3, 'F', 5, 'COUPLE', 40000.00), (3, 'F', 6, 'COUPLE', 40000.00),
 (3, 'F', 7, 'COUPLE', 40000.00), (3, 'F', 8, 'COUPLE', 40000.00), (3, 'F', 9, 'COUPLE', 40000.00),
 (3, 'F', 10, 'COUPLE', 40000.00), (3, 'F', 11, 'COUPLE', 40000.00), (3, 'F', 12, 'COUPLE', 40000.00),
+-- Rows G-J (Regular seats - 48 total)
 (3, 'G', 1, 'REGULAR', 0.00), (3, 'G', 2, 'REGULAR', 0.00), (3, 'G', 3, 'REGULAR', 0.00),
 (3, 'G', 4, 'REGULAR', 0.00), (3, 'G', 5, 'REGULAR', 0.00), (3, 'G', 6, 'REGULAR', 0.00),
 (3, 'G', 7, 'REGULAR', 0.00), (3, 'G', 8, 'REGULAR', 0.00), (3, 'G', 9, 'REGULAR', 0.00),
@@ -350,77 +370,114 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (3, 'J', 1, 'REGULAR', 0.00), (3, 'J', 2, 'REGULAR', 0.00), (3, 'J', 3, 'REGULAR', 0.00),
 (3, 'J', 4, 'REGULAR', 0.00), (3, 'J', 5, 'REGULAR', 0.00), (3, 'J', 6, 'REGULAR', 0.00),
 (3, 'J', 7, 'REGULAR', 0.00), (3, 'J', 8, 'REGULAR', 0.00), (3, 'J', 9, 'REGULAR', 0.00),
-(3, 'J', 10, 'REGULAR', 0.00), (3, 'J', 11, 'REGULAR', 0.00), (3, 'J', 12, 'REGULAR', 0.00),
+(3, 'J', 10, 'REGULAR', 0.00), (3, 'J', 11, 'REGULAR', 0.00), (3, 'J', 12, 'REGULAR', 0.00);
+
+-- Insert seats for Room 4 (room_id=4, 45 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular - 9 seats)
 (4, 'A', 1, 'REGULAR', 0.00), (4, 'A', 2, 'REGULAR', 0.00), (4, 'A', 3, 'REGULAR', 0.00),
 (4, 'A', 4, 'REGULAR', 0.00), (4, 'A', 5, 'REGULAR', 0.00), (4, 'A', 6, 'REGULAR', 0.00),
 (4, 'A', 7, 'REGULAR', 0.00), (4, 'A', 8, 'REGULAR', 0.00), (4, 'A', 9, 'REGULAR', 0.00),
+-- Row B (VIP - 9 seats)
 (4, 'B', 1, 'VIP', 20000.00), (4, 'B', 2, 'VIP', 20000.00), (4, 'B', 3, 'VIP', 20000.00),
 (4, 'B', 4, 'VIP', 20000.00), (4, 'B', 5, 'VIP', 20000.00), (4, 'B', 6, 'VIP', 20000.00),
 (4, 'B', 7, 'VIP', 20000.00), (4, 'B', 8, 'VIP', 20000.00), (4, 'B', 9, 'VIP', 20000.00),
+-- Row C (Couple - 9 seats)
 (4, 'C', 1, 'COUPLE', 30000.00), (4, 'C', 2, 'COUPLE', 30000.00), (4, 'C', 3, 'COUPLE', 30000.00),
 (4, 'C', 4, 'COUPLE', 30000.00), (4, 'C', 5, 'COUPLE', 30000.00), (4, 'C', 6, 'COUPLE', 30000.00),
 (4, 'C', 7, 'COUPLE', 30000.00), (4, 'C', 8, 'COUPLE', 30000.00), (4, 'C', 9, 'COUPLE', 30000.00),
+-- Row D (Regular - 9 seats)
 (4, 'D', 1, 'REGULAR', 0.00), (4, 'D', 2, 'REGULAR', 0.00), (4, 'D', 3, 'REGULAR', 0.00),
 (4, 'D', 4, 'REGULAR', 0.00), (4, 'D', 5, 'REGULAR', 0.00), (4, 'D', 6, 'REGULAR', 0.00),
 (4, 'D', 7, 'REGULAR', 0.00), (4, 'D', 8, 'REGULAR', 0.00), (4, 'D', 9, 'REGULAR', 0.00),
+-- Row E (Regular - 9 seats)
 (4, 'E', 1, 'REGULAR', 0.00), (4, 'E', 2, 'REGULAR', 0.00), (4, 'E', 3, 'REGULAR', 0.00),
 (4, 'E', 4, 'REGULAR', 0.00), (4, 'E', 5, 'REGULAR', 0.00), (4, 'E', 6, 'REGULAR', 0.00),
-(4, 'E', 7, 'REGULAR', 0.00), (4, 'E', 8, 'REGULAR', 0.00), (4, 'E', 9, 'REGULAR', 0.00),
+(4, 'E', 7, 'REGULAR', 0.00), (4, 'E', 8, 'REGULAR', 0.00), (4, 'E', 9, 'REGULAR', 0.00);
+
+-- Insert seats for Room 5 (room_id=5, 30 seats, VIP)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (VIP - 8 seats)
 (5, 'A', 1, 'VIP', 40000.00), (5, 'A', 2, 'VIP', 40000.00), (5, 'A', 3, 'VIP', 40000.00),
 (5, 'A', 4, 'VIP', 40000.00), (5, 'A', 5, 'VIP', 40000.00), (5, 'A', 6, 'VIP', 40000.00),
 (5, 'A', 7, 'VIP', 40000.00), (5, 'A', 8, 'VIP', 40000.00),
+-- Row B (VIP - 8 seats)
 (5, 'B', 1, 'VIP', 40000.00), (5, 'B', 2, 'VIP', 40000.00), (5, 'B', 3, 'VIP', 40000.00),
 (5, 'B', 4, 'VIP', 40000.00), (5, 'B', 5, 'VIP', 40000.00), (5, 'B', 6, 'VIP', 40000.00),
 (5, 'B', 7, 'VIP', 40000.00), (5, 'B', 8, 'VIP', 40000.00),
+-- Row C (Couple - 6 seats)
 (5, 'C', 1, 'COUPLE', 60000.00), (5, 'C', 2, 'COUPLE', 60000.00), (5, 'C', 3, 'COUPLE', 60000.00),
 (5, 'C', 4, 'COUPLE', 60000.00), (5, 'C', 5, 'COUPLE', 60000.00), (5, 'C', 6, 'COUPLE', 60000.00),
+-- Row D (VIP - 8 seats)
 (5, 'D', 1, 'VIP', 40000.00), (5, 'D', 2, 'VIP', 40000.00), (5, 'D', 3, 'VIP', 40000.00),
 (5, 'D', 4, 'VIP', 40000.00), (5, 'D', 5, 'VIP', 40000.00), (5, 'D', 6, 'VIP', 40000.00),
-(5, 'D', 7, 'VIP', 40000.00), (5, 'D', 8, 'VIP', 40000.00),
+(5, 'D', 7, 'VIP', 40000.00), (5, 'D', 8, 'VIP', 40000.00);
+
+-- Insert seats for Room 6 (room_id=6, 60 seats, 4DX)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- All rows have 4DX surcharge (special motion seats)
+-- Row A
 (6, 'A', 1, 'REGULAR', 50000.00), (6, 'A', 2, 'REGULAR', 50000.00), (6, 'A', 3, 'REGULAR', 50000.00),
 (6, 'A', 4, 'REGULAR', 50000.00), (6, 'A', 5, 'REGULAR', 50000.00), (6, 'A', 6, 'REGULAR', 50000.00),
 (6, 'A', 7, 'REGULAR', 50000.00), (6, 'A', 8, 'REGULAR', 50000.00), (6, 'A', 9, 'REGULAR', 50000.00),
 (6, 'A', 10, 'REGULAR', 50000.00),
+-- Row B
 (6, 'B', 1, 'REGULAR', 50000.00), (6, 'B', 2, 'REGULAR', 50000.00), (6, 'B', 3, 'REGULAR', 50000.00),
 (6, 'B', 4, 'REGULAR', 50000.00), (6, 'B', 5, 'REGULAR', 50000.00), (6, 'B', 6, 'REGULAR', 50000.00),
 (6, 'B', 7, 'REGULAR', 50000.00), (6, 'B', 8, 'REGULAR', 50000.00), (6, 'B', 9, 'REGULAR', 50000.00),
 (6, 'B', 10, 'REGULAR', 50000.00),
+-- Row C
 (6, 'C', 1, 'REGULAR', 50000.00), (6, 'C', 2, 'REGULAR', 50000.00), (6, 'C', 3, 'REGULAR', 50000.00),
 (6, 'C', 4, 'REGULAR', 50000.00), (6, 'C', 5, 'REGULAR', 50000.00), (6, 'C', 6, 'REGULAR', 50000.00),
 (6, 'C', 7, 'REGULAR', 50000.00), (6, 'C', 8, 'REGULAR', 50000.00), (6, 'C', 9, 'REGULAR', 50000.00),
 (6, 'C', 10, 'REGULAR', 50000.00),
+-- Row D
 (6, 'D', 1, 'REGULAR', 50000.00), (6, 'D', 2, 'REGULAR', 50000.00), (6, 'D', 3, 'REGULAR', 50000.00),
 (6, 'D', 4, 'REGULAR', 50000.00), (6, 'D', 5, 'REGULAR', 50000.00), (6, 'D', 6, 'REGULAR', 50000.00),
 (6, 'D', 7, 'REGULAR', 50000.00), (6, 'D', 8, 'REGULAR', 50000.00), (6, 'D', 9, 'REGULAR', 50000.00),
 (6, 'D', 10, 'REGULAR', 50000.00),
+-- Row E
 (6, 'E', 1, 'REGULAR', 50000.00), (6, 'E', 2, 'REGULAR', 50000.00), (6, 'E', 3, 'REGULAR', 50000.00),
 (6, 'E', 4, 'REGULAR', 50000.00), (6, 'E', 5, 'REGULAR', 50000.00), (6, 'E', 6, 'REGULAR', 50000.00),
 (6, 'E', 7, 'REGULAR', 50000.00), (6, 'E', 8, 'REGULAR', 50000.00), (6, 'E', 9, 'REGULAR', 50000.00),
 (6, 'E', 10, 'REGULAR', 50000.00),
+-- Row F
 (6, 'F', 1, 'REGULAR', 50000.00), (6, 'F', 2, 'REGULAR', 50000.00), (6, 'F', 3, 'REGULAR', 50000.00),
 (6, 'F', 4, 'REGULAR', 50000.00), (6, 'F', 5, 'REGULAR', 50000.00), (6, 'F', 6, 'REGULAR', 50000.00),
 (6, 'F', 7, 'REGULAR', 50000.00), (6, 'F', 8, 'REGULAR', 50000.00), (6, 'F', 9, 'REGULAR', 50000.00),
-(6, 'F', 10, 'REGULAR', 50000.00),
+(6, 'F', 10, 'REGULAR', 50000.00);
+
+-- Insert seats for Room 7 (room_id=7, 55 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular - 11 seats)
 (7, 'A', 1, 'REGULAR', 0.00), (7, 'A', 2, 'REGULAR', 0.00), (7, 'A', 3, 'REGULAR', 0.00),
 (7, 'A', 4, 'REGULAR', 0.00), (7, 'A', 5, 'REGULAR', 0.00), (7, 'A', 6, 'REGULAR', 0.00),
 (7, 'A', 7, 'REGULAR', 0.00), (7, 'A', 8, 'REGULAR', 0.00), (7, 'A', 9, 'REGULAR', 0.00),
 (7, 'A', 10, 'REGULAR', 0.00), (7, 'A', 11, 'REGULAR', 0.00),
+-- Row B (Regular - 11 seats)
 (7, 'B', 1, 'REGULAR', 0.00), (7, 'B', 2, 'REGULAR', 0.00), (7, 'B', 3, 'REGULAR', 0.00),
 (7, 'B', 4, 'REGULAR', 0.00), (7, 'B', 5, 'REGULAR', 0.00), (7, 'B', 6, 'REGULAR', 0.00),
 (7, 'B', 7, 'REGULAR', 0.00), (7, 'B', 8, 'REGULAR', 0.00), (7, 'B', 9, 'REGULAR', 0.00),
 (7, 'B', 10, 'REGULAR', 0.00), (7, 'B', 11, 'REGULAR', 0.00),
+-- Row C (VIP - 11 seats)
 (7, 'C', 1, 'VIP', 20000.00), (7, 'C', 2, 'VIP', 20000.00), (7, 'C', 3, 'VIP', 20000.00),
 (7, 'C', 4, 'VIP', 20000.00), (7, 'C', 5, 'VIP', 20000.00), (7, 'C', 6, 'VIP', 20000.00),
 (7, 'C', 7, 'VIP', 20000.00), (7, 'C', 8, 'VIP', 20000.00), (7, 'C', 9, 'VIP', 20000.00),
 (7, 'C', 10, 'VIP', 20000.00), (7, 'C', 11, 'VIP', 20000.00),
+-- Row D (VIP - 11 seats)
 (7, 'D', 1, 'VIP', 20000.00), (7, 'D', 2, 'VIP', 20000.00), (7, 'D', 3, 'VIP', 20000.00),
 (7, 'D', 4, 'VIP', 20000.00), (7, 'D', 5, 'VIP', 20000.00), (7, 'D', 6, 'VIP', 20000.00),
 (7, 'D', 7, 'VIP', 20000.00), (7, 'D', 8, 'VIP', 20000.00), (7, 'D', 9, 'VIP', 20000.00),
 (7, 'D', 10, 'VIP', 20000.00), (7, 'D', 11, 'VIP', 20000.00),
+-- Row E (Regular - 11 seats)
 (7, 'E', 1, 'REGULAR', 0.00), (7, 'E', 2, 'REGULAR', 0.00), (7, 'E', 3, 'REGULAR', 0.00),
 (7, 'E', 4, 'REGULAR', 0.00), (7, 'E', 5, 'REGULAR', 0.00), (7, 'E', 6, 'REGULAR', 0.00),
 (7, 'E', 7, 'REGULAR', 0.00), (7, 'E', 8, 'REGULAR', 0.00), (7, 'E', 9, 'REGULAR', 0.00),
-(7, 'E', 10, 'REGULAR', 0.00), (7, 'E', 11, 'REGULAR', 0.00),
+(7, 'E', 10, 'REGULAR', 0.00), (7, 'E', 11, 'REGULAR', 0.00);
+
+-- Insert seats for Room 8 (room_id=8, 80 seats, VIP Premium)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Rows A-D (VIP - 40 seats total)
 (8, 'A', 1, 'VIP', 40000.00), (8, 'A', 2, 'VIP', 40000.00), (8, 'A', 3, 'VIP', 40000.00),
 (8, 'A', 4, 'VIP', 40000.00), (8, 'A', 5, 'VIP', 40000.00), (8, 'A', 6, 'VIP', 40000.00),
 (8, 'A', 7, 'VIP', 40000.00), (8, 'A', 8, 'VIP', 40000.00), (8, 'A', 9, 'VIP', 40000.00),
@@ -437,10 +494,12 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (8, 'D', 4, 'VIP', 40000.00), (8, 'D', 5, 'VIP', 40000.00), (8, 'D', 6, 'VIP', 40000.00),
 (8, 'D', 7, 'VIP', 40000.00), (8, 'D', 8, 'VIP', 40000.00), (8, 'D', 9, 'VIP', 40000.00),
 (8, 'D', 10, 'VIP', 40000.00),
+-- Row E (Couple - 10 seats)
 (8, 'E', 1, 'COUPLE', 60000.00), (8, 'E', 2, 'COUPLE', 60000.00), (8, 'E', 3, 'COUPLE', 60000.00),
 (8, 'E', 4, 'COUPLE', 60000.00), (8, 'E', 5, 'COUPLE', 60000.00), (8, 'E', 6, 'COUPLE', 60000.00),
 (8, 'E', 7, 'COUPLE', 60000.00), (8, 'E', 8, 'COUPLE', 60000.00), (8, 'E', 9, 'COUPLE', 60000.00),
 (8, 'E', 10, 'COUPLE', 60000.00),
+-- Rows F-H (VIP - 30 seats total)
 (8, 'F', 1, 'VIP', 40000.00), (8, 'F', 2, 'VIP', 40000.00), (8, 'F', 3, 'VIP', 40000.00),
 (8, 'F', 4, 'VIP', 40000.00), (8, 'F', 5, 'VIP', 40000.00), (8, 'F', 6, 'VIP', 40000.00),
 (8, 'F', 7, 'VIP', 40000.00), (8, 'F', 8, 'VIP', 40000.00), (8, 'F', 9, 'VIP', 40000.00),
@@ -452,7 +511,11 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (8, 'H', 1, 'VIP', 40000.00), (8, 'H', 2, 'VIP', 40000.00), (8, 'H', 3, 'VIP', 40000.00),
 (8, 'H', 4, 'VIP', 40000.00), (8, 'H', 5, 'VIP', 40000.00), (8, 'H', 6, 'VIP', 40000.00),
 (8, 'H', 7, 'VIP', 40000.00), (8, 'H', 8, 'VIP', 40000.00), (8, 'H', 9, 'VIP', 40000.00),
-(8, 'H', 10, 'VIP', 40000.00),
+(8, 'H', 10, 'VIP', 40000.00);
+
+-- Insert seats for Room 9 (room_id=9, 70 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Rows A-B (Regular - 20 seats total)
 (9, 'A', 1, 'REGULAR', 0.00), (9, 'A', 2, 'REGULAR', 0.00), (9, 'A', 3, 'REGULAR', 0.00),
 (9, 'A', 4, 'REGULAR', 0.00), (9, 'A', 5, 'REGULAR', 0.00), (9, 'A', 6, 'REGULAR', 0.00),
 (9, 'A', 7, 'REGULAR', 0.00), (9, 'A', 8, 'REGULAR', 0.00), (9, 'A', 9, 'REGULAR', 0.00),
@@ -461,6 +524,7 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (9, 'B', 4, 'REGULAR', 0.00), (9, 'B', 5, 'REGULAR', 0.00), (9, 'B', 6, 'REGULAR', 0.00),
 (9, 'B', 7, 'REGULAR', 0.00), (9, 'B', 8, 'REGULAR', 0.00), (9, 'B', 9, 'REGULAR', 0.00),
 (9, 'B', 10, 'REGULAR', 0.00),
+-- Rows C-D (VIP - 20 seats total)
 (9, 'C', 1, 'VIP', 20000.00), (9, 'C', 2, 'VIP', 20000.00), (9, 'C', 3, 'VIP', 20000.00),
 (9, 'C', 4, 'VIP', 20000.00), (9, 'C', 5, 'VIP', 20000.00), (9, 'C', 6, 'VIP', 20000.00),
 (9, 'C', 7, 'VIP', 20000.00), (9, 'C', 8, 'VIP', 20000.00), (9, 'C', 9, 'VIP', 20000.00),
@@ -469,10 +533,12 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (9, 'D', 4, 'VIP', 20000.00), (9, 'D', 5, 'VIP', 20000.00), (9, 'D', 6, 'VIP', 20000.00),
 (9, 'D', 7, 'VIP', 20000.00), (9, 'D', 8, 'VIP', 20000.00), (9, 'D', 9, 'VIP', 20000.00),
 (9, 'D', 10, 'VIP', 20000.00),
+-- Row E (Couple - 10 seats)
 (9, 'E', 1, 'COUPLE', 30000.00), (9, 'E', 2, 'COUPLE', 30000.00), (9, 'E', 3, 'COUPLE', 30000.00),
 (9, 'E', 4, 'COUPLE', 30000.00), (9, 'E', 5, 'COUPLE', 30000.00), (9, 'E', 6, 'COUPLE', 30000.00),
 (9, 'E', 7, 'COUPLE', 30000.00), (9, 'E', 8, 'COUPLE', 30000.00), (9, 'E', 9, 'COUPLE', 30000.00),
 (9, 'E', 10, 'COUPLE', 30000.00),
+-- Rows F-G (Regular - 20 seats total)
 (9, 'F', 1, 'REGULAR', 0.00), (9, 'F', 2, 'REGULAR', 0.00), (9, 'F', 3, 'REGULAR', 0.00),
 (9, 'F', 4, 'REGULAR', 0.00), (9, 'F', 5, 'REGULAR', 0.00), (9, 'F', 6, 'REGULAR', 0.00),
 (9, 'F', 7, 'REGULAR', 0.00), (9, 'F', 8, 'REGULAR', 0.00), (9, 'F', 9, 'REGULAR', 0.00),
@@ -480,47 +546,64 @@ INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
 (9, 'G', 1, 'REGULAR', 0.00), (9, 'G', 2, 'REGULAR', 0.00), (9, 'G', 3, 'REGULAR', 0.00),
 (9, 'G', 4, 'REGULAR', 0.00), (9, 'G', 5, 'REGULAR', 0.00), (9, 'G', 6, 'REGULAR', 0.00),
 (9, 'G', 7, 'REGULAR', 0.00), (9, 'G', 8, 'REGULAR', 0.00), (9, 'G', 9, 'REGULAR', 0.00),
-(9, 'G', 10, 'REGULAR', 0.00),
+(9, 'G', 10, 'REGULAR', 0.00);
+
+-- Insert seats for Room 10 (room_id=10, 50 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular - 10 seats)
 (10, 'A', 1, 'REGULAR', 0.00), (10, 'A', 2, 'REGULAR', 0.00), (10, 'A', 3, 'REGULAR', 0.00),
 (10, 'A', 4, 'REGULAR', 0.00), (10, 'A', 5, 'REGULAR', 0.00), (10, 'A', 6, 'REGULAR', 0.00),
 (10, 'A', 7, 'REGULAR', 0.00), (10, 'A', 8, 'REGULAR', 0.00), (10, 'A', 9, 'REGULAR', 0.00),
 (10, 'A', 10, 'REGULAR', 0.00),
+-- Row B (VIP - 10 seats)
 (10, 'B', 1, 'VIP', 20000.00), (10, 'B', 2, 'VIP', 20000.00), (10, 'B', 3, 'VIP', 20000.00),
 (10, 'B', 4, 'VIP', 20000.00), (10, 'B', 5, 'VIP', 20000.00), (10, 'B', 6, 'VIP', 20000.00),
 (10, 'B', 7, 'VIP', 20000.00), (10, 'B', 8, 'VIP', 20000.00), (10, 'B', 9, 'VIP', 20000.00),
 (10, 'B', 10, 'VIP', 20000.00),
+-- Row C (VIP - 10 seats)
 (10, 'C', 1, 'VIP', 20000.00), (10, 'C', 2, 'VIP', 20000.00), (10, 'C', 3, 'VIP', 20000.00),
 (10, 'C', 4, 'VIP', 20000.00), (10, 'C', 5, 'VIP', 20000.00), (10, 'C', 6, 'VIP', 20000.00),
 (10, 'C', 7, 'VIP', 20000.00), (10, 'C', 8, 'VIP', 20000.00), (10, 'C', 9, 'VIP', 20000.00),
 (10, 'C', 10, 'VIP', 20000.00),
+-- Row D (Regular - 10 seats)
 (10, 'D', 1, 'REGULAR', 0.00), (10, 'D', 2, 'REGULAR', 0.00), (10, 'D', 3, 'REGULAR', 0.00),
 (10, 'D', 4, 'REGULAR', 0.00), (10, 'D', 5, 'REGULAR', 0.00), (10, 'D', 6, 'REGULAR', 0.00),
 (10, 'D', 7, 'REGULAR', 0.00), (10, 'D', 8, 'REGULAR', 0.00), (10, 'D', 9, 'REGULAR', 0.00),
 (10, 'D', 10, 'REGULAR', 0.00),
+-- Row E (Regular - 10 seats)
 (10, 'E', 1, 'REGULAR', 0.00), (10, 'E', 2, 'REGULAR', 0.00), (10, 'E', 3, 'REGULAR', 0.00),
 (10, 'E', 4, 'REGULAR', 0.00), (10, 'E', 5, 'REGULAR', 0.00), (10, 'E', 6, 'REGULAR', 0.00),
 (10, 'E', 7, 'REGULAR', 0.00), (10, 'E', 8, 'REGULAR', 0.00), (10, 'E', 9, 'REGULAR', 0.00),
-(10, 'E', 10, 'REGULAR', 0.00),
+(10, 'E', 10, 'REGULAR', 0.00);
+
+-- Insert seats for Room 11 (room_id=11, 60 seats, Standard)
+INSERT INTO seats (room_id, row_label, seat_number, seat_type, surcharge) VALUES
+-- Row A (Regular - 10 seats)
 (11, 'A', 1, 'REGULAR', 0.00), (11, 'A', 2, 'REGULAR', 0.00), (11, 'A', 3, 'REGULAR', 0.00),
 (11, 'A', 4, 'REGULAR', 0.00), (11, 'A', 5, 'REGULAR', 0.00), (11, 'A', 6, 'REGULAR', 0.00),
 (11, 'A', 7, 'REGULAR', 0.00), (11, 'A', 8, 'REGULAR', 0.00), (11, 'A', 9, 'REGULAR', 0.00),
 (11, 'A', 10, 'REGULAR', 0.00),
+-- Row B (VIP - 10 seats)
 (11, 'B', 1, 'VIP', 20000.00), (11, 'B', 2, 'VIP', 20000.00), (11, 'B', 3, 'VIP', 20000.00),
 (11, 'B', 4, 'VIP', 20000.00), (11, 'B', 5, 'VIP', 20000.00), (11, 'B', 6, 'VIP', 20000.00),
 (11, 'B', 7, 'VIP', 20000.00), (11, 'B', 8, 'VIP', 20000.00), (11, 'B', 9, 'VIP', 20000.00),
 (11, 'B', 10, 'VIP', 20000.00),
+-- Row C (VIP - 10 seats)
 (11, 'C', 1, 'VIP', 20000.00), (11, 'C', 2, 'VIP', 20000.00), (11, 'C', 3, 'VIP', 20000.00),
 (11, 'C', 4, 'VIP', 20000.00), (11, 'C', 5, 'VIP', 20000.00), (11, 'C', 6, 'VIP', 20000.00),
 (11, 'C', 7, 'VIP', 20000.00), (11, 'C', 8, 'VIP', 20000.00), (11, 'C', 9, 'VIP', 20000.00),
 (11, 'C', 10, 'VIP', 20000.00),
+-- Row D (Regular - 10 seats)
 (11, 'D', 1, 'REGULAR', 0.00), (11, 'D', 2, 'REGULAR', 0.00), (11, 'D', 3, 'REGULAR', 0.00),
 (11, 'D', 4, 'REGULAR', 0.00), (11, 'D', 5, 'REGULAR', 0.00), (11, 'D', 6, 'REGULAR', 0.00),
 (11, 'D', 7, 'REGULAR', 0.00), (11, 'D', 8, 'REGULAR', 0.00), (11, 'D', 9, 'REGULAR', 0.00),
 (11, 'D', 10, 'REGULAR', 0.00),
+-- Row E (Regular - 10 seats)
 (11, 'E', 1, 'REGULAR', 0.00), (11, 'E', 2, 'REGULAR', 0.00), (11, 'E', 3, 'REGULAR', 0.00),
 (11, 'E', 4, 'REGULAR', 0.00), (11, 'E', 5, 'REGULAR', 0.00), (11, 'E', 6, 'REGULAR', 0.00),
 (11, 'E', 7, 'REGULAR', 0.00), (11, 'E', 8, 'REGULAR', 0.00), (11, 'E', 9, 'REGULAR', 0.00),
 (11, 'E', 10, 'REGULAR', 0.00),
+-- Row F (Regular - 10 seats)
 (11, 'F', 1, 'REGULAR', 0.00), (11, 'F', 2, 'REGULAR', 0.00), (11, 'F', 3, 'REGULAR', 0.00),
 (11, 'F', 4, 'REGULAR', 0.00), (11, 'F', 5, 'REGULAR', 0.00), (11, 'F', 6, 'REGULAR', 0.00),
 (11, 'F', 7, 'REGULAR', 0.00), (11, 'F', 8, 'REGULAR', 0.00), (11, 'F', 9, 'REGULAR', 0.00),
@@ -1820,5 +1903,3 @@ INSERT INTO showtimes (movie_id, room_id, cinema_id, start_time, end_time, base_
 (10, 1, 1, '2026-08-30 08:30:00', '2026-08-30 10:32:00', 90000.00, 'ACTIVE'),
 (10, 3, 1, '2026-08-30 13:00:00', '2026-08-30 15:02:00', 100000.00, 'ACTIVE'),
 (10, 3, 1, '2026-08-30 19:00:00', '2026-08-30 21:02:00', 120000.00, 'ACTIVE');
-
-
