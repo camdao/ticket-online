@@ -60,7 +60,9 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Display published image
-        run: echo "Docker image pushed successfully: ${{ steps.meta.outputs.tags }}"
+        run: |
+          echo "Docker image pushed successfully:"
+          echo "${{ steps.meta.outputs.tags }}"
 
   deploy:
     name: Deploy to EC2
