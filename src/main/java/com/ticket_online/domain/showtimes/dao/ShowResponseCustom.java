@@ -1,6 +1,7 @@
 package com.ticket_online.domain.showtimes.dao;
 
 import com.ticket_online.domain.showtimes.domain.Showtime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ShowResponseCustom {
@@ -55,4 +56,13 @@ public interface ShowResponseCustom {
      */
     List<Showtime> findShowtimesByCinemaId(
             Long cinemaId, Long movieId, String date, String startDate, String endDate);
+
+    /**
+     * Find distinct dates where showtimes exist for a movie at a cinema
+     *
+     * @param movieId required movie ID filter
+     * @param cinemaId required cinema ID filter
+     * @return list of distinct dates (sorted) where active future showtimes exist
+     */
+    List<LocalDate> findDistinctShowtimeDates(Long movieId, Long cinemaId);
 }
