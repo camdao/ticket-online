@@ -10,7 +10,7 @@ public enum UrlConstants {
     DEV_SERVER_URL(""),
     LOCAL_SERVER_URL("http://localhost:8081"),
 
-    PROD_DOMAIN_URL(""),
+    PROD_DOMAIN_URL("https://ticket-client-gold.vercel.app"),
     DEV_DOMAIN_URL(""),
     LOCAL_DOMAIN_URL("http://localhost:3001"),
     LOCAL_SECURE_DOMAIN_URL("https://localhost:3001"),
