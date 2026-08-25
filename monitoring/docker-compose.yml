@@ -14,7 +14,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - monitoring-network
+      - ticket-network
 
   grafana:
     image: grafana/grafana:latest
@@ -27,11 +27,12 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      - monitoring-network
+      - ticket-network
 
 networks:
-  monitoring-network:
-    driver: bridge
+  ticket-network:
+    name: ticket-network
+    external: true
 
 volumes:
   prometheus_data:

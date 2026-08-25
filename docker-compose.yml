@@ -44,7 +44,7 @@ services:
     networks:
       - ticket-network
 
-  app:
+  spring-app:
     image: ${DOCKER_USERNAME}/ticket-online:${IMAGE_TAG:-latest}
     container_name: ticket-app
     restart: unless-stopped
@@ -94,3 +94,5 @@ volumes:
 
 networks:
   ticket-network:
+    driver: bridge
+    name: ticket-network
