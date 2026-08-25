@@ -25,7 +25,6 @@ docs/
 
 # Test data
 .env
-.env.*
 
 # Logs
 logs/
