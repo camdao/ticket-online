@@ -141,7 +141,7 @@ public class BookingService {
                 seats.size(),
                 transactionId);
 
-        return buildBookingResponse(booking, seats, showtime, paymentUrl, transactionId);
+        return BookingResponse.from(payment);
     }
 
     public BookingListPageResponse getUserBookings(Long userId, Pageable pageable) {
@@ -244,50 +244,6 @@ public class BookingService {
         }
 
         return request.getRemoteAddr();
-    }
-
-    private BookingResponse buildBookingResponse(
-            Booking booking,
-            List<Seat> seats,
-            Showtime showtime,
-            String paymentUrl,
-            String transactionId) {
-        List<SeatDto> seatDtos =
-                seats.stream()
-                        .map(
-                                seat ->
-                                        SeatDto.builder()
-                                                .id(seat.getId())
-                                                .row(seat.getRow())
-                                                .number(seat.getNumber())
-                                                .type(seat.getType())
-                                                .price(
-                                                        showtime.getBasePrice()
-                                                                .add(
-                                                                        BigDecimal.valueOf(
-                                                                                seat
-                                                                                        .getSurcharge())))
-                                                .build())
-                        .toList();
-
-        return BookingResponse.builder()
-                .id(booking.getId())
-                .bookingCode(booking.getBookingCode())
-                .userId(booking.getUser().getId())
-                .showtimeId(showtime.getId())
-                .movieTitle(showtime.getMovie().getTitle())
-                .cinemaName(showtime.getCinema().getName())
-                .screenName(showtime.getRoom().getName())
-                .showtime(showtime.getStartTime())
-                .seats(seatDtos)
-                .totalAmount(booking.getTotalAmount())
-                .status(booking.getStatus())
-                .paymentUrl(paymentUrl)
-                .transactionId(transactionId)
-                .createdAt(booking.getCreatedAt())
-                .expiresAt(booking.getExpiresAt())
-                .confirmedAt(booking.getConfirmedAt())
-                .build();
     }
 
     private BookingDetailResponse buildBookingDetailResponse(
