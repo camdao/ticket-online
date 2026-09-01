@@ -4,7 +4,6 @@ import com.ticket_online.domain.bookings.dao.BookingDetailRepository;
 import com.ticket_online.domain.bookings.dao.BookingRepository;
 import com.ticket_online.domain.bookings.domain.Booking;
 import com.ticket_online.domain.bookings.domain.BookingDetail;
-import com.ticket_online.domain.bookings.domain.BookingStatus;
 import com.ticket_online.domain.bookings.dto.request.CreateBookingRequest;
 import com.ticket_online.domain.bookings.dto.response.*;
 import com.ticket_online.domain.payments.application.VnpayService;
@@ -145,11 +144,10 @@ public class BookingService {
         return buildBookingResponse(booking, seats, showtime, paymentUrl, transactionId);
     }
 
-    public Page<BookingListResponse> getUserBookings(Long userId, Pageable pageable) {
-        // Only return CONFIRMED bookings by default as per API design
-        Page<Booking> bookings =
-                bookingRepository.findByUserIdAndStatus(userId, BookingStatus.CONFIRMED, pageable);
-        return bookings.map(this::buildBookingListResponse);
+    public BookingListPageResponse getUserBookings(Long userId, Pageable pageable) {
+        Page<BookingListResponse> result = bookingRepository.findUserBookings(userId, pageable);
+
+        return BookingListPageResponse.from(result);
     }
 
     public BookingDetailResponse getBookingDetail(Long bookingId, Long userId) {
@@ -288,25 +286,6 @@ public class BookingService {
                 .transactionId(transactionId)
                 .createdAt(booking.getCreatedAt())
                 .expiresAt(booking.getExpiresAt())
-                .confirmedAt(booking.getConfirmedAt())
-                .build();
-    }
-
-    private BookingListResponse buildBookingListResponse(Booking booking) {
-        List<BookingDetail> details = bookingDetailRepository.findByBookingId(booking.getId());
-
-        return BookingListResponse.builder()
-                .id(booking.getId())
-                .bookingCode(booking.getBookingCode())
-                .movieTitle(booking.getShowtime().getMovie().getTitle())
-                .moviePosterUrl(booking.getShowtime().getMovie().getImageUrl())
-                .cinemaName(booking.getShowtime().getCinema().getName())
-                .screenName(booking.getShowtime().getRoom().getName())
-                .showtime(booking.getShowtime().getStartTime())
-                .seatCount(details.size())
-                .totalAmount(booking.getTotalAmount())
-                .status(booking.getStatus())
-                .createdAt(booking.getCreatedAt())
                 .confirmedAt(booking.getConfirmedAt())
                 .build();
     }

@@ -182,7 +182,6 @@ Prevents race conditions in concurrent bookings using Redis Lua scripts for atom
 ```java
 // RedisSeatScripts.java
 holdSeats(seatIds, showId, userId, ttlSeconds)       // Atomic check + hold
-checkAndExtendSeats(showId, seatIds, userId, ttl)    // Verify + extend
 releaseSeats(showId, seatIds)                        // Free seats
 ```
 

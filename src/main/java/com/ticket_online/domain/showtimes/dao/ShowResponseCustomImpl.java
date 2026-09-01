@@ -38,22 +38,18 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        // Filter by movie (optional)
         if (movieId != null) {
             builder.and(showtime.movie.id.eq(movieId));
         }
 
-        // Filter by cinema (optional)
         if (cinemaId != null) {
             builder.and(showtime.room.cinema.id.eq(cinemaId));
         }
 
-        // Filter by city (optional)
         if (city != null && !city.isBlank()) {
             builder.and(showtime.room.cinema.city.eq(city));
         }
 
-        // Filter by date
         if (date != null && !date.isBlank()) {
             LocalDate localDate = LocalDate.parse(date);
             LocalDateTime startOfDay = localDate.atStartOfDay();
@@ -69,10 +65,8 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
             }
         }
 
-        // Only active showtimes
         builder.and(showtime.status.eq(ShowtimeStatus.ACTIVE));
 
-        // Future showtimes only
         builder.and(showtime.startTime.goe(LocalDateTime.now()));
 
         return jpaQueryFactory
@@ -103,20 +97,16 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        // Filter by movie (required)
         builder.and(showtime.movie.id.eq(movieId));
 
-        // Filter by cinema (optional)
         if (cinemaId != null) {
             builder.and(showtime.room.cinema.id.eq(cinemaId));
         }
 
-        // Filter by city (optional)
         if (city != null && !city.isBlank()) {
             builder.and(showtime.room.cinema.city.eq(city));
         }
 
-        // Filter by date
         if (date != null && !date.isBlank()) {
             LocalDate localDate = LocalDate.parse(date);
             LocalDateTime startOfDay = localDate.atStartOfDay();
@@ -132,10 +122,8 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
             }
         }
 
-        // Only active showtimes
         builder.and(showtime.status.eq(ShowtimeStatus.ACTIVE));
 
-        // Future showtimes only
         builder.and(showtime.startTime.goe(LocalDateTime.now()));
 
         return jpaQueryFactory
@@ -161,15 +149,12 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        // Filter by cinema (required)
         builder.and(showtime.room.cinema.id.eq(cinemaId));
 
-        // Filter by movie (optional)
         if (movieId != null) {
             builder.and(showtime.movie.id.eq(movieId));
         }
 
-        // Filter by date
         if (date != null && !date.isBlank()) {
             LocalDate localDate = LocalDate.parse(date);
             LocalDateTime startOfDay = localDate.atStartOfDay();
@@ -185,10 +170,8 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
             }
         }
 
-        // Only active showtimes
         builder.and(showtime.status.eq(ShowtimeStatus.ACTIVE));
 
-        // Future showtimes only
         builder.and(showtime.startTime.goe(LocalDateTime.now()));
 
         return jpaQueryFactory
@@ -209,19 +192,14 @@ public class ShowResponseCustomImpl implements ShowResponseCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        // Filter by movie (required)
         builder.and(showtime.movie.id.eq(movieId));
 
-        // Filter by cinema (required)
         builder.and(showtime.room.cinema.id.eq(cinemaId));
 
-        // Only active showtimes
         builder.and(showtime.status.eq(ShowtimeStatus.ACTIVE));
 
-        // Future showtimes only
         builder.and(showtime.startTime.goe(LocalDateTime.now()));
 
-        // Extract date from startTime and get distinct dates
         return jpaQueryFactory
                 .select(Expressions.dateTemplate(LocalDate.class, "DATE({0})", showtime.startTime))
                 .from(showtime)

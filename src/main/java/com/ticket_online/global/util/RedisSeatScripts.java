@@ -46,35 +46,6 @@ public class RedisSeatScripts {
         return HoldSeatResult.SUCCESS;
     }
 
-    public HoldSeatResult checkAndExtendSeats(
-            Long showId, List<Long> seatIds, Long userId, int ttlSeconds) {
-        List<String> keys = seatIds.stream().map(seatId -> key(showId, seatId)).toList();
-        RedisScript<Long> CHECK_AND_EXTEND_SEATS =
-                RedisScript.of(
-                        """
-            for i = 1, #KEYS do
-                local v = redis.call("GET", KEYS[i])
-                if not v or v ~= ARGV[1] then
-                    return 0
-                end
-            end
-            for i = 1, #KEYS do
-                redis.call("PEXPIRE", KEYS[i], ARGV[2])
-            end
-            return 1
-        """,
-                        Long.class);
-
-        Long r =
-                redisTemplate.execute(
-                        CHECK_AND_EXTEND_SEATS,
-                        keys,
-                        userId.toString(),
-                        String.valueOf(ttlSeconds * 1000));
-
-        return r == 1 ? HoldSeatResult.SUCCESS : HoldSeatResult.OWNED_BY_OTHER;
-    }
-
     public void releaseSeats(Long showId, List<Long> seatIds) {
 
         if (seatIds == null || seatIds.isEmpty()) {
