@@ -48,15 +48,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         s.startTime,
         s.endTime,
         seat.id,
-        seat.rowLabel,
-        seat.seatNumber,
-        seat.seatType,
+        seat.row,
+        seat.number,
+        seat.type,
         bd.price
     )
-    FROM Booking b
+    FROM BookingDetail bd
+    JOIN bd.booking b
     JOIN b.showtime s
     JOIN s.movie m
-    JOIN b.bookingDetails bd
     JOIN bd.seat seat
     WHERE b.id = :bookingId
       AND b.user.id = :userId

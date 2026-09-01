@@ -41,6 +41,7 @@ public class BookingService {
     private final RedisSeatScripts redisSeatScripts;
     private final PaymentService paymentService;
 
+    // TODO: Add idempotency to prevent duplicate bookings when the same request is retried.
     @Transactional
     public BookingResponse createBooking(
             CreateBookingRequest request, Long userId, String ipAddress) {
