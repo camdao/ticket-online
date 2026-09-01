@@ -1,6 +1,7 @@
 package com.ticket_online.domain.bookings.dao;
 
 import com.ticket_online.domain.bookings.domain.Booking;
+import com.ticket_online.domain.bookings.dto.response.BookingDetailRow;
 import com.ticket_online.domain.bookings.dto.response.BookingListResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,4 +33,34 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "SELECT b FROM Booking b WHERE b.status = 'PENDING' AND b.expiresAt < :now ORDER BY"
                     + " b.expiresAt")
     List<Booking> findExpiredPendingBookings(@Param("now") LocalDateTime now);
+
+    @Query(
+            """
+    SELECT new com.ticket_online.domain.bookings.dto.response.BookingDetailRow(
+        b.id,
+        b.bookingCode,
+        m.title,
+        m.imageUrl,
+        b.totalAmount,
+        b.status,
+        b.createdAt,
+        b.confirmedAt,
+        s.startTime,
+        s.endTime,
+        seat.id,
+        seat.rowLabel,
+        seat.seatNumber,
+        seat.seatType,
+        bd.price
+    )
+    FROM Booking b
+    JOIN b.showtime s
+    JOIN s.movie m
+    JOIN b.bookingDetails bd
+    JOIN bd.seat seat
+    WHERE b.id = :bookingId
+      AND b.user.id = :userId
+""")
+    List<BookingDetailRow> findBookingDetail(
+            @Param("bookingId") Long bookingId, @Param("userId") Long userId);
 }

@@ -42,8 +42,23 @@ public class BookingController {
     public ResponseEntity<BookingResponse> createBooking(
             @Valid @RequestBody CreateBookingRequest request, HttpServletRequest httpRequest) {
         Long userId = securityUtil.getCurrentUserId();
-        BookingResponse response = bookingService.createBooking(request, userId, httpRequest);
+        String ipAddress = getClientIp(httpRequest);
+        BookingResponse response = bookingService.createBooking(request, userId, ipAddress);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty()) {
+            return xRealIp;
+        }
+
+        return request.getRemoteAddr();
     }
 
     @Operation(

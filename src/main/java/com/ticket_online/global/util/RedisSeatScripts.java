@@ -1,5 +1,6 @@
 package com.ticket_online.global.util;
 
+import com.ticket_online.global.config.redis.RedisProperties;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import java.util.List;
@@ -14,11 +15,13 @@ public class RedisSeatScripts {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    private final RedisProperties redisProperties;
+
     private String key(Long showId, Long seatId) {
         return "seat:hold:" + showId + ":" + seatId;
     }
 
-    public HoldSeatResult holdSeats(List<Long> seatIds, Long showId, Long userId, int ttlSeconds) {
+    public HoldSeatResult holdSeats(List<Long> seatIds, Long showId, Long userId) {
         List<String> keys = seatIds.stream().map(seatId -> key(showId, seatId)).toList();
 
         RedisScript<Long> HOLD_SEATS =
@@ -39,7 +42,10 @@ public class RedisSeatScripts {
 
         Long r =
                 redisTemplate.execute(
-                        HOLD_SEATS, keys, userId.toString(), String.valueOf(ttlSeconds * 1000));
+                        HOLD_SEATS,
+                        keys,
+                        userId.toString(),
+                        String.valueOf(redisProperties.seatHoldTtl() * 1000));
         if (r == 0) {
             throw new CustomException(ErrorCode.SEAT_ALREADY_HELD);
         }

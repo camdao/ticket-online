@@ -52,9 +52,7 @@ public class Booking extends BaseTimeEntity {
             Showtime showtime,
             BigDecimal totalAmount,
             BookingStatus status,
-            LocalDateTime expiresAt,
-            String customerEmail,
-            String customerPhone) {
+            LocalDateTime expiresAt) {
         this.bookingCode = bookingCode;
         this.user = user;
         this.showtime = showtime;
@@ -64,12 +62,7 @@ public class Booking extends BaseTimeEntity {
     }
 
     public static Booking createBooking(
-            String bookingCode,
-            User user,
-            Showtime showtime,
-            BigDecimal totalAmount,
-            String customerEmail,
-            String customerPhone) {
+            String bookingCode, User user, Showtime showtime, BigDecimal totalAmount) {
         return Booking.builder()
                 .bookingCode(bookingCode)
                 .user(user)
@@ -77,15 +70,13 @@ public class Booking extends BaseTimeEntity {
                 .totalAmount(totalAmount)
                 .status(BookingStatus.PENDING)
                 .expiresAt(LocalDateTime.now().plusMinutes(15)) // 15 minutes to pay
-                .customerEmail(customerEmail)
-                .customerPhone(customerPhone)
                 .build();
     }
 
     public void confirm() {
         this.status = BookingStatus.CONFIRMED;
         this.confirmedAt = LocalDateTime.now();
-        this.expiresAt = null; // Remove expiration after confirmation
+        this.expiresAt = null;
     }
 
     public void cancel() {
@@ -116,13 +107,9 @@ public class Booking extends BaseTimeEntity {
         if (!isConfirmed()) {
             return isPending();
         }
-        // Can cancel confirmed booking if more than 2 hours before showtime
+
         LocalDateTime showtimeStart = showtime.getStartTime();
         LocalDateTime twoHoursBefore = showtimeStart.minusHours(2);
         return LocalDateTime.now().isBefore(twoHoursBefore);
-    }
-
-    public boolean hasExpired() {
-        return isPending() && expiresAt != null && LocalDateTime.now().isAfter(expiresAt);
     }
 }
