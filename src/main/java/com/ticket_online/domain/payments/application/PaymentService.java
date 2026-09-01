@@ -7,6 +7,7 @@ import com.ticket_online.domain.bookings.domain.Booking;
 import com.ticket_online.domain.bookings.domain.BookingDetail;
 import com.ticket_online.domain.payments.dao.PaymentRepository;
 import com.ticket_online.domain.payments.domain.Payment;
+import com.ticket_online.domain.payments.domain.PaymentMethod;
 import com.ticket_online.domain.payments.dto.response.PaymentVerificationResponse;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
 import com.ticket_online.global.error.exception.CustomException;
@@ -15,6 +16,7 @@ import com.ticket_online.global.util.RedisSeatScripts;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,39 @@ public class PaymentService {
     private final RedisSeatScripts redisSeatScripts;
     private final ObjectMapper objectMapper;
     private final VnpayProperties vnpayProperties;
+
+    @Transactional
+    public Payment createPayment(Booking booking, PaymentMethod paymentMethod, String ipAddress) {
+
+        String transactionId = generateTransactionId();
+
+        String orderInfo = "Thanh toan ve phim - Booking: " + booking.getBookingCode();
+
+        String paymentUrl =
+                vnpayService.createPaymentUrl(
+                        transactionId,
+                        booking.getTotalAmount().longValue(),
+                        orderInfo,
+                        vnpayProperties.returnUrl(),
+                        ipAddress);
+
+        Payment payment =
+                Payment.createPayment(
+                        booking,
+                        transactionId,
+                        paymentMethod,
+                        booking.getTotalAmount(),
+                        paymentUrl);
+
+        return paymentRepository.save(payment);
+    }
+
+    private String generateTransactionId() {
+        String prefix = "PAY";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String random = UUID.randomUUID().toString().substring(0, 8);
+        return prefix + timestamp.substring(timestamp.length() - 10) + random;
+    }
 
     @Transactional
     public void handleVnpayCallback(Map<String, String> params) {
