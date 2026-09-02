@@ -36,14 +36,7 @@ public class ShowtimeService {
     private final BookingDetailRepository bookingDetailRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    /**
-     * Get detailed information for a specific showtime
-     *
-     * @param showtimeId the ID of the showtime
-     * @return ShowtimeDetailResponse with nested movie and cinema info
-     */
     public ShowtimeDetailResponse getShowtimeById(Long showtimeId) {
-        // Fetch showtime with movie, cinema, and room details
         Showtime showtime =
                 showtimeRepository
                         .findByIdWithDetails(showtimeId)
@@ -51,16 +44,14 @@ public class ShowtimeService {
 
         Room room = showtime.getRoom();
 
-        // Get total seats count for the room
         List<Seat> allSeats = seatRepository.findByRoomId(room.getId());
         int totalSeats = allSeats.size();
 
-        // Get confirmed (BOOKED) seat count from database
         List<Long> confirmedSeatIds =
                 bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId);
         int bookedSeatsCount = confirmedSeatIds.size();
 
-        // Get held seats count from Redis
+        // Get held Redis
         int heldSeatsCount = 0;
         for (Seat seat : allSeats) {
             String redisKey = String.format("seat:hold:%d:%d", showtimeId, seat.getId());
@@ -70,7 +61,6 @@ public class ShowtimeService {
             }
         }
 
-        // Calculate available seats
         int availableSeats = totalSeats - bookedSeatsCount - heldSeatsCount;
 
         return ShowtimeDetailResponse.from(showtime, availableSeats, totalSeats);

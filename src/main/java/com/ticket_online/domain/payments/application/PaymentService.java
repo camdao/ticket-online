@@ -8,14 +8,11 @@ import com.ticket_online.domain.bookings.domain.BookingDetail;
 import com.ticket_online.domain.payments.dao.PaymentRepository;
 import com.ticket_online.domain.payments.domain.Payment;
 import com.ticket_online.domain.payments.domain.PaymentMethod;
-import com.ticket_online.domain.payments.dto.request.PaymentRequest;
-import com.ticket_online.domain.payments.dto.response.PaymentResponse;
 import com.ticket_online.domain.payments.dto.response.PaymentVerificationResponse;
 import com.ticket_online.global.config.vnpay.VnpayProperties;
 import com.ticket_online.global.error.exception.CustomException;
 import com.ticket_online.global.error.exception.ErrorCode;
 import com.ticket_online.global.util.RedisSeatScripts;
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,80 +37,36 @@ public class PaymentService {
     private final VnpayProperties vnpayProperties;
 
     @Transactional
-    public PaymentResponse initiatePayment(
-            PaymentRequest request, Long userId, HttpServletRequest httpRequest) {
-        // Get booking and validate
-        Booking booking =
-                bookingRepository
-                        .findById(request.getBookingId())
-                        .orElseThrow(() -> new CustomException(ErrorCode.BOOKING_NOT_FOUND));
+    public Payment createPayment(Booking booking, PaymentMethod paymentMethod, String ipAddress) {
 
-        // Verify ownership
-        if (!booking.getUser().getId().equals(userId)) {
-            throw new CustomException(ErrorCode.BOOKING_NOT_FOUND);
-        }
-
-        // Validate booking is pending
-        if (!booking.isPending()) {
-            if (booking.isConfirmed()) {
-                throw new CustomException(ErrorCode.BOOKING_ALREADY_CONFIRMED);
-            } else if (booking.isExpired()) {
-                throw new CustomException(ErrorCode.BOOKING_EXPIRED);
-            }
-        }
-
-        // Check if payment already exists
-        paymentRepository
-                .findByBookingId(request.getBookingId())
-                .ifPresent(
-                        existingPayment -> {
-                            if (existingPayment.isSuccess()) {
-                                throw new CustomException(ErrorCode.PAYMENT_ALREADY_COMPLETED);
-                            }
-                        });
-
-        // Generate transaction ID
         String transactionId = generateTransactionId();
 
-        // Get client IP
-        String ipAddress = getClientIp(httpRequest);
+        String orderInfo = "Thanh toan ve phim - Booking: " + booking.getBookingCode();
 
-        // Create payment URL based on payment method
-        String paymentUrl;
-        if (request.getPaymentMethod() == PaymentMethod.VNPAY) {
-            String orderInfo = "Thanh toan ve phim - Booking: " + booking.getBookingCode();
-            paymentUrl =
-                    vnpayService.createPaymentUrl(
-                            transactionId,
-                            booking.getTotalAmount().longValue(),
-                            orderInfo,
-                            vnpayProperties.returnUrl(),
-                            ipAddress);
-        } else {
-            throw new CustomException(
-                    ErrorCode.METHOD_NOT_ALLOWED); // Other payment methods not implemented yet
-        }
+        String paymentUrl =
+                vnpayService.createPaymentUrl(
+                        transactionId,
+                        booking.getTotalAmount().longValue(),
+                        orderInfo,
+                        vnpayProperties.returnUrl(),
+                        ipAddress);
 
-        // Create payment record
         Payment payment =
                 Payment.createPayment(
                         booking,
                         transactionId,
-                        request.getPaymentMethod(),
+                        paymentMethod,
                         booking.getTotalAmount(),
                         paymentUrl);
-        payment = paymentRepository.save(payment);
 
-        return PaymentResponse.builder()
-                .paymentId(payment.getId())
-                .bookingId(booking.getId())
-                .paymentMethod(payment.getPaymentMethod())
-                .amount(payment.getAmount())
-                .status(payment.getStatus())
-                .paymentUrl(payment.getPaymentUrl())
-                .transactionId(payment.getTransactionId())
-                .expiresAt(booking.getExpiresAt())
-                .build();
+        return paymentRepository.save(payment);
+    }
+
+    private String generateTransactionId() {
+        String prefix = "PAY";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String random = UUID.randomUUID().toString().substring(0, 8);
+        return prefix + timestamp.substring(timestamp.length() - 10) + random;
     }
 
     @Transactional
@@ -195,26 +148,5 @@ public class PaymentService {
                 .transactionId(payment.getTransactionId())
                 .paidAt(payment.getPaidAt())
                 .build();
-    }
-
-    private String generateTransactionId() {
-        String prefix = "PAY";
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String random = UUID.randomUUID().toString().substring(0, 8);
-        return prefix + timestamp.substring(timestamp.length() - 10) + random;
-    }
-
-    private String getClientIp(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-            return xForwardedFor.split(",")[0].trim();
-        }
-
-        String xRealIp = request.getHeader("X-Real-IP");
-        if (xRealIp != null && !xRealIp.isEmpty()) {
-            return xRealIp;
-        }
-
-        return request.getRemoteAddr();
     }
 }

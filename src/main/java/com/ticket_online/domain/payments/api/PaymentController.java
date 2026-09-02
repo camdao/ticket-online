@@ -1,16 +1,11 @@
 package com.ticket_online.domain.payments.api;
 
 import com.ticket_online.domain.payments.application.PaymentService;
-import com.ticket_online.domain.payments.dto.request.PaymentRequest;
-import com.ticket_online.domain.payments.dto.response.PaymentResponse;
 import com.ticket_online.domain.payments.dto.response.PaymentVerificationResponse;
 import com.ticket_online.global.util.SecurityUtil;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +19,6 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final SecurityUtil securityUtil;
-
-    @PostMapping
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PaymentResponse> initiatePayment(
-            @Valid @RequestBody PaymentRequest request, HttpServletRequest httpRequest) {
-        Long userId = securityUtil.getCurrentUserId();
-        PaymentResponse response = paymentService.initiatePayment(request, userId, httpRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
 
     @GetMapping("/callback")
     public RedirectView handlePaymentCallback(@RequestParam Map<String, String> params) {

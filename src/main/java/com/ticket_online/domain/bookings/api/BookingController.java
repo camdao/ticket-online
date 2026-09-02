@@ -3,7 +3,7 @@ package com.ticket_online.domain.bookings.api;
 import com.ticket_online.domain.bookings.application.BookingService;
 import com.ticket_online.domain.bookings.dto.request.CreateBookingRequest;
 import com.ticket_online.domain.bookings.dto.response.BookingDetailResponse;
-import com.ticket_online.domain.bookings.dto.response.BookingListResponse;
+import com.ticket_online.domain.bookings.dto.response.BookingListPageResponse;
 import com.ticket_online.domain.bookings.dto.response.BookingResponse;
 import com.ticket_online.global.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -43,8 +42,23 @@ public class BookingController {
     public ResponseEntity<BookingResponse> createBooking(
             @Valid @RequestBody CreateBookingRequest request, HttpServletRequest httpRequest) {
         Long userId = securityUtil.getCurrentUserId();
-        BookingResponse response = bookingService.createBooking(request, userId, httpRequest);
+        String ipAddress = getClientIp(httpRequest);
+        BookingResponse response = bookingService.createBooking(request, userId, ipAddress);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty()) {
+            return xRealIp;
+        }
+
+        return request.getRemoteAddr();
     }
 
     @Operation(
@@ -55,11 +69,11 @@ public class BookingController {
                             + " authentication.")
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Page<BookingListResponse>> getUserBookings(
+    public ResponseEntity<BookingListPageResponse> getUserBookings(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
                     Pageable pageable) {
         Long userId = securityUtil.getCurrentUserId();
-        Page<BookingListResponse> response = bookingService.getUserBookings(userId, pageable);
+        BookingListPageResponse response = bookingService.getUserBookings(userId, pageable);
         return ResponseEntity.ok(response);
     }
 

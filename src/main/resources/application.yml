@@ -13,6 +13,8 @@ management:
             exposure:
                 include: health,info,prometheus
             base-path: /actuator
+        prometheus:
+            enabled: true
         jmx:
             exposure:
                 exclude: "*"
