@@ -1,5 +1,6 @@
 package com.ticket_online.domain.bookings.application;
 
+import com.ticket_online.domain.bookings.dao.BookingDetailProjection;
 import com.ticket_online.domain.bookings.dao.BookingDetailRepository;
 import com.ticket_online.domain.bookings.dao.BookingListProjection;
 import com.ticket_online.domain.bookings.dao.BookingRepository;
@@ -60,59 +61,60 @@ public class BookingService {
                 userRepository
                         .findById(userId)
                         .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        // TODO: it don't roll back if @Transactional Error
+
+        if (bookingDetailRepository.existsActiveBooking(
+                request.getShowtimeId(), request.getSeatIds())) {
+            throw new CustomException(ErrorCode.SEATS_ALREADY_BOOKED);
+        }
+
         redisSeatScripts.holdSeats(request.getSeatIds(), request.getShowtimeId(), userId);
+        // roll back if @Transactional Error
+        try {
+            BigDecimal totalAmount = calculateTotalAmount(showtime, seats);
 
-        BigDecimal totalAmount = calculateTotalAmount(showtime, seats);
+            String bookingCode = generateBookingCode();
 
-        String bookingCode = generateBookingCode();
+            Booking booking = Booking.createBooking(bookingCode, user, showtime, totalAmount);
 
-        Booking booking = Booking.createBooking(bookingCode, user, showtime, totalAmount);
+            booking = bookingRepository.save(booking);
 
-        booking = bookingRepository.save(booking);
+            createBookingDetails(booking, showtime, seats);
 
-        createBookingDetails(booking, showtime, seats);
+            Payment payment =
+                    paymentService.createPayment(booking, request.getPaymentMethod(), ipAddress);
 
-        Payment payment =
-                paymentService.createPayment(booking, request.getPaymentMethod(), ipAddress);
+            log.info(
+                    "Created booking {} with {} seats, transaction ID: {}",
+                    bookingCode,
+                    seats.size(),
+                    payment.getTransactionId());
 
-        log.info(
-                "Created booking {} with {} seats, transaction ID: {}",
-                bookingCode,
-                seats.size(),
-                payment.getTransactionId());
+            return BookingResponse.from(payment);
+        } catch (Exception e) {
 
-        return BookingResponse.from(payment);
+            redisSeatScripts.releaseSeats(request.getShowtimeId(), request.getSeatIds());
+
+            throw e;
+        }
     }
 
     public BookingListPageResponse getUserBookings(Long userId, Pageable pageable) {
+
         Page<BookingListProjection> result = bookingRepository.findUserBookings(userId, pageable);
 
-        return new BookingListPageResponse(
-                result.getContent().stream()
-                        .map(
-                                p ->
-                                        new BookingListResponse(
-                                                p.getId(),
-                                                p.getBookingCode(),
-                                                p.getStatus(),
-                                                p.getMovieTitle()))
-                        .toList(),
-                result.getNumber(),
-                result.getSize(),
-                result.hasNext());
+        return toBookingListPageResponse(result);
     }
 
     public BookingDetailResponse getBookingDetail(Long bookingId, Long userId) {
 
-        List<BookingDetailRow> bookingDetails =
+        List<BookingDetailProjection> projections =
                 bookingRepository.findBookingDetail(bookingId, userId);
 
-        if (bookingDetails.isEmpty()) {
+        if (projections.isEmpty()) {
             throw new CustomException(ErrorCode.BOOKING_NOT_FOUND);
         }
 
-        return BookingDetailResponse.of(bookingDetails);
+        return toBookingDetailResponse(projections);
     }
 
     @Transactional
@@ -189,5 +191,53 @@ public class BookingService {
                         .toList();
 
         bookingDetailRepository.saveAll(details);
+    }
+
+    private BookingListPageResponse toBookingListPageResponse(Page<BookingListProjection> result) {
+
+        return new BookingListPageResponse(
+                result.getContent().stream()
+                        .map(
+                                p ->
+                                        new BookingListResponse(
+                                                p.getId(),
+                                                p.getBookingCode(),
+                                                p.getStatus(),
+                                                p.getMovieTitle()))
+                        .toList(),
+                result.getNumber(),
+                result.getSize(),
+                result.hasNext());
+    }
+
+    private BookingDetailResponse toBookingDetailResponse(
+            List<BookingDetailProjection> projections) {
+
+        BookingDetailProjection first = projections.get(0);
+
+        List<SeatBookingResponse> seats =
+                projections.stream()
+                        .map(
+                                p ->
+                                        new SeatBookingResponse(
+                                                p.getSeatId(),
+                                                p.getSeatRow(),
+                                                p.getSeatNumber(),
+                                                p.getSeatType(),
+                                                p.getPrice()))
+                        .toList();
+
+        return new BookingDetailResponse(
+                first.getBookingId(),
+                first.getBookingCode(),
+                first.getMovieTitle(),
+                first.getMovieImageUrl(),
+                first.getTotalAmount(),
+                first.getStatus(),
+                first.getCreatedAt(),
+                first.getConfirmedAt(),
+                first.getStartTime(),
+                first.getEndTime(),
+                seats);
     }
 }

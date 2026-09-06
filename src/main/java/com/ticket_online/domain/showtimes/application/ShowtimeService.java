@@ -172,44 +172,24 @@ public class ShowtimeService {
         return showtimes.stream().map(ShowtimeResponse::from).toList();
     }
 
-    /**
-     * Get distinct dates where showtimes exist for a movie at a cinema
-     *
-     * @param movieId the ID of the movie
-     * @param cinemaId the ID of the cinema
-     * @return list of date strings (YYYY-MM-DD) sorted in ascending order
-     */
     public List<String> getShowtimeDates(Long movieId, Long cinemaId) {
         List<LocalDate> dates = showtimeRepository.findDistinctShowtimeDates(movieId, cinemaId);
-
-        // Convert LocalDate to String format (YYYY-MM-DD)
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         return dates.stream().map(date -> date.format(formatter)).toList();
     }
 
-    /**
-     * Determine the status of a seat
-     *
-     * @param seat the seat to check
-     * @param bookedSeatIds set of confirmed (BOOKED) seat IDs
-     * @param heldSeatIds set of held seat IDs from Redis
-     * @return the seat status (BOOKED, HELD, or AVAILABLE)
-     */
     private SeatStatus determineSeatStatus(
             Seat seat, Set<Long> bookedSeatIds, Set<Long> heldSeatIds) {
         Long seatId = seat.getId();
 
-        // Check if seat is confirmed/booked in database
         if (bookedSeatIds.contains(seatId)) {
             return SeatStatus.BOOKED;
         }
 
-        // Check if seat is held in Redis
         if (heldSeatIds.contains(seatId)) {
             return SeatStatus.HELD;
         }
 
-        // Seat is available
         return SeatStatus.AVAILABLE;
     }
 }
