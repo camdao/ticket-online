@@ -30,6 +30,10 @@ public class Showtime extends BaseTimeEntity {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cinema_id", nullable = false)
+    private Cinema cinema;
+
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
@@ -75,35 +79,8 @@ public class Showtime extends BaseTimeEntity {
                 .build();
     }
 
-    public Cinema getCinema() {
-        return this.room.getCinema();
-    }
-
-    public void updateShowtime(
-            LocalDateTime startTime,
-            LocalDateTime endTime,
-            BigDecimal basePrice,
-            ShowtimeStatus status) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.basePrice = basePrice;
-        this.status = status;
-    }
-
-    public void cancel() {
-        this.status = ShowtimeStatus.CANCELLED;
-    }
-
     public boolean isActive() {
         return this.status == ShowtimeStatus.ACTIVE;
-    }
-
-    public boolean isPast() {
-        return this.endTime.isBefore(LocalDateTime.now());
-    }
-
-    public boolean isUpcoming() {
-        return this.startTime.isAfter(LocalDateTime.now());
     }
 
     public void updateStatus(ShowtimeStatus showtimeStatus) {

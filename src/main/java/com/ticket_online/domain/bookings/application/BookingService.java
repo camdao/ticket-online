@@ -42,6 +42,8 @@ public class BookingService {
     private final PaymentService paymentService;
 
     // TODO: Add idempotency to prevent duplicate bookings when the same request is retried.
+    // TODO: Check business rule to prevent a user from creating multiple active bookings
+    //       for the same seat and showtime.
     @Transactional
     public BookingResponse createBooking(
             CreateBookingRequest request, Long userId, String ipAddress) {

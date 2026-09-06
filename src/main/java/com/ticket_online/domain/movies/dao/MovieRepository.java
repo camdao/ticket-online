@@ -8,11 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long> {
+public interface MovieRepository extends JpaRepository<Movie, Long>, MovieRepositoryCustom {
 
     List<Movie> findByReleaseDateLessThanEqual(LocalDate date, Sort sort);
-
-    List<Movie> findByReleaseDateAfter(LocalDate date, Sort sort);
 
     List<Movie> findByTitleContainingIgnoreCase(String title);
 }
