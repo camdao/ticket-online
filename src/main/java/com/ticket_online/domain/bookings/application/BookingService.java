@@ -1,6 +1,7 @@
 package com.ticket_online.domain.bookings.application;
 
 import com.ticket_online.domain.bookings.dao.BookingDetailRepository;
+import com.ticket_online.domain.bookings.dao.BookingListProjection;
 import com.ticket_online.domain.bookings.dao.BookingRepository;
 import com.ticket_online.domain.bookings.domain.Booking;
 import com.ticket_online.domain.bookings.domain.BookingDetail;
@@ -85,9 +86,21 @@ public class BookingService {
     }
 
     public BookingListPageResponse getUserBookings(Long userId, Pageable pageable) {
-        Page<BookingListResponse> result = bookingRepository.findUserBookings(userId, pageable);
+        Page<BookingListProjection> result = bookingRepository.findUserBookings(userId, pageable);
 
-        return BookingListPageResponse.from(result);
+        return new BookingListPageResponse(
+                result.getContent().stream()
+                        .map(
+                                p ->
+                                        new BookingListResponse(
+                                                p.getId(),
+                                                p.getBookingCode(),
+                                                p.getStatus(),
+                                                p.getMovieTitle()))
+                        .toList(),
+                result.getNumber(),
+                result.getSize(),
+                result.hasNext());
     }
 
     public BookingDetailResponse getBookingDetail(Long bookingId, Long userId) {
