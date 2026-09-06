@@ -8,6 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface BookingDetailRepository extends JpaRepository<BookingDetail, Long> {
 
+    @Query(
+            "SELECT bd.seat.id FROM BookingDetail bd WHERE bd.booking.showtime.id = :showtimeId"
+                    + " AND bd.booking.status = 'CONFIRMED'")
     List<Long> findConfirmedSeatIdsByShowtimeId(@Param("showtimeId") Long showtimeId);
 
     List<BookingDetail> findByBookingId(Long bookingId);
