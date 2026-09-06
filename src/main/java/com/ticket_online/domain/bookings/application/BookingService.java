@@ -46,6 +46,9 @@ public class BookingService {
     // TODO: Add idempotency to prevent duplicate bookings when the same request is retried.
     // TODO: Check business rule to prevent a user from creating multiple active bookings
     //       for the same seat and showtime.
+    // TODO: rate condition booking, use can add schema seat_showtime
+    // TODO: redis hold seat can can make api other, because redis can hold pool thread db, trade
+    // off retry booking
     @Transactional
     public BookingResponse createBooking(
             CreateBookingRequest request, Long userId, String ipAddress) {
