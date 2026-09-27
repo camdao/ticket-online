@@ -66,14 +66,7 @@ public class ShowtimeService {
         return ShowtimeDetailResponse.from(showtime, availableSeats, totalSeats);
     }
 
-    /**
-     * Get seat availability for a specific showtime
-     *
-     * @param showtimeId the ID of the showtime
-     * @return ShowtimeSeatsResponse containing showtime ID and seat list
-     */
     public ShowtimeSeatsResponse getShowtimeSeats(Long showtimeId) {
-        // Fetch showtime with room details
         Showtime showtime =
                 showtimeRepository
                         .findByIdWithDetails(showtimeId)
@@ -81,15 +74,12 @@ public class ShowtimeService {
 
         Room room = showtime.getRoom();
 
-        // Fetch all active seats for the room
         List<Seat> seats = seatRepository.findByRoomId(room.getId());
 
-        // Get confirmed (BOOKED) seat IDs from database
         List<Long> confirmedSeatIds =
                 bookingDetailRepository.findConfirmedSeatIdsByShowtimeId(showtimeId);
         Set<Long> bookedSeatIds = new HashSet<>(confirmedSeatIds);
 
-        // Batch-check held seats in Redis with a single operation
         List<String> redisKeys =
                 seats.stream()
                         .map(seat -> String.format("seat:hold:%d:%d", showtimeId, seat.getId()))
@@ -97,7 +87,6 @@ public class ShowtimeService {
 
         List<String> redisValues = redisTemplate.opsForValue().multiGet(redisKeys);
 
-        // Build set of held seat IDs (where Redis value is not null)
         Set<Long> heldSeatIds = new HashSet<>();
         if (redisValues != null) {
             for (int i = 0; i < seats.size(); i++) {
@@ -107,7 +96,6 @@ public class ShowtimeService {
             }
         }
 
-        // Map seats to response with proper status checking
         List<SeatResponse> seatResponses =
                 seats.stream()
                         .map(
@@ -121,17 +109,6 @@ public class ShowtimeService {
         return ShowtimeSeatsResponse.of(showtimeId, seatResponses);
     }
 
-    /**
-     * Get showtimes with optional filters
-     *
-     * @param movieId optional movie ID filter
-     * @param cinemaId optional cinema ID filter
-     * @param city optional city filter
-     * @param date optional specific date filter (YYYY-MM-DD)
-     * @param startDate optional start date range filter (YYYY-MM-DD)
-     * @param endDate optional end date range filter (YYYY-MM-DD)
-     * @return list of showtimes matching the filters
-     */
     public List<ShowtimeResponse> getShowtimes(
             Long movieId,
             Long cinemaId,
@@ -147,21 +124,6 @@ public class ShowtimeService {
         return showtimes.stream().map(ShowtimeResponse::from).toList();
     }
 
-    public List<ShowtimeResponse> getShowtimesByMovieId(
-            Long movieId,
-            Long cinemaId,
-            String city,
-            String date,
-            String startDate,
-            String endDate) {
-
-        List<Showtime> showtimes =
-                showtimeRepository.findShowtimesByMovieId(
-                        movieId, cinemaId, city, date, startDate, endDate);
-
-        return showtimes.stream().map(ShowtimeResponse::from).toList();
-    }
-
     public List<ShowtimeResponse> getShowtimesByCinemaId(
             Long cinemaId, Long movieId, String date, String startDate, String endDate) {
 
@@ -172,44 +134,24 @@ public class ShowtimeService {
         return showtimes.stream().map(ShowtimeResponse::from).toList();
     }
 
-    /**
-     * Get distinct dates where showtimes exist for a movie at a cinema
-     *
-     * @param movieId the ID of the movie
-     * @param cinemaId the ID of the cinema
-     * @return list of date strings (YYYY-MM-DD) sorted in ascending order
-     */
     public List<String> getShowtimeDates(Long movieId, Long cinemaId) {
         List<LocalDate> dates = showtimeRepository.findDistinctShowtimeDates(movieId, cinemaId);
-
-        // Convert LocalDate to String format (YYYY-MM-DD)
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         return dates.stream().map(date -> date.format(formatter)).toList();
     }
 
-    /**
-     * Determine the status of a seat
-     *
-     * @param seat the seat to check
-     * @param bookedSeatIds set of confirmed (BOOKED) seat IDs
-     * @param heldSeatIds set of held seat IDs from Redis
-     * @return the seat status (BOOKED, HELD, or AVAILABLE)
-     */
     private SeatStatus determineSeatStatus(
             Seat seat, Set<Long> bookedSeatIds, Set<Long> heldSeatIds) {
         Long seatId = seat.getId();
 
-        // Check if seat is confirmed/booked in database
         if (bookedSeatIds.contains(seatId)) {
             return SeatStatus.BOOKED;
         }
 
-        // Check if seat is held in Redis
         if (heldSeatIds.contains(seatId)) {
             return SeatStatus.HELD;
         }
 
-        // Seat is available
         return SeatStatus.AVAILABLE;
     }
 }

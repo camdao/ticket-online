@@ -16,39 +16,4 @@ public record BookingDetailResponse(
         LocalDateTime confirmedAt,
         LocalDateTime startTime,
         LocalDateTime endTime,
-        List<SeatBookingResponse> seats) {
-
-    public static BookingDetailResponse of(List<BookingDetailRow> details) {
-
-        if (details.isEmpty()) {
-            return null;
-        }
-
-        BookingDetailRow first = details.get(0);
-
-        List<SeatBookingResponse> seats =
-                details.stream()
-                        .map(
-                                detail ->
-                                        SeatBookingResponse.from(
-                                                detail.seatId(),
-                                                detail.rowLabel(),
-                                                detail.seatNumber(),
-                                                detail.seatType(),
-                                                detail.seatPrice()))
-                        .toList();
-
-        return new BookingDetailResponse(
-                first.id(),
-                first.bookingCode(),
-                first.movieTitle(),
-                first.movieImageUrl(),
-                first.totalAmount(),
-                first.status(),
-                first.createdAt(),
-                first.confirmedAt(),
-                first.startTime(),
-                first.endTime(),
-                seats);
-    }
-}
+        List<SeatBookingResponse> seats) {}

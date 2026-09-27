@@ -71,7 +71,6 @@ public class PaymentService {
 
     @Transactional
     public void handleVnpayCallback(Map<String, String> params) {
-        // Validate signature
         if (!vnpayService.validateCallback(new HashMap<>(params))) {
             log.error("Invalid VNPay callback signature");
             throw new CustomException(ErrorCode.INVALID_PAYMENT_CALLBACK);
@@ -80,13 +79,11 @@ public class PaymentService {
         String transactionId = params.get("vnp_TxnRef");
         String responseCode = params.get("vnp_ResponseCode");
 
-        // Find payment
         Payment payment =
                 paymentRepository
                         .findByTransactionId(transactionId)
                         .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
 
-        // Prevent duplicate processing (idempotency)
         if (!payment.isPending()) {
             log.info(
                     "Payment {} already processed with status: {}",
@@ -99,16 +96,13 @@ public class PaymentService {
             String gatewayResponse = objectMapper.writeValueAsString(params);
 
             if ("00".equals(responseCode)) {
-                // Payment successful
                 payment.markAsSuccess(gatewayResponse);
                 paymentRepository.save(payment);
 
-                // Confirm booking
                 Booking booking = payment.getBooking();
                 booking.confirm();
                 bookingRepository.save(booking);
 
-                // Release seats from Redis (they're now permanently booked)
                 List<BookingDetail> details =
                         bookingDetailRepository.findByBookingId(booking.getId());
                 List<Long> seatIds = details.stream().map(bd -> bd.getSeat().getId()).toList();
@@ -116,7 +110,6 @@ public class PaymentService {
 
                 log.info("Payment {} completed successfully", transactionId);
             } else {
-                // Payment failed
                 payment.markAsFailed(gatewayResponse);
                 paymentRepository.save(payment);
 
@@ -135,7 +128,6 @@ public class PaymentService {
                         .findById(paymentId)
                         .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
 
-        // Verify ownership
         if (!payment.getBooking().getUser().getId().equals(userId)) {
             throw new CustomException(ErrorCode.PAYMENT_NOT_FOUND);
         }

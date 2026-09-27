@@ -12,7 +12,7 @@ public class BookingScheduler {
 
     private final BookingService bookingService;
 
-    @Scheduled(fixedRate = 60000) // Run every minute
+    @Scheduled(fixedRate = 60000)
     public void expireOldBookings() {
         try {
             bookingService.expireOldBookings();
